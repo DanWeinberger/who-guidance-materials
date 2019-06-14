@@ -1,5 +1,5 @@
 ---
-title: "Measuring the impact of new vaccines using time series of mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study"
+title: "Measuring the impact of new vaccines using mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study"
 output: learnr::tutorial
 runtime: shiny_prerendered
 ---
@@ -20,9 +20,12 @@ knitr::opts_chunk$set(echo = FALSE)
 ##	Hospitalization data from administrative sources (Cris)
 
 ## ‐	Study design (DAN): 
+Observational studies present a number of analytical challenges. The introduction of vaccines is often occurring concurrently with other oublic health and social interventions that can influence disease rates. Other relevant changes include changes in social welfare systems, changes in the capacity of the healthcare system, changes in the efficincy of registering hospitalizations and deaths, and other pharmacological interventions that could influence susceptibility (e.g., increasing use of anti-retroviral therapy in sub-Saharan Africa).
 
 ###	Possible study designs for impact assessment
-	Cluster RCT; step wedge; time trend/SC/etc
+
+Given these factors, the analysis goal is to disentangle changes in disease rates that are caused by the introduction of a vaccine program with changes that are due to these other factors. There are several approaches that could be taken. First, in a pre-licensure study, vaccine impact could be evaluated using a cluster-randomized design, where disease rates are compared between clusters that have no vs high vaccine uptake (or between clsters that have varying levels of uptake). In a post-licensure setting, this type of design can be approximated by using a 'step-wedge' study design, where the vaccine is rolled out in phases in different geographic units, and the geographic units are randomized to receive the vaccine earlier or later. In this design, the geographic units that introduce the vaccine later serve as controls for the geographics units that introduce the vaccine earlier. In most settings, however, such controlled roll-outs of vaccine are not possible. Therefore, the most common study designs are purely observational in which changes in incidence are evaluated over time or in which geographic units are compared based on their levels of vaccine coverage. Extreme caution needs to be used when performing and interpreting these studies to ensure that factors 
+
 
 ###	Time series analysis
 	Types of models for time series analysis
