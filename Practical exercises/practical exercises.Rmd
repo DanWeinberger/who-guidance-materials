@@ -1,0 +1,96 @@
+---
+title: "Measuring the impact of new vaccines using time series of mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Tutorial on the use of administrative data
+
+In this tutorial, you will learn about:
+  1. The types of administrative data 
+  2. The minimum requirement of the data for performing a credible analysis
+  3. How to extract relevant information from these databases 
+  4. How to format the data into time series
+  5. How to perform visual quality checks
+  6. How to fit models to the data to evaluate vaccine impact
+  7. How to interpret and describe the results 
+
+This turorial is designed for individuals without extensive experience in R, but if you want to learn about the R sofwatre, which underlies these anayses, you can learn some basics in this other tutorial: https://weinbergerlab.shinyapps.io/SurveillanceIntroR/. In this tutorial, we will format and analyze publicly-available data from Chile and analyze data from Chile and Brazil. The data for Chile were originally accessed from www.deis.cl. 
+
+## Types of administrative data
+
+"Administrative data" comprises a broad set of data sources that are routinely collected as part of healthcare delivery and colletion of vital statistics. These include electronic sources, such as hospital discharge databases, 'electronic health records', insurance databases, as well as data that are not stored electronically, such as paper log books from a health center or hospital.
+
+###ICD coding
+Many electronic administrative databases (particularly mortality data) use the International Classification of Disease (ICD) to classify causes of illness of death into specific categories. The 10th revision of the ICD (ICD10) is the most commonly used categorization, but some older data sources ue ICD8 or ICD9. 
+
+Causes of illness or death are organized into broad categories in ICD10. These groupings of ICD codes are called *chapters*. For examples, the chapter that includes codes A00-B99 covers "certain infectious and parasitic diseases," while the chapter that includes codes J00-J99 covers "Diseases of the respiratory system." The chapters are further subdivided into sub-chapters. The J00-J99 chapter has 11 sub-chapers, which include 'Acute upper Respiratory infections' (J00-J06), 'Influenza and pneumonia' (J09-J18), and 'Chronic lower respiratory diseases' (J40-J47). The subchapters are further subdivided into specific causes, and many of these coes are further subdivided. As an example, J09-J18 has 10 codes 
+
+### Recording of causes of illness or death
+Some databases record just a single cause of illness or death while others have multiple causes listed. For example XXX. This poses a challenge when comparing between databases.
+
+The *specificity* of coding differs by database. For instance, many of the Latin American databases commonly use J18.9 (pneumonia, unspecified organism), which is a non-specific code indicating pneumonia. In contrast, databases from the United States commonly use cause-specific codes such as J13 ("pneumonia due to *Streptococcus pneumoniae*"). This has an important effect on the analysis: if you can only use non-specific codes, then pneumococcus will comprise a relatively small fraction of all cases, and you will therefore detec a small relative decline. But if you can use more pathogen-specific codes, it will usually be easier to detect an effect of vaccine.
+
+## Minimum requirements for a credible analysis
+
+### Number of years
+
+**See section below on baseline length**
+
+### Number of cases
+
+### xxx
+
+## Extracting relevant information
+
+With a database that uses ICD codes to classify causes of death, we can create case definitions based on the presence of absence of individual codes or combinations of cdes (when multiple diagnostic codes are present). In the excercise below, we will search for and flag records that have a diagnosis code indicating a respiratory condition (codes starting with 'J'), as well as codes specific for pneumonia (J12-J18). We will then look at the frequency with which the different codes are used
+
+
+```{r extract1, exercise=TRUE}
+
+#This will contain an interactive extraction of data
+
+```
+
+## Formatting the data into time series
+
+```{r ts.format, exercise=TRUE}
+
+#This will contain an interactive formatting of data
+
+```
+
+## Performing visual quality checks
+
+```{r qc.plotting, exercise=TRUE}
+
+#This will contain an interactive plotting of data
+
+```
+
+##Types of analysis
+
+
+
+## Fitting models to the data to evaluate vaccine impact
+
+```{r model.fitting, exercise=TRUE}
+
+#This will contain an interactive plotting of data
+
+```
+
+## Interpreting the findings and reporting the results
+
+# Problem situations
+## What to do with a short baseline
+If you have a short baseline period (ie <3 years) of pre-vaccine data, it can be difficult or impossible to disentangle trends caused by the vaccine from unrelated trends that were occurring before the vaccine was introduced. Simulation studies demonstrate that performing an interrupted time series analysis in such a situation can lead to extremely low power to detect a change. If there is a control variable that can explain any trends unrelated to the vaccine, this can be used, and the assumption would be that this control variable captures all of the important trends that could confound the results. For instance, in an analysis in The Gambia, the use of number of X-Rays performed as a control for changes in X-Ray-confirmed pneumonia effectively allowed for the estimation of a credible vaccine effect with just ~1 year of pre-vaccine data. The time series analysis needs to be adjusted from the typical setup--it is not possible to include a separate trend variable to capture pre-vaccine changes
+**note to Dan: see Gambia ITS simulations on this topic** 
+
+## How to disentangle effects of higher-valency vaccines
+It is common for a country to introduce 1 vaccine (e.g., PCV7) and then switch to a higher-valency vaccine (PCV10 or PCV13). If this change occurs within a few years, it is not typically possible to disentangle the effects of the first vaccine vs the second. This is because it takes several years for a vaccine program to mature and for disease rates to reach a new equilibirum. If there is not sufficient time between the introduction of the first and second vaccine, it is not possible to disentangle these two effects. Rather, a single overall vaccine impact estimate should be presented. If there are many years between introduction of the two vaccines, than it might be possible to estimate the additional benefit of switching by comparing the trends in the period after introduction of the first vaccine but before introduction of the second vaccine with the period after introduction of the second vaccine. 

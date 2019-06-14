@@ -1,0 +1,52 @@
+---
+title: "Measuring the impact of new vaccines using time series of mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Manual describing approaches to measuring PCV impact using mortality and hospitalization, including minimum data requirements, and a framework for ensuring adequate application of relevant methodological aspects required for the use of time series methodology.
+
+
+## Introduction (Cris)
+
+
+## Mortality data from Vital Statistics (Cris)
+
+##	Hospitalization data from administrative sources (Cris)
+
+## ‐	Study design (DAN): 
+
+###	Possible study designs for impact assessment
+	Cluster RCT; step wedge; time trend/SC/etc
+
+###	Time series analysis
+	Types of models for time series analysis
+
+###	Controls – conventional vs synthetic control approach
+	Describe each one, compare approaches, and 
+
+##	Defining the study question and objectives (CRISTIANA)
+
+##	Data Sources (international and national for both mortality and hospitalization) (Cristiana)
+
+##	Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts) (CRISTIANA)
+
+## Data management (MOSTLY CRISTIANA)
+
+## Data analysis (text + web based tutorial) (DAN)
+-	Data formatting
+-	Descriptive analysis
+-	Time series models
+- Synthetic Control analysis
+-	Incorporating co-variates into the analyses
+-	Exercises
+
+## Interpreting results (DAN)
+	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1)
+o	Communicating and Presenting results effectively (including suggested templates) (DAN AND CRIS)
+

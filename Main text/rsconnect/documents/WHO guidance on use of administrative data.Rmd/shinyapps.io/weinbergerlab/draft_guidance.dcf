@@ -1,0 +1,12 @@
+name: draft_guidance
+title: draft_guidance
+username:
+account: weinbergerlab
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 644304
+bundleId: 1815816
+url: https://weinbergerlab.shinyapps.io/draft_guidance/
+when: 1547571507.6981
+asMultiple: FALSE
+asStatic: FALSE
