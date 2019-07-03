@@ -1,30 +1,44 @@
 ---
-title: "Measuring the impact of new vaccines using mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study"
-output: learnr::tutorial
+title: "WHO Manual on Administrative data"
+output: 
+  learnr::tutorial:
+      theme: journal 
+      toc: true
+      toc_depth: 2
+      toc_float:
+        collapsed: false
+        smooth_scroll: false
 runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
 library(learnr)
+#https://bookdown.org/yihui/rmarkdown/html-document.html#table-of-contents
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-# Manual describing approaches to measuring PCV impact using mortality and hospitalization, including minimum data requirements, and a framework for ensuring adequate application of relevant methodological aspects required for the use of time series methodology.
-
+#Measuring the impact of new vaccines using mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study
 
 ## Introduction (Cris)
+Once vaccines or other public health interventions are deployed, it is often desirable to measure their impact on health. This information is often critical for policy-makers who prioritize funding and implementation of different programs. However, conducting robust and credible evaluations of the public health impact of interventions is challenging. Real-world data are complex, and decisions about how to clean, format, analyze, and interpret the data can influence the conclusions about the impact of the intervention. 
 
+In this manual, we present a framework for performing impact analyses using routinely-collected administrative data sources. As a specific case study, we discuss challenges in evaluating the impact of the introduction of pneumococcal conjugate vaccines among children on rates of hospitalization and death due to pneumonia. 
 
 ## Mortality data from Vital Statistics (Cris)
 
 ##	Hospitalization data from administrative sources (Cris)
 
-## ‐	Study design (DAN): 
+
+## Study design (DAN) {.tabset .tabset-fade .tabset-pills}
+
+### Overview
 Observational studies present a number of analytical challenges. The introduction of vaccines is often occurring concurrently with other oublic health and social interventions that can influence disease rates. Other relevant changes include changes in social welfare systems, changes in the capacity of the healthcare system, changes in the efficincy of registering hospitalizations and deaths, and other pharmacological interventions that could influence susceptibility (e.g., increasing use of anti-retroviral therapy in sub-Saharan Africa).
 
 ###	Possible study designs for impact assessment
 
-Given these factors, the analysis goal is to disentangle changes in disease rates that are caused by the introduction of a vaccine program with changes that are due to these other factors. There are several approaches that could be taken. First, in a pre-licensure study, vaccine impact could be evaluated using a cluster-randomized design, where disease rates are compared between clusters that have no vs high vaccine uptake (or between clsters that have varying levels of uptake). In a post-licensure setting, this type of design can be approximated by using a 'step-wedge' study design, where the vaccine is rolled out in phases in different geographic units, and the geographic units are randomized to receive the vaccine earlier or later. In this design, the geographic units that introduce the vaccine later serve as controls for the geographics units that introduce the vaccine earlier. In most settings, however, such controlled roll-outs of vaccine are not possible. Therefore, the most common study designs are purely observational in which changes in incidence are evaluated over time or in which geographic units are compared based on their levels of vaccine coverage. Extreme caution needs to be used when performing and interpreting these studies to ensure that factors 
+Given these factors, the analysis goal is to disentangle changes in disease rates that are caused by the introduction of a vaccine program with changes that are due to these other factors. There are several approaches that could be taken. First, in a *pre-licensure* study, vaccine impact could be evaluated using a cluster-randomized design, where disease rates are compared between clusters that have no vs high vaccine uptake (or between clsters that have varying levels of uptake). In a *post-licensure setting*, this type of design can be approximated by using a 'step-wedge' study design, where the vaccine is rolled out in phases in different geographic units, and the geographic units are randomized to receive the vaccine earlier or later. In this design, the geographic units that introduce the vaccine later serve as controls for the geographics units that introduce the vaccine earlier. 
+
+In most settings, however, such controlled roll-outs of vaccine are not possible. Therefore, the most common study designs are purely observational in which changes in incidence are evaluated over time or in which geographic units are compared based on their levels of vaccine coverage. Extreme caution needs to be used when performing and interpreting these studies to ensure that factors unlreated to vaccination are appropriately adjusted in the analysis.  
 
 
 ###	Time series analysis
@@ -33,13 +47,19 @@ Given these factors, the analysis goal is to disentangle changes in disease rate
 ###	Controls – conventional vs synthetic control approach
 	Describe each one, compare approaches, and 
 
+
 ##	Defining the study question and objectives (CRISTIANA)
+
+
 
 ##	Data Sources (international and national for both mortality and hospitalization) (Cristiana)
 
+
 ##	Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts) (CRISTIANA)
 
+
 ## Data management (MOSTLY CRISTIANA)
+
 
 ## Data analysis (text + web based tutorial) (DAN)
 -	Data formatting
@@ -49,7 +69,12 @@ Given these factors, the analysis goal is to disentangle changes in disease rate
 -	Incorporating co-variates into the analyses
 -	Exercises
 
+
 ## Interpreting results (DAN)
 	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1)
 o	Communicating and Presenting results effectively (including suggested templates) (DAN AND CRIS)
+```{r}
+#https://bookdown.org/yihui/rmarkdown/layout.html#story-boards
+```
+
 
