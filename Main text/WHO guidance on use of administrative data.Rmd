@@ -130,7 +130,8 @@ points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
 ```
 
 
-#### ITS
+#### Interrupted time series analysis (ITS)
+In many instances, there is an underlying trend in the time series that
 -segmented vs spline
 -Control outcomes
 
