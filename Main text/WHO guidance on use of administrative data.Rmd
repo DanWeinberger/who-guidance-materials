@@ -67,7 +67,7 @@ abline(v=as.Date('2010-03-01'), lty=2, col='gray')
 
 
 ####Pre-Post comparison
-The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre/post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introducion are excluded from the analysis because vaccine coverage has not yet reached full coverage levels yet. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
+The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre/post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introducion are excluded from the analysis because vaccine coverage has not yet reached full coverage levels. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
 
 ```{r, fig.wdith=7, fig.height=3}
 mean.pre<-mean(kids$J12_18[kids$date<as.Date('2010-03-01')])
@@ -80,7 +80,7 @@ arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.post, length
 
 ```
 
-**Counterfactual** In this study design, it is assumed that if the vaccine had not been introduced, the incidence rate after vaccine introduction would be the same as the incidence of disease before vaccine introduction. Therefore the counterfactual is simply the average incidence in the pre-vaccine period, and the comparison is between incidence in the post vaccine period. In the plot below, the $\color{#d95f02}{\text{counterfactual}}$ is shown with a dotted line. Comparing the $\color{#d95f02}{\text{counterfactual}}$ with the $\color{#7570b3}{\text{observed mean for the post-period}}$ gives an estimate of the vaccine effect.
+**Counterfactual** In this study design, it is assumed that if the vaccine had not been introduced, the incidence rate after vaccine introduction would be the same as the incidence of disease before vaccine introduction. Therefore the counterfactual is simply the average incidence in the pre-vaccine period, and the comparison is with incidence in the post vaccine period. In the plot below, the $\color{#d95f02}{\text{counterfactual}}$ is shown with a dotted line. Comparing the $\color{#d95f02}{\text{counterfactual}}$ with the $\color{#7570b3}{\text{observed mean for the post-period}}$ gives an estimate of the vaccine effect.
 
 ```{r, fig.width=7, fig.height=3}
 mean.pre<-mean(kids$J12_18[kids$date<as.Date('2010-03-01')])
@@ -102,7 +102,7 @@ arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.pre, length=
 
 In this example, the $\color{#d95f02}{\text{counterfactual}}$ is seasonally adjusted, so the counterfactual for January is equal to the mean number of cases in January in the pre-vaccine period, a likewise for all of the months.
 
-```{r}
+```{r, fig.width=5, fig.height=7}
 
 month<-as.factor(month(kids$date))
 kids$period<-0
@@ -113,7 +113,8 @@ pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$period<-as.factor(0)
 pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
-pred1.counter[kids$date<=as.Date('2011-03-01')] <-NA
+pred1.counter.post<-pred1.counter
+pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
 
 pred1.pre<-pred1
 pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
@@ -121,19 +122,49 @@ pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
 pred1.post<-pred1
 pred1.post[kids$date<as.Date('2011-03-01')]<-NA
 
-plot(kids$date, kids$J12_18, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_18)))
+```
+
+
+#### Interrupted time series analysis (ITS)
+In many instances, there is an underlying trend in the time series that is unrelated to vaccination. Such a trend can be caused by a number of factors, including changes in healthcare access, changes in susceptibility of the population, and changes in the sensitivity of surveillance. Such trends can bias the estimates of vaccine impact if they are not properly controlled. The simplest approach to adjust for trends is to fit a straight line through the data and then test whether the slope of the line or the level of the line changes after vaccine introduction. This can be accomplished by fitting a Poisson or negative binomial regression model. There are a number of ways to code these models, but they typically include an index for time to capture the slope during the pre-vaccine period as well as terms that allow the slope or intercept to change in the post-vaccine period. The structure of the ITS model depends on how quickly you expect the vaccine effect to take hold
+
+In a segmented ITS analysis, dummy variables (encoded 0 before vaccine introduction and 1 after vaccine introduction) are included to allow the level to change, and an interaction term between the dummy variable and the index for time allows the slope to change after vaccine introduction. In this model, the line segments fitted through the data do not connect. In practice, this can also lead to strange and implausible shifts in the fitted values.    
+```{r, fig.width=5, fig.height=7}
+kids$index<-1:nrow(kids) #creates an index for time
+mod1<-glm(J12_18~month+as.factor(period)*index,family='poisson', data=kids )
+pred1<-predict(mod1, type='response')
+kid.counter<-kids
+kid.counter$period<-as.factor(0)
+pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
+pred1.counter.post<-pred1.counter
+pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
+
+
+pred1.pre<-pred1
+pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
+
+pred1.post<-pred1
+pred1.post[kids$date<as.Date('2011-03-01')]<-NA
+
+par(mfrow=c(2,1))
+plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)))
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
+abline(v=as.Date('2010-03-01'), lty=3, col='gray')
+
+plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
+abline(h=1, lty=2, col='gray')
+
 
 
 ```
 
 
-#### Interrupted time series analysis (ITS)
-In many instances, there is an underlying trend in the time series that
+needs to be adjusted for
 -segmented vs spline
 -Control outcomes
+An excellent review of this topic is provided by Bernal, Cummins and Gasparrini (Intl Journ of Epidem., 2017 (46)1: 348-355)
 
 **Counterfactual** 
 **Calculation of vaccine impact** 
