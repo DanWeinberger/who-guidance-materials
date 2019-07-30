@@ -1,18 +1,14 @@
 ---
 title: "WHO Manual on Administrative data"
 output: 
-  learnr::tutorial:
-      theme: journal 
-      toc: true
-      toc_depth: 2
-      toc_float:
-        collapsed: false
-        smooth_scroll: false
-runtime: shiny_prerendered
+   html_document:
+    css: styles.css
+    toc: true
+    toc_depth: 2
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
-library(learnr)
 library(RCurl)
 library(lubridate)
 #https://bookdown.org/yihui/rmarkdown/html-document.html#table-of-contents
@@ -25,7 +21,7 @@ kids<-br1[br1$age_group=='9',]
 
 ```
 
-#Measuring the impact of new vaccines using mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study
+#Measuring the impact of new vaccines using mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study 
 
 ## Introduction (Cris)
 Once vaccines or other public health interventions are deployed, it is often desirable to measure their impact on health. This information is often critical for policy-makers who prioritize funding and implementation of different programs. However, conducting robust and credible evaluations of the public health impact of interventions is challenging. Real-world data are complex, and decisions about how to clean, format, analyze, and interpret the data can influence the conclusions about the impact of the intervention. 
@@ -40,7 +36,7 @@ Many vaccines influence disease rates in 2 ways. Direct effects reduce the risk 
 ##	Hospitalization data from administrative sources (Cris)
 
 
-## Study design (DAN) {.tabset .tabset-fade .tabset-pills}
+## Study design (DAN) 
 
 ### Overview
 Observational studies present a number of analytical challenges. The introduction of vaccines is often occurring concurrently with other oublic health and social interventions that can influence disease rates. Other relevant changes include changes in social welfare systems, changes in the capacity of the healthcare system, changes in the efficincy of registering hospitalizations and deaths, and other pharmacological interventions that could influence susceptibility (e.g., increasing use of anti-retroviral therapy in sub-Saharan Africa). Because vaccines are introduced at the same time as these other changes, it can be challenging to attribute specific changes to the introduction of a vaccine. The methods that we will discuss here attempt to address this issue using different approaches and different assumptions. It is important to be aware of the assumptions and limitations of the different approaches. 
@@ -87,10 +83,11 @@ mean.pre<-mean(kids$J12_18[kids$date<as.Date('2010-03-01')])
 mean.post<-mean(kids$J12_18[kids$date>=as.Date('2011-03-01')])
 
 plot(kids$date, kids$J12_18, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_18)))
-abline(v=as.Date('2010-03-01'), lty=2, col='gray')
 arrows(x0=as.Date('2003-01-01'), x1=as.Date('2010-02-01') , y0=mean.pre, length=0, col='#1b9e77')
 arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.post, length=0, col='#7570b3')
 arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.pre, length=0, col='#d95f02', lty=3)
+abline(v=as.Date('2010-03-01'), lty=3, col='gray')
+abline(v=as.Date('2011-03-01'), lty=3, col='gray')
 
 ```
 
@@ -100,7 +97,7 @@ arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.pre, length=
 
 **Extensions** It is sometimes desirable to adjust for seasonality in the analysis. This is particularly important when partial years are included in the pre and/or post period, and the pre- or post-periods are imbalanced in terms of which parts of the year are included in the analyses. This is accomplished in a regression model by adjusting for seasonality using dummy variables for month or harmonic variables. More details can be found in the hands-on exercises.
 
-In this example, the $\color{#d95f02}{\text{counterfactual}}$ is seasonally adjusted, so the counterfactual for January is equal to the mean number of cases in January in the pre-vaccine period, a likewise for all of the months.
+In this example, the $\color{#d95f02}{\text{counterfactual}}$ is seasonally adjusted, so the counterfactual for January is equal to the mean number of cases in January in the pre-vaccine period, and likewise for all of the months.
 
 ```{r, fig.width=5, fig.height=7}
 
@@ -122,13 +119,29 @@ pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
 pred1.post<-pred1
 pred1.post[kids$date<as.Date('2011-03-01')]<-NA
 
+
+par(mfrow=c(2,1))
+plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)))
+points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
+points(kids$date,pred1.post, type='l' , col='#7570b3' )
+points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
+abline(v=as.Date('2010-03-01'), lty=3, col='gray')
+abline(v=as.Date('2011-03-01'), lty=3, col='gray')
+
+plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
+abline(h=1, lty=2, col='gray')
 ```
 
 
 #### Interrupted time series analysis (ITS)
-In many instances, there is an underlying trend in the time series that is unrelated to vaccination. Such a trend can be caused by a number of factors, including changes in healthcare access, changes in susceptibility of the population, and changes in the sensitivity of surveillance. Such trends can bias the estimates of vaccine impact if they are not properly controlled. The simplest approach to adjust for trends is to fit a straight line through the data and then test whether the slope of the line or the level of the line changes after vaccine introduction. This can be accomplished by fitting a Poisson or negative binomial regression model. There are a number of ways to code these models, but they typically include an index for time to capture the slope during the pre-vaccine period as well as terms that allow the slope or intercept to change in the post-vaccine period. The structure of the ITS model depends on how quickly you expect the vaccine effect to take hold
+In many instances, there is an underlying trend in the time series that is unrelated to vaccination. Such a trend can be caused by a number of factors, including changes in healthcare access, changes in susceptibility of the population, and changes in the sensitivity of surveillance. Such trends can bias the estimates of vaccine impact if they are not properly controlled. The simplest approach to adjust for trends is to fit a straight line through the data and then test whether the slope of the line or the level of the line changes after vaccine introduction. This can be accomplished by fitting a Poisson or negative binomial regression model. A number of quantities can be estimated sing these models, including the change in the slope of the trend line or in the average number of cases. However, it is often most useful to use the model to calculate the decline in incidence (rate ratio or rate difference) compared to what would be expected if the trend/level had remained constant. 
 
-In a segmented ITS analysis, dummy variables (encoded 0 before vaccine introduction and 1 after vaccine introduction) are included to allow the level to change, and an interaction term between the dummy variable and the index for time allows the slope to change after vaccine introduction. In this model, the line segments fitted through the data do not connect. In practice, this can also lead to strange and implausible shifts in the fitted values.    
+
+There are a number of ways to code these models, but they typically include an index for time to capture the slope during the pre-vaccine period as well as terms that allow the slope or intercept to change in the post-vaccine period. The structure of the ITS model depends on how quickly you expect the vaccine effect to take hold. An excellent review of this topic is provided by Bernal, Cummins and Gasparrini (Intl Journ of Epidem., 2017 (46)1: 348-355).
+
+
+In a segmented ITS analysis, dummy variables (encoded 0 before vaccine introduction and 1 after vaccine introduction) are included to allow the level to change, and an interaction term between the dummy variable and the index for time allows the slope to change after vaccine introduction. In this model, the line segments fitted through the data do not connect. In practice, this can also lead to strange and implausible shifts in the fitted values. 
+
 ```{r, fig.width=5, fig.height=7}
 kids$index<-1:nrow(kids) #creates an index for time
 mod1<-glm(J12_18~month+as.factor(period)*index,family='poisson', data=kids )
@@ -152,6 +165,7 @@ points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
 abline(v=as.Date('2010-03-01'), lty=3, col='gray')
+abline(v=as.Date('2011-03-01'), lty=3, col='gray')
 
 plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
 abline(h=1, lty=2, col='gray')
@@ -160,18 +174,119 @@ abline(h=1, lty=2, col='gray')
 
 ```
 
+A better alternative is to use a linear spline, which forces the fitted line segments to connect. Since most vaccines roll out gradually, and there is unlikely to be an immediate drop, this is a more realistic way to model the data. 
 
-needs to be adjusted for
--segmented vs spline
--Control outcomes
-An excellent review of this topic is provided by Bernal, Cummins and Gasparrini (Intl Journ of Epidem., 2017 (46)1: 348-355)
+```{r, fig.width=5, fig.height=7}
+kids$index<-1:nrow(kids) #creates an index for time
+intro.date<-min(which(kids$date>=as.Date('2010-03-01')))
+eval.date<-min(which(kids$date>=as.Date('2011-03-01')))
+
+kids$spl1<- kids$index -  intro.date
+kids$spl2<- kids$index -  eval.date
+kids$spl1[kids$spl1<0]<-0
+kids$spl2[kids$spl2<0]<-0
+
+mod1<-glm(J12_18~month+ index +spl1 + spl2 ,family='poisson', data=kids )
+pred1<-predict(mod1, type='response')
+kid.counter<-kids
+kid.counter$spl1<-0
+kid.counter$spl2<-0
+pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
+pred1.counter.post<-pred1.counter
+pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
+
+
+pred1.pre<-pred1
+pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
+
+pred1.post<-pred1
+pred1.post[kids$date<as.Date('2011-03-01')]<-NA
+
+par(mfrow=c(2,1))
+plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)))
+points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
+points(kids$date,pred1.post, type='l' , col='#7570b3' )
+points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
+abline(v=as.Date('2010-03-01'), lty=3, col='gray')
+abline(v=as.Date('2011-03-01'), lty=3, col='gray')
+
+plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
+abline(h=1, lty=2, col='gray')
+
+
+```
+
+This could be further modified to allow the slope to level out after a certain time period (in this example, the post-vaccine trend levels out 36 months after vaccine introduction)
+
+```{r, fig.width=5, fig.height=7}
+kids$index<-1:nrow(kids) #creates an index for time
+intro.date<-min(which(kids$date>=as.Date('2010-03-01')))
+eval.date<-min(which(kids$date>=as.Date('2011-03-01')))
+
+kids$spl1<- kids$index -  intro.date
+kids$spl2<- kids$index -  eval.date
+kids$spl1[kids$spl1>12]<-12 #effect only in place for 12 months
+kids$spl2[kids$spl2>24]<-24 #Level off after 24 months
+kids$spl1[kids$spl1<0]<-0
+kids$spl2[kids$spl2<0]<-0
+
+mod1<-glm(J12_18~month+ index +spl1 + spl2 ,family='poisson', data=kids )
+pred1<-predict(mod1, type='response')
+kid.counter<-kids
+kid.counter$spl1<-0
+kid.counter$spl2<-0
+pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
+pred1.counter.post<-pred1.counter
+pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
+
+
+pred1.pre<-pred1
+pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
+
+pred1.post<-pred1
+pred1.post[kids$date<as.Date('2011-03-01')]<-NA
+
+par(mfrow=c(2,1))
+plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)))
+points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
+points(kids$date,pred1.post, type='l' , col='#7570b3' )
+points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
+abline(v=as.Date('2010-03-01'), lty=3, col='gray')
+abline(v=as.Date('2011-03-01'), lty=3, col='gray')
+
+plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
+abline(h=1, lty=2, col='gray')
+
+
+```
 
 **Counterfactual** 
+With an ITS model, the assumption is that the trend from the pre-vaccine period would have continued with the same slope into the post-vaccine period. To estimate the value of the counterfactual at each time point, we use the regression model but hold the terms representing post-vaccine changes in trend or level to 0 (no change from the pre-vaccine trends and levels). 
+
 **Calculation of vaccine impact** 
+Vaccine impact is measured in a variety of ways with ITS models. Some authors report the actual change in the slope parameter or change in the level. However, these values are somewhat abstract and difficult to interpret from a public health standpoint. It is more useful to calculate a relative change (rate ratio) or an absolute change (rate difference) by comparing the fitted value from the regression with the counterfactual value.  
+
 **Assumptions**
+A key assumption is that the linear trend in the pre-vaccine period captures the important underlying trends and that these trends would have continued at the same rate if the vaccine had not been introduced.  Assumptions also need to be made about which time periods to include in the ramp-up period and whether the slope should level out after a certain amount of time (and how much time should be allowed). Some of these assumptions about the timing and shape of the trajectory can be relaxed by using a flexible spline to capture post-vaccine changes (For example, see van Deursen, **Vaccine**, 2017)
+
+#### The use of controls in ITS analysis
+With this type of ITS analysis, there is a good chance that there are changes in the time series that are not well-captured by the linear trend assumption. There are 2 approaches that can be used to detect and control for such patterns: control outcomes and control covariates
+
+**Control Outcomes**
+With a control outcome, a different disease that is not affected by the vaccine is chosen, and the same model that was fit to the main outcome of interest is fit to this control time series. If the 
+
+**Control covariates**
+It is also possible to include other time series as control variables in the ITS regression model. The goal with this approach is to adjust for time-varying confounders As an example, if the outcome is pneumonia, and smoking rates are changing over time, the rate of smoking in the population at each time point could be included as a covariate. Alternatively,
+
+
 ***Extensions**
+
+
 -Change point models
 -Control covariates
+-Control outcomes
+-Holt-Winter, ARIMA...
+
 
 #### Synthetic controls
 **Counterfactual** 
@@ -180,7 +295,6 @@ An excellent review of this topic is provided by Bernal, Cummins and Gasparrini 
 ***Extensions**
 
 #### Other variations
--Holt-Winter, ARIMA...
 -incorporating controls into SC analyses
 -Dynamic transmission models
 
