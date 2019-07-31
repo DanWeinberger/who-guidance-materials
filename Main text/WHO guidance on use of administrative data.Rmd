@@ -29,25 +29,19 @@ kids<-br1[br1$age_group=='9',]
 #<img src="WHO_logo.png" style="position:absolute;top:0px;right:0px;" />
 ```
 
-<style>
-#TOC {
-  background: "WHO_logo.png";
-  background-size: contain;
-  padding-top: 80px !important;
-  background-repeat: no-repeat;
-}
-</style>
-
-<style>
-.list-group-item.active, .list-group-item.active:focus, .list-group-item active:cursor:pointer, cursor: pointer {
-    color: #507894;
-}
-</style>
-
 ```{r knitr-logo, out.width='32.8%', fig.show='hold',fig.align="center"}
 knitr::include_graphics('WHO_logo.png')
 ```
 <br>
+
+WHO working group on the use of administrative data to evaluate the impacts of pneumococcal conjugate vaccines:
+- Adam Cohen (World Health Organization)
+- Lucia Helena De Oliveira (Pan American Health Organization)
+- Fernanda Lessa (Centers for Disease Control and Prevention)
+- Jennifer Loo Farrar (Centers for Disease Control and Prevention)
+- Tomoka Nakamura (World Health Organization)
+- Cristiana Toscano (Universidade Federal de Goiás)
+- Daniel Weinberger (Yale School of Public Health)
 
 ## Introduction (Cris)
 Once vaccines or other public health interventions are deployed, it is often desirable to measure their impact on health. This information is often critical for policy-makers who prioritize funding and implementation of different programs. However, conducting robust and credible evaluations of the public health impact of interventions is challenging. Real-world data are complex, and decisions about how to clean, format, analyze, and interpret the data can influence the conclusions about the impact of the intervention. 
