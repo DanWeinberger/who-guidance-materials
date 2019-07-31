@@ -3,17 +3,17 @@ title: Measuring the impact of new vaccines using mortality and administrative h
   data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
   html_document:
     css: styles.css
     toc: yes
     toc_depth: 3
     toc_float: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '3'
-  word_document:
-    toc: yes
-    toc_depth: '3'
 --- 
 
 ```{r setup, include=FALSE}
@@ -34,14 +34,15 @@ knitr::include_graphics('WHO_logo.png')
 ```
 <br>
 
-WHO working group on the use of administrative data to evaluate the impacts of pneumococcal conjugate vaccines:
-- Adam Cohen (World Health Organization)
-- Lucia Helena De Oliveira (Pan American Health Organization)
-- Fernanda Lessa (Centers for Disease Control and Prevention)
-- Jennifer Loo Farrar (Centers for Disease Control and Prevention)
-- Tomoka Nakamura (World Health Organization)
-- Cristiana Toscano (Universidade Federal de Goiás)
-- Daniel Weinberger (Yale School of Public Health)
+ WHO working group on the use of administrative data to evaluate the impacts of pneumococcal conjugate vaccines:
+ 
+* Adam Cohen (World Health Organization)
+* Lucia Helena De Oliveira (Pan American Health Organization)
+* Fernanda Lessa (Centers for Disease Control and Prevention)
+* Jennifer Loo Farrar (Centers for Disease Control and Prevention)
+* Tomoka Nakamura (World Health Organization)
+* Cristiana Toscano (Universidade Federal de Goiás)
+* Daniel Weinberger (Yale School of Public Health)
 
 ## Introduction (Cris)
 Once vaccines or other public health interventions are deployed, it is often desirable to measure their impact on health. This information is often critical for policy-makers who prioritize funding and implementation of different programs. However, conducting robust and credible evaluations of the public health impact of interventions is challenging. Real-world data are complex, and decisions about how to clean, format, analyze, and interpret the data can influence the conclusions about the impact of the intervention. 
@@ -111,8 +112,8 @@ arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.post, length
 arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.pre, length=0, col='#d95f02', lty=3)
 abline(v=as.Date('2010-03-01'), lty=3, col='gray')
 abline(v=as.Date('2011-03-01'), lty=3, col='gray')
-text(as.Date('2014-01-01'), 15000, 'Counterfactual', col='#d95f02', cex=0.5,pos=2, offset=0)
-text(as.Date('2014-01-01'), 8000, 'Fitted', col='#7570b3', cex=0.5,pos=2, offset=0)
+text(as.Date('2014-01-01'), 13000, 'Counterfactual', col='#d95f02', cex=0.8,pos=2, offset=0)
+text(as.Date('2014-01-01'), 8000, 'Fitted', col='#7570b3', cex=0.8,pos=2, offset=0)
 
 ```
 
