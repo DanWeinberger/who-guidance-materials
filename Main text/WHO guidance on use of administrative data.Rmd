@@ -73,14 +73,6 @@ In most settings, such controlled roll-outs of vaccine are not possible. Therefo
 ### Counterfactuals: What would have happened without a vaccine?
 With any analysis of vaccine impact, the goal is to compare the observed disease rates in the post-vaccine period with an estimate of what would have happened if the vaccine had not been introduced. This value is called the **counterfactual**. There are many ways to estimate counterfactuals from very simple approaches (as is done in pre/post comparison of incidence) to more complex approaches that adjust for trends and dynamics of the disease. In each of the followinng sections, we will discuss different methods to obtain this quantity.
 
-##	Types of analyses
-In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence. In this example, we have the number of hospitalization coded as having a diagnosis for pneumonia (ICD10 codes J12-J18) in Brazil in infants
-
-```{r, fig.wdith=7, fig.height=3}
-plot(kids$date, kids$J12_18, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_18)), main='Time series of pneumonia cases')
-abline(v=as.Date('2010-03-01'), lty=2, col='gray')
-```
-
 ### Key considerations for analyses 
 
 ####Denominators
@@ -99,6 +91,14 @@ A key assumption when selecting control diseases is that the relationship betwee
 Another key assumption is that the control variables are themselves not influenced by the intervention of interest. Therefore, invasive pneumococcal disease (IPD) would be a poor control for evaluating the impact of pneumococcal conjugate vaccines on pneumonia, because IPD is itself influenced by the same vaccine. The inclusion of a control that is influenced by the same intervention will bias the estimates towards  no effect because both will be going down in parallel due to the same cause.
 
 In summary, control diseases should share some relevant etiological drivers with the disease of interest and should themselves not be influenced by the intervention or by other interventions that would change the relationship between the control and the outcome of interest. The sections that follow discuss some specific uses of control diseases in analyses. 
+
+##	Types of analyses
+In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence. In this example, we have the number of hospitalization coded as having a diagnosis for pneumonia (ICD10 codes J12-J18) in Brazil in infants
+
+```{r, fig.wdith=7, fig.height=3}
+plot(kids$date, kids$J12_18, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_18)), main='Time series of pneumonia cases')
+abline(v=as.Date('2010-03-01'), lty=2, col='gray')
+```
 
 ### Pre-Post comparison
 The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre-post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introducion are excluded from the analysis because vaccine coverage has not yet reached full coverage levels. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
