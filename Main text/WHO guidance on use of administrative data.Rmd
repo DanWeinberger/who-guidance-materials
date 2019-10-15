@@ -34,7 +34,6 @@ knitr::include_graphics('WHO_logo.png')
 ```
 <br>
 
-DRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFT
 WHO working group on the use of administrative data to evaluate the impact of pneumococcal conjugate vaccines:
  
 * Adam Cohen (World Health Organization)
