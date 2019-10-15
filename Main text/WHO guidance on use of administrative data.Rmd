@@ -1,5 +1,5 @@
 ---
-title: Measuring the impact of new vaccines using mortality and administrative hospitalization
+title: DRAFT:Measuring the impact of new vaccines using mortality and administrative hospitalization
   data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
@@ -34,7 +34,8 @@ knitr::include_graphics('WHO_logo.png')
 ```
 <br>
 
- WHO working group on the use of administrative data to evaluate the impacts of pneumococcal conjugate vaccines:
+DRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFTDRAFT
+WHO working group on the use of administrative data to evaluate the impact of pneumococcal conjugate vaccines:
  
 * Adam Cohen (World Health Organization)
 * Lucia Helena De Oliveira (Pan American Health Organization)
@@ -86,9 +87,9 @@ abline(v=as.Date('2010-03-01'), lty=2, col='gray')
 ####Denominators
 It is common when analyzing trend data to analyze changes in incidence (i.e., cases/population size) rather than the raw number of cases. The assumption here is that the number of cases should scale with population size. However, when using administrative data, using a population denominator might not effectively adjust for underlying change. Often, the administrative database does not cover the entire population, or other factors (e.g., access to healthcare) are larger drivers of trends than population size. Using alternative denominators, such as total number of hospitalizations in the system, can sometimes be a more effective approach (see Schuck-Paim et al., *Vaccine* 2017). Whatever the chosen denominator, it can either be included as an offset term (regression coefficient is held to 1), or as a covariate in a regression model. 
 
-
 -Rollout period TODO
 -Choosing control variables TODO
+-junk codes TODO
 
 ### Pre-Post comparison
 The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre-post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introducion are excluded from the analysis because vaccine coverage has not yet reached full coverage levels. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
