@@ -338,7 +338,7 @@ There are countless variants of ITS-type models that incorporate information abo
 
 
 ### Synthetic controls
-With the synthetic controls approach, the goal is to usetime series that are not influenced by the vaccine to adjust for underlying secular trends in the data. 
+With the synthetic controls approach, the goal is to use time series that are not influenced by the vaccine to adjust for underlying secular trends in the data. 
 
 **Counterfactual** 
 TODO
@@ -348,13 +348,11 @@ TODO
 **Assumptions**
 TODO
 
-***Extensions**
-TODO
-
-
 ### Special considerations.
 **How many years of data required?**
--Requires pre-vaccine data
+In many instances, vaccines are introduced in the context of unrleated changes that influence disease rates. Changes in the underlying health of the population (e.g., due to changes in social welfare programs, declines in indoor air pollution), changes in healthcare utilization, and changes in coding can all affect the reported rates of disease. Therefore, it is important to have sufficient data from the pre-vaccine period to detect and adjust for such trends. *At least 4-5 years* of pre-vaccine data are typically needed to adequately adjust for existing trends in the data. This is often context specific and depends on the particular factors driving underlying trends. Analyses using fewer years of pre-vaccine data should be interpreted with *extreme caution*. 
+
+Likewise, it is ideal to accumulate several years of post-vaccine data prior to evaluating vaccine uptake. This allows the vaccine program to mature. Additionally, pneumonia rates during short periods of observation can be strongly influenced by short epidemics such as those cuased by influenza or RSV. This can potentially obscure or exagerate the true vaccine effects.
 
 **What to do if you have an epidemic disease**
 All of these methods assume that the disease patterns follow a preditable pattern and can be captured either using a straight line relationship (ITS), or that the relationship with control variables is stable. Therefore, these methods are generally only appropriate for **endemic** diseases. For diseases that are epidemic (e.g., meningococcal meningitis), other approaches might be required that account for the dynamics of the pathogen and the build-up of immunity in the population. If the epidemic is widespread but the intervention is limited to a smaller region, it  might be possible to use the time series from an unvaccinated control population (e.g., another region within the country) as the control variable to generate a counterfactual in a synthetic control-type analysis. Or it might be necessary to use a dynamic transmission model that can capture non-linear dynamics (e.g., a compartmental model with Susceptiple, Infected, and Resistant classes). 
@@ -368,34 +366,42 @@ All of these methods assume that the disease patterns follow a preditable patter
 
 ##	Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts) (CRISTIANA)
 
-
 ## Data management (MOSTLY CRISTIANA)
-
 
 ## Data analysis (text + web based tutorial) (DAN)
 ###	Data formatting
 
-To evaluate changes in disease rates associated with an intervention, the first step is to format the data into a **time series**. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data, creating a variable that has the date rounded rown to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period. 
+To evaluate changes in disease rates associated with an intervention, the first step is to format the data into a **time series**. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data, creating a variable that has the date rounded down to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period. 
 
-Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases that we want to enumerate
+Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases that we want to enumerate.
 ```{r, echo=F}
 dataset<-cbind.data.frame( 'date'=seq.Date(from=as.Date('2010-01-01'), length.out=15, by='month'), 'pneumonia'=rpois(15, lambda=50), 'control1'=rpois(15, lambda=200))
 print(dataset)
 ```
 
-If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 3 age groups, each with 5 observations. Each date/age group combination should have only 1 row in this dataset.
+If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 3 age groups, each with 5 observations. Each date/age group combination should have only 1 row in this dataset, *and all date/age combinations should be represented, even if no cases were observed during a particular time period*.
 ```{r, echo=F}
 dataset<-cbind.data.frame( 'age_group'= rep(1:3, each=5), 'date'=seq.Date(from=as.Date('2010-01-01'), length.out=5, by='month'), 'pneumonia'=rpois(15, lambda=50), 'control1'=rpois(15, lambda=200))
 print(dataset)
 ```
 
-In the *exercise*, we will learn how to take a individual-level dataset that has 1 observation for each hospitalization/death and convert it to a time series dataset.
+In the *exercise*, we will learn how to take a individual-level dataset that has 1 observation for each hospitalization/death and convert it to a time series dataset using the statistical software R.
+
+TODO: USE EXAMPLE FROM PH SURVEILLANCE CLASS WITH CHILE DATA, FORMATTING DATA< EXPLORING ICD CODES
 
 -	Descriptive analysis
+The most useful thing to do to ensure the data are approriately formatted is to plot the data as a time series line plot, where we have time on the x-axis and number of cases on the y-axis. 
+```{r, echo=F}
+ds.sub<-dataset[dataset$age_group==1,]
+plot(ds.sub$date,ds.sub$pneumonia, type='l', bty='l', col='blue')
+```
+
+
 -	Time series models
 - Synthetic Control analysis
 -	Incorporating co-variates into the analyses
 -	Exercises
+
 #### Converting individual-level data to time series
 
 ## Interpreting results (DAN)
