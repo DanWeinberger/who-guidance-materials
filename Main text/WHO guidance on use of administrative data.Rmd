@@ -370,7 +370,7 @@ Now that we have fit the model, we will plug in the observed values of the contr
 fit.j12_18.post<-predict(mod1, type='response', newdata=kids)
 
 plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)), main='Extrapolation to post-vaccine period')
-points(kids$date,fit.j12_18.post, type='l' ,col='#7570b3' )
+points(kids$date,fit.j12_18.post, type='l' ,col='#d95f02' )
 points(kids$date[kids$date<as.Date('2010-03-01')],fit.j12_18.pre, type='l' ,col='#1b9e77' )
 abline(v=as.Date('2010-02-01'), lty=2, col='gray')
 ```
