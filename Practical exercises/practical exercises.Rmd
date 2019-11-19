@@ -1,8 +1,38 @@
 ---
-title: "Measuring the impact of new vaccines using time series of mortality and administrative hospitalization data: Pneumococcal conjugate vaccine as a case study"
-output: learnr::tutorial
-runtime: shiny_prerendered
----
+title: DRAFT:Measuring the impact of new vaccines using mortality and administrative hospitalization
+  data
+subtitle: Pneumococcal conjugate vaccine as a case study
+output:
+  rmdformats::readthedown:
+    code_folding: hide
+    self_contained: true
+    thumbnails: false
+    lightbox: false
+    css: stylesreadthedown.css
+    toc_depth: '3'
+--- 
+
+```{r setup, include=FALSE}
+library(RCurl)
+library(lubridate)
+library(rmdformats)
+#https://bookdown.org/yihui/rmarkdown/html-document.html#table-of-contents
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+Ecuador data source: Instituto nacional de estadisticas y censos https://www.ecuadorencifras.gob.ec/defunciones-generales-y-fetales-bases-de-datos/ Download data for 2001-2018
+```{r}
+library(foreign)
+years1<-2001:2007
+ds.list1<-  vector("list", length(years1))
+years2<-2008:2018
+ds.list2<-  vector("list", length(years2))
+for(i in 1:length(years1)){
+  ds.list1[[i]]<-read.spss(paste0('./ecuador raw/defunciones_',years1[i],'.sav'))
+} 
+
+```
 
 ```{r setup, include=FALSE}
 library(learnr)
