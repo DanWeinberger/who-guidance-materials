@@ -13,55 +13,86 @@ output:
 --- 
 
 ```{r setup, include=FALSE}
-library(RCurl)
-library(lubridate)
-library(rmdformats)
 #https://bookdown.org/yihui/rmarkdown/html-document.html#table-of-contents
-knitr::opts_chunk$set(echo = FALSE)
-
+knitr::opts_chunk$set(echo = TRUE)
+library(rmdformats)
 ```
 
-Ecuador data source: Instituto nacional de estadisticas y censos https://www.ecuadorencifras.gob.ec/defunciones-generales-y-fetales-bases-de-datos/ Download data for 2001-2018
+Load the libraries we need for this exercise. If you get an error saying "error in library(): there is no package called..." this means you first need to install the package. Run the code that is commented off with the install.packages function. You should only have to do this once.
 ```{r}
-library(foreign)
-years1<-2001:2007
-ds.list1<-  vector("list", length(years1))
-years2<-2008:2015
-ds.list2<-  vector("list", length(years2))
-for(i in 1:length(years1)){
-  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/defunciones_',years1[i],'.sav')))
-  ds.list1[[i]]<-ds.in[,c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')]
-} 
-for(i in 1:3){
-  print(i)
-  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
-  names(ds.in)<-tolower(names(ds.in))
-   ds.list2[[i]]<-ds.in[,c('causa', 'edad','aniof','mesf','anion','mesn','prov','cant')]
-      names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
-} 
-for(i in 4:7){
-  print(i)
-  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
-  names(ds.in)<-tolower(names(ds.in))
-   ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_res')]
-   names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
-} 
-for(i in c(8)){
-  print(i)
-  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
-  names(ds.in)<-tolower(names(ds.in))
-   ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_insc')]
-   names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
-} 
-
-ds.append1<-do.call('rbind.data.frame',ds.list1)
-ds.append2<-do.call('rbind.data.frame',ds.list2)
-ds.combined<-rbind.data.frame(ds.append1, ds.append2)
-ds.combined.u5 <- ds.combined[ds.combined$EDAD<5,]
-
+#install.packages(c('lubridate', 'RCurl'))
+library(lubridate)
+library(RCurl)
 ```
 
 
+```{r, echo=F}
+# library(foreign)
+# years1<-2001:2007
+# ds.list1<-  vector("list", length(years1))
+# years2<-2008:2015
+# ds.list2<-  vector("list", length(years2))
+# for(i in 1:length(years1)){
+#   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/defunciones_',years1[i],'.sav')))
+#   ds.list1[[i]]<-ds.in[,c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')]
+# } 
+# for(i in 1:3){
+#   print(i)
+#   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
+#   names(ds.in)<-tolower(names(ds.in))
+#    ds.list2[[i]]<-ds.in[,c('causa', 'edad','aniof','mesf','anion','mesn','prov','cant')]
+#       names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
+# } 
+# for(i in 4:7){
+#   print(i)
+#   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
+#   names(ds.in)<-tolower(names(ds.in))
+#    ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_res')]
+#    names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
+# } 
+# for(i in c(8)){
+#   print(i)
+#   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
+#   names(ds.in)<-tolower(names(ds.in))
+#    ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_insc')]
+#    names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
+# } 
+# ds.append1<-do.call('rbind.data.frame',ds.list1)
+# ds.append2<-do.call('rbind.data.frame',ds.list2)
+# ds.combined<-rbind.data.frame(ds.append1, ds.append2)
+# ds.combined.u5 <- ds.combined[ds.combined$EDAD<5,]
+# saveRDS(ds.combined.u5, './ecuador raw/u5.deaths.2001.2015.rds')
+# ds1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
+# ds1$MESF<-trimws(ds1$MESF, which='both')
+# ds1$MESF[ds1$MESF %in% c('1','Enero')] <-'Jan'
+# ds1$MESF[ds1$MESF %in% c('2','Febrero')] <-'Feb'
+# ds1$MESF[ds1$MESF %in% c('3','Marzo')] <-'Mar'
+# ds1$MESF[ds1$MESF %in% c('4','Abril')] <-'Apr'
+# ds1$MESF[ds1$MESF %in% c('5','Mayo')] <-'May'
+# ds1$MESF[ds1$MESF %in% c('6','Junio')] <-'Jun'
+# ds1$MESF[ds1$MESF %in% c('7','Julio')] <-'Jul'
+# ds1$MESF[ds1$MESF %in% c('8','Agosto')] <-'Aug'
+# ds1$MESF[ds1$MESF %in% c('9','Septiembre')] <-'Sep'
+# ds1$MESF[ds1$MESF %in% c('10','Octubre')] <-'Oct'
+# ds1$MESF[ds1$MESF %in% c('11','Noviembre')] <-'Nov'
+# ds1$MESF[ds1$MESF %in% c('12','Diciembre')] <-'Dec'
+# 
+# ds1$MESN<-trimws(ds1$MESN, which='both')
+# ds1$MESN[ds1$MESN %in% c('1','Enero')] <-'Jan'
+# ds1$MESN[ds1$MESN %in% c('2','Febrero')] <-'Feb'
+# ds1$MESN[ds1$MESN %in% c('3','Marzo')] <-'Mar'
+# ds1$MESN[ds1$MESN %in% c('4','Abril')] <-'Apr'
+# ds1$MESN[ds1$MESN %in% c('5','Mayo')] <-'May'
+# ds1$MESN[ds1$MESN %in% c('6','Junio')] <-'Jun'
+# ds1$MESN[ds1$MESN %in% c('7','Julio')] <-'Jul'
+# ds1$MESN[ds1$MESN %in% c('8','Agosto')] <-'Aug'
+# ds1$MESN[ds1$MESN %in% c('9','Septiembre')] <-'Sep'
+# ds1$MESN[ds1$MESN %in% c('10','Octubre')] <-'Oct'
+# ds1$MESN[ds1$MESN %in% c('11','Noviembre')] <-'Nov'
+# ds1$MESN[ds1$MESN %in% c('12','Diciembre')] <-'Dec'
+# saveRDS(ds.combined.u5, './ecuador raw/u5.deaths.2001.2015.rds')
+
+```
 
 # Tutorial on the use of administrative data
 
@@ -74,7 +105,37 @@ In this tutorial, you will learn about:
   6. How to fit models to the data to evaluate vaccine impact
   7. How to interpret and describe the results 
 
-This turorial is designed for individuals without extensive experience in R, but if you want to learn about the R sofwatre, which underlies these anayses, you can learn some basics in this other tutorial: https://weinbergerlab.shinyapps.io/SurveillanceIntroR/. In this tutorial, we will format and analyze publicly-available data from Chile and analyze data from Chile and Brazil. The data for Chile were originally accessed from www.deis.cl. 
+This tutorial is designed for individuals without extensive experience in R, but if you want to learn about the R software, which underlies these anayses, you can learn some basics in this other tutorial: https://weinbergerlab.shinyapps.io/SurveillanceIntroR/. In this tutorial, we will format and analyze publicly-available data from Ecuador. these data for 2001-2015 were downloaded from the Instituto Nacional de Estadisticas y Censos https://www.ecuadorencifras.gob.ec/defunciones-generales-y-fetales-bases-de-datos/ 
+
+The key variables we will work with are:
+-Causa: The main cause of death ('causa basica'), with the first 3-digits of the ICD10 code
+-anof: Year of death
+-mesf: month of death
+-anon: age in years
+
+This dataset has all deaths for children <59 months of age.
+
+The data are stored as an R dataset. 
+
+First read in the data
+
+```{r}
+ds1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
+```
+
+Look at the first few lines
+```{r}
+head(ds1)
+```
+
+```{r}
+birth.date<-as.Date(paste(ds1$ANON, ds1$MESN, '01', sep='-'), '%Y-%b-%d')
+death.date<-as.Date(paste(ds1$ANOF, ds1$MESF, '01', sep='-'), '%Y-%b-%d')
+age.check<-(death.date-birth.date)/365
+plot(age.check, ds1$EDAD)
+```
+
+
 
 ## Types of administrative data
 
