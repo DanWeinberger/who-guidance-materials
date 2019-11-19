@@ -26,18 +26,42 @@ Ecuador data source: Instituto nacional de estadisticas y censos https://www.ecu
 library(foreign)
 years1<-2001:2007
 ds.list1<-  vector("list", length(years1))
-years2<-2008:2018
+years2<-2008:2015
 ds.list2<-  vector("list", length(years2))
 for(i in 1:length(years1)){
-  ds.list1[[i]]<-read.spss(paste0('./ecuador raw/defunciones_',years1[i],'.sav'))
+  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/defunciones_',years1[i],'.sav')))
+  ds.list1[[i]]<-ds.in[,c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')]
+} 
+for(i in 1:3){
+  print(i)
+  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
+  names(ds.in)<-tolower(names(ds.in))
+   ds.list2[[i]]<-ds.in[,c('causa', 'edad','aniof','mesf','anion','mesn','prov','cant')]
+      names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
+} 
+for(i in 4:7){
+  print(i)
+  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
+  names(ds.in)<-tolower(names(ds.in))
+   ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_res')]
+   names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
+} 
+for(i in c(8)){
+  print(i)
+  ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
+  names(ds.in)<-tolower(names(ds.in))
+   ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_insc')]
+   names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
 } 
 
+ds.append1<-do.call('rbind.data.frame',ds.list1)
+ds.append2<-do.call('rbind.data.frame',ds.list2)
+ds.combined<-rbind.data.frame(ds.append1, ds.append2)
+ds.combined.u5 <- ds.combined[ds.combined$EDAD<5,]
+
 ```
 
-```{r setup, include=FALSE}
-library(learnr)
-knitr::opts_chunk$set(echo = FALSE)
-```
+
 
 # Tutorial on the use of administrative data
 
