@@ -303,6 +303,25 @@ Let's load the data, which are included with the package
     head(ecuador_mortality[,1:5]) #View first few rows and columns
     ds<-ecuador_mortality
 ```
+Ensure your date variable is in an R date format. If your variable is in a character or factor format, you need to tell R the format. 
+-- %m is a 2 digit month; %b is a month abbreviation (ie Jan, Feb)
+-- %d is a 2 digit day (0-31), 
+-- %Y is a 4 digit year (e.g. 2011), %y is a 2 digit year (e.g. 11).  
+These codes are separated by a dash or slash or space. Modify the tryFormats script below if needed to match the format in your dataset
+```{r}
+ds$monthdate<-as.Date(ds$monthdate, tryFormats=c('%Y-%m-%d',
+                                                    '%m-%d-%Y',
+                                                    '%m/%d/%Y',
+                                                    '%Y/%m/%d',
+                                                    '%d/%m/%Y'
+                                                    ) )
+```
+
+Check the variable types
+```{r}
+str(ds)
+```
+
 
 ### Set parameters for analysis
 
@@ -331,10 +350,11 @@ set.seed(1)
     ds<-ds[order(ds[, analysis$group_name], ds[,analysis$date_name]),] #Sort data by age group and month
 ```
 
+
 ## Run analyses
 ### Run ITS analysis
 ```{r}
-impact_results_time = evaluatr.impact(analysis, variants='time')
+impact_results_time = evaluatr.impact(analysis)
 
 ```
 
