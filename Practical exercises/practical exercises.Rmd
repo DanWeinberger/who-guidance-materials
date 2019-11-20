@@ -187,13 +187,12 @@ Plot your time series
 
 Create the variable:
 ```{r}
-d1$agec <- d1$Age.group
 
-#d1$agec <- NA
-#d1$agec[d1$age_m>=0 & d1$age_m<2] <-0
-#d1$agec[d1$age_m>=2 & d1$age_m<12] <-1
-#d1$agec[d1$age_m>=12 & d1$age_m<24] <-2
-#d1$agec[d1$age_m>=24 & d1$age_m<60] <-3
+d1$agec <- NA
+d1$agec[d1$age.years>=0 & d1$age.years<2/12] <-0
+d1$agec[d1$age.years>=2/12 & d1$age.years<1] <-1
+d1$agec[d1$age.years>=1 & d1$age.years<2] <-2
+d1$agec[d1$age.years>=2 & d1$age.years<5] <-3
 
 age.labels<-c('<2m','2-11m','12-23m','24-59m')
 ```
@@ -226,24 +225,17 @@ for(i in 1:length(d3.spl)){
 ### Extract some control variables
 1) Flag any records that has a potential pneumococcal-related code anywhere in the record
 ```{r}
-#J12-J18 anywhere in record
-d1$J12_J18_any <- ifelse(apply(d1[,c("dx1","dx2","dx3","dx4","dx5","dx6")], 1,function(x) sum(substr(x, 1, 3) %in% c("J12","J13","J14","J15","J16","J17","J18"))) > 0, 1, 0)
-
-table(d1$j12_j18, d1$J12_J18_any)
-
 # possible_pneumo_code: any pneumo code anywhere
-d1$possible_pneumo_code <- ifelse(d1$J12_J18_any==1, 1, 0)
-d1$possible_pneumo_code <- ifelse(apply(d1[,c("dx1","dx2","dx3","dx4","dx5","dx6")], 1,
-                                       function(x) sum(substr(x, 1, 3) %in% c("A40","A49","B953","R652","H10","H65",
-                                                                              "H66","G00","G01","G02","G03","G04"))) > 0, 
-                                 1, d1$possible_pneumo_code)
+d1$possible_pneumo_code <- 0
+d1$possible_pneumo_code[d1$cause %in% c("A40","A49","B953","R652","H10","H65",                                                                   "H66","G00","G01","G02","G03","G04")] <-1
+ 
 ```
 
 
 A00-B99 primary cause of death:
 ```{r}
-d1$A00_B99_prim <- ifelse(c(substr(d1$dx1, 1, 1) %in% c("A","B")), 1, 0)
-d1$A00_B99_prim <- ifelse(c(substr(d1$dx1, 1, 2) =="A0" | # Exclude A00-A09 (rotavax)
+d1$A00_B99_prim <- ifelse(c(substr(d1$cause, 1, 1) %in% c("A","B")), 1, 0)
+d1$A00_B99_prim <- ifelse(c(substr(d1$cause, 1, 2) =="A0" | # Exclude A00-A09 (rotavax)
                               d1$possible_pneumo_code==1), 0, d1$A00_B99_prim) 
 
 ```
@@ -255,10 +247,10 @@ table(d1$A00_B99_prim, d1$possible_pneumo_code) # Good.
 
 Also extract some more specific sub-chapter codes
 ```{r}
-table(d1$dx1[substr(d1$dx1, 1, 2)=="A1"])
-d1$A15_A19_prim <- ifelse(c(substr(d1$dx1, 1, 2) =="A1"), 1, 0)
+table(d1$cause[substr(d1$cause, 1, 2)=="A1"])
+d1$A15_A19_prim <- ifelse(c(substr(d1$cause, 1, 2) =="A1"), 1, 0)
 d1$A15_A19_prim <- ifelse(d1$possible_pneumo_code==1, 0, d1$A15_A19_prim) 
-table(d1$dx1[substr(d1$dx1, 1, 2)=="A1"], d1$possible_pneumo_code[substr(d1$dx1, 1, 2)=="A1"])
+table(d1$cause[substr(d1$cause, 1, 2)=="A1"], d1$possible_pneumo_code[substr(d1$cause, 1, 2)=="A1"])
 ```
 Check your work
 ```{r}
@@ -267,26 +259,23 @@ table(d1$A15_A19_prim, d1$possible_pneumo_code)
 
 And let's add in a few more controls
 ```{r}
-d1$p_prim<- 1*(substr(d1$dx1,1,1)=='P') #logical test for whether code starts with P
+d1$p_prim<- 1*(substr(d1$cause,1,1)=='P') #logical test for whether code starts with P
 d1$p_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
 
-d1$q_prim<- 1*(substr(d1$dx1,1,1)=='Q') #logical test for whether code starts with P
+d1$q_prim<- 1*(substr(d1$cause,1,1)=='Q') #logical test for whether code starts with P
 d1$q_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
 
-d1$r_prim<- 1*(substr(d1$dx1,1,1)=='R') #logical test for whether code starts with P
-d1$r_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
-
-d1$w_prim<- 1*(substr(d1$dx1,1,1)=='W') #logical test for whether code starts with P
+d1$w_prim<- 1*(substr(d1$cause,1,1)=='W') #logical test for whether code starts with w
 d1$w_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
 
-d1$g_prim<- 1*(substr(d1$dx1,1,1)=='G') #logical test for whether code starts with P
+d1$g_prim<- 1*(substr(d1$cause,1,1)=='G') #logical test for whether code starts with P
 d1$g_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
 
 ```
 
 ## Now aggregate the outcome and the controls
 ```{r}
-d2<-aggregate(d1[ ,c('j12_j18','A15_A19_prim','A00_B99_prim','p_prim','q_prim','r_prim','w_prim','g_prim')], by=list('agec'=d1$agec, 'date'=d1$date), FUN=sum)
+d2<-aggregate(d1[ ,c('j12_j18','A15_A19_prim','A00_B99_prim','p_prim','q_prim','w_prim','g_prim')], by=list('agec'=d1$agec, 'date'=d1$date), FUN=sum)
 str(d2)
 ```
 
