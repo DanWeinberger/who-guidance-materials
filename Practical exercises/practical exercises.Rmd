@@ -17,12 +17,20 @@ knitr::opts_chunk$set(echo = TRUE)
 library(rmdformats)
 ```
 
-Load the libraries we need for this exercise. If you get an error saying "error in library(): there is no package called..." this means you first need to install the package. Run the code that is commented off with the install.packages function. You should only have to do this once.
+Load the libraries we need for this exercise. The first time you do this, run the code that is commented off with the install.packages function. You should only have to do this once.
+
 ```{r}
-#install.packages(c('lubridate', 'RCurl'))
+#install.packages(c('lubridate', 'RCurl','devtools','xtable','knitr','htmlTable','coda'))
+#library(devtools) 
+#devtools::install_github('https://github.com/weinbergerlab/InterventionEvaluatR')
 library(lubridate)
 library(RCurl)
+library(knitr)
+library(htmlTable)
+library(InterventionEvaluatR)
+library(coda)
 ```
+
 
 
 ```{r, echo=F}
@@ -283,25 +291,69 @@ str(d2)
 ```
 
 ## Set up for analysis
+
 ### Install InterventionEvaluatR package
-### Set key parameters
+
+
+SWITCHEROOO---start using data from package instead
+
+Let's load the data, which are included with the package
+```{r viewdata, include=TRUE}
+    data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
+    head(ecuador_mortality[,1:5]) #View first few rows and columns
+    ds<-ecuador_mortality
+```
+
+### Set parameters for analysis
+
+Here we need to set a few parameters. We use the evaluatr.init() function to specify the name of the dataset, the date at which the vaccine is introduced, the date at which we want to begin evaluating the vaccine (typically 1-2 year after vaccine introduction). We also provide some information on the dataset, sch as whether the data are monthly or quarterly (n_seasons), the variable names for the grouping variable, the date variable, the outcome variable, and the denominator variable (if any). You can also set the number of interations for the MCMC. the default is to use a burn-in period of 5000 iterations and to sample 10,000 iterations afterthe burn in. This is a decent place to start. After evaluating model convergence (see below), you might want to increase the burn-in period.
+
+```{r setup_data, echo=TRUE}
+analysis <- evaluatr.init(
+  country = "Ecuador", data = ds,
+  post_period_start = "2010-08-01", #First 'post-intervention' month is Jan 2012
+  eval_period_start = "2011-08-01", #We ignore first 12 month of data to allow for vaccine ramp up
+  eval_period_end = "2015-12-01", #The evaluation period lasts 2 years
+  n_seasons = 12, #This is monthly data, so select 12
+  year_def = "cal_year", # we are in southern hemisphere, so aggregate results by calendar year (Jan-Dec)
+  group_name = "age_group",  #Strata categry name
+  date_name = "monthdate", #Date variable name
+  outcome_name = "J12_J18_prim", #Outcome variable name
+  denom_name = "acm_noj_prim" , #Denominator variable name
+  log.covars=TRUE, #log-transform the covariates
+  set.burnN=5000,
+  set.sampleN=10000
+)
+set.seed(1)
+```
+### Sort data by age group and month
+```{r}
+    ds<-ds[order(ds[, analysis$group_name], ds[,analysis$date_name]),] #Sort data by age group and month
+```
 
 ## Run analyses
 ### Run ITS analysis
-### Run single control variable analysis
+```{r}
+impact_results_time = evaluatr.impact(analysis, variants='time')
+
+```
+
+### Run a simple analysis controlling for 1 control variable at a time
+
+Before getting into more complicated analyses, we will first try to fit a simple Poisson regression model (with overdispersion) where we adjust for seasonality and 1 control variable at a time. this allows us to see how the use of different controls influences the results
+
+```{r univariate, echo = T, results = 'hide',warning=FALSE}
+ glmer_results= evaluatr.univariate(analysis)
+```
+Then plot the results. The results are ordered by goodness of fit (based on AIC scores), with best fitting covariates on top. Each plot represents a different age group. Overall, we see a generally consistent pattern. The use of the subchapter R00-09 as a control variable leads to estimates that are closer to 1 (no effect). This subchapter is "Symptoms and signs involving the circulatory and respiratory systems". These are often considered non-specific 'junk' codes. There could be arguments for or against using this subchapter as a control. On the downside, it is possible that actual pneumonia deaths incorrectly were assigned a code of R00-99, and the vaccine could therefore reduce the incidence of R00-09 codes and bias the estimates towards no effect. On the upside, the use of these junk codes as a control could help to adjust for underlying improvements or changes in coding quality.   
+
+```{r univariate_plot,fig.width=4, fig.height=5}
+par(mar=c(4,5,1,1)) #fix margins
+group.labels<-as.character(unique(analysis$input_data[,analysis$group_name]))
+lapply(glmer_results,evaluatr.univariate.plot)
+```
+
+
 ### Run Synthetic control analysis
+
 ###Sensitivity analysis
-
-## Interpreting results
-
-
-
-
-
-
-
-
-
-
-
-
