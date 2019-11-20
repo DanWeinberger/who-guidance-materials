@@ -17,6 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 library(rmdformats)
 ```
 
+
+##Getting started
+Before starting, you should install R and Rstudio on your computer. R can be downloaded from here: https://cran.r-project.org/mirrors.html. and RStudio can be downloaded from https://rstudio.com/products/rstudio/. Both are free. Once both programs are installed, open RStudio, and either open the .Rmd file practical exercises.Rmd or create a new RMarkdown document File/New File/R Notebook.
+
 Load the libraries we need for this exercise. The first time you do this, run the code that is commented off with the install.packages function. You should only have to do this once.
 
 ```{r}
@@ -101,9 +105,6 @@ library(coda)
 # ds1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
 ```
 
-##Getting started
-Before starting, you should install R and Rstudio on your computer. 
-
 ## Introduction to the tutorial
 
 In this tutorial, you will learn about:
@@ -152,7 +153,7 @@ d1<-d1[d1$date>=as.Date('2001-01-01'),]
 hist(d1$date, breaks=10)
 ```
 
-### Which codes are the most commonly used in this databse?
+### Which codes are the most commonly used in this database?
 Make a table of the 50 most common codes
 ```{r freq.codes, echo=FALSE}
 sort(table(d1$cause),decreasing=T)[1:50]
@@ -291,13 +292,13 @@ str(d2)
 ```
 
 ## Set up for analysis
+###Troubleshooting notes
+If the analyses here are not working or giving an error, 90% of the time it is because either your date variable is not in the correct format or because the data are not correctly sorted. Use as.Date() to tell R that the date variable is a date. Check the variable types using str(ds) And the data should be sorted by stratum (e.g., age group) and then by date.
 
-### Install InterventionEvaluatR package
+###Load the data
+We are going to switch and start using a pre-formatted time series from Ecuador that has a larger number of control variables and has been more extensively cleaned. It was created using similar steps to the ones used above. 
 
-
-SWITCHEROOO---start using data from package instead
-
-Let's load the data, which are included with the package
+Let's load the data, which are included with the InterventionEvaluatR package
 ```{r viewdata, include=TRUE}
     data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
     head(ecuador_mortality[,1:5]) #View first few rows and columns
