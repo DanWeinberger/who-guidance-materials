@@ -30,68 +30,68 @@ library(RCurl)
 # library(foreign)
 # years1<-2001:2007
 # ds.list1<-  vector("list", length(years1))
-# years2<-2008:2015
+# years2<-2008:2014
 # ds.list2<-  vector("list", length(years2))
 # for(i in 1:length(years1)){
 #   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/defunciones_',years1[i],'.sav')))
-#   ds.list1[[i]]<-ds.in[,c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')]
-# } 
+#   ds.list1[[i]]<-ds.in[,c('CAUSA', 'ANOF','MESF','ANON','MESN','PROV','CANT')]
+# }
 # for(i in 1:3){
 #   print(i)
 #   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
 #   names(ds.in)<-tolower(names(ds.in))
-#    ds.list2[[i]]<-ds.in[,c('causa', 'edad','aniof','mesf','anion','mesn','prov','cant')]
-#       names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
-# } 
+#    ds.list2[[i]]<-ds.in[,c('causa', 'aniof','mesf','anion','mesn','prov','cant')]
+#       names(ds.list2[[i]])<-c('CAUSA', 'ANOF','MESF','ANON','MESN','PROV','CANT')
+# }
 # for(i in 4:7){
 #   print(i)
 #   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
 #   names(ds.in)<-tolower(names(ds.in))
-#    ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_res')]
-#    names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
-# } 
-# for(i in c(8)){
-#   print(i)
-#   ds.in<-as.data.frame(read.spss(paste0('./ecuador raw/EDG',years2[i],'.sav')))
-#   names(ds.in)<-tolower(names(ds.in))
-#    ds.list2[[i]]<-ds.in[,c('causa', 'edad','anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_insc')]
-#    names(ds.list2[[i]])<-c('CAUSA', 'EDAD','ANOF','MESF','ANON','MESN','PROV','CANT')
-# } 
+#    ds.list2[[i]]<-ds.in[,c('causa', 'anio_fall','mes_fall','anio_nac','mes_nac','prov_res','cant_res')]
+#    names(ds.list2[[i]])<-c('CAUSA', 'ANOF','MESF','ANON','MESN','PROV','CANT')
+# }
+# 
 # ds.append1<-do.call('rbind.data.frame',ds.list1)
 # ds.append2<-do.call('rbind.data.frame',ds.list2)
 # ds.combined<-rbind.data.frame(ds.append1, ds.append2)
-# ds.combined.u5 <- ds.combined[ds.combined$EDAD<5,]
+# ds.combined$MESF<-trimws(ds.combined$MESF, which='both')
+# ds.combined$MESF[ds.combined$MESF %in% c('1','Enero')] <-'Jan'
+# ds.combined$MESF[ds.combined$MESF %in% c('2','Febrero')] <-'Feb'
+# ds.combined$MESF[ds.combined$MESF %in% c('3','Marzo')] <-'Mar'
+# ds.combined$MESF[ds.combined$MESF %in% c('4','Abril')] <-'Apr'
+# ds.combined$MESF[ds.combined$MESF %in% c('5','Mayo')] <-'May'
+# ds.combined$MESF[ds.combined$MESF %in% c('6','Junio')] <-'Jun'
+# ds.combined$MESF[ds.combined$MESF %in% c('7','Julio')] <-'Jul'
+# ds.combined$MESF[ds.combined$MESF %in% c('8','Agosto')] <-'Aug'
+# ds.combined$MESF[ds.combined$MESF %in% c('9','Septiembre')] <-'Sep'
+# ds.combined$MESF[ds.combined$MESF %in% c('10','Octubre')] <-'Oct'
+# ds.combined$MESF[ds.combined$MESF %in% c('11','Noviembre')] <-'Nov'
+# ds.combined$MESF[ds.combined$MESF %in% c('12','Diciembre')] <-'Dec'
+# 
+# ds.combined$MESN<-trimws(ds.combined$MESN, which='both')
+# ds.combined$MESN[ds.combined$MESN %in% c('1','Enero')] <-'Jan'
+# ds.combined$MESN[ds.combined$MESN %in% c('2','Febrero')] <-'Feb'
+# ds.combined$MESN[ds.combined$MESN %in% c('3','Marzo')] <-'Mar'
+# ds.combined$MESN[ds.combined$MESN %in% c('4','Abril')] <-'Apr'
+# ds.combined$MESN[ds.combined$MESN %in% c('5','Mayo')] <-'May'
+# ds.combined$MESN[ds.combined$MESN %in% c('6','Junio')] <-'Jun'
+# ds.combined$MESN[ds.combined$MESN %in% c('7','Julio')] <-'Jul'
+# ds.combined$MESN[ds.combined$MESN %in% c('8','Agosto')] <-'Aug'
+# ds.combined$MESN[ds.combined$MESN %in% c('9','Septiembre')] <-'Sep'
+# ds.combined$MESN[ds.combined$MESN %in% c('10','Octubre')] <-'Oct'
+# ds.combined$MESN[ds.combined$MESN %in% c('11','Noviembre')] <-'Nov'
+# ds.combined$MESN[ds.combined$MESN %in% c('12','Diciembre')] <-'Dec'
+# ds.combined$death.date<-as.Date(paste(ds.combined$ANOF, ds.combined$MESF,'01', sep='-'), '%Y-%b-%d')
+# ds.combined$birth.date<-as.Date(paste(ds.combined$ANON, ds.combined$MESN,'01', sep='-'), '%Y-%b-%d')
+# ds.combined$agey<- as.numeric((ds.combined$death.date- ds.combined$birth.date))/365
+# ds.combined<-ds.combined[ds.combined$agey>=0 & ds.combined$agey<120,]
+# 
+# ds.combined.u5 <- ds.combined[ds.combined$agey<5,c('death.date','agey','CAUSA')]
+# names(ds.combined.u5)<-c('date','age.years','cause')
+# ds.combined.u5$cause<-substr(ds.combined.u5$cause,1,3)
+# 
 # saveRDS(ds.combined.u5, './ecuador raw/u5.deaths.2001.2015.rds')
 # ds1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
-# ds1$MESF<-trimws(ds1$MESF, which='both')
-# ds1$MESF[ds1$MESF %in% c('1','Enero')] <-'Jan'
-# ds1$MESF[ds1$MESF %in% c('2','Febrero')] <-'Feb'
-# ds1$MESF[ds1$MESF %in% c('3','Marzo')] <-'Mar'
-# ds1$MESF[ds1$MESF %in% c('4','Abril')] <-'Apr'
-# ds1$MESF[ds1$MESF %in% c('5','Mayo')] <-'May'
-# ds1$MESF[ds1$MESF %in% c('6','Junio')] <-'Jun'
-# ds1$MESF[ds1$MESF %in% c('7','Julio')] <-'Jul'
-# ds1$MESF[ds1$MESF %in% c('8','Agosto')] <-'Aug'
-# ds1$MESF[ds1$MESF %in% c('9','Septiembre')] <-'Sep'
-# ds1$MESF[ds1$MESF %in% c('10','Octubre')] <-'Oct'
-# ds1$MESF[ds1$MESF %in% c('11','Noviembre')] <-'Nov'
-# ds1$MESF[ds1$MESF %in% c('12','Diciembre')] <-'Dec'
-# 
-# ds1$MESN<-trimws(ds1$MESN, which='both')
-# ds1$MESN[ds1$MESN %in% c('1','Enero')] <-'Jan'
-# ds1$MESN[ds1$MESN %in% c('2','Febrero')] <-'Feb'
-# ds1$MESN[ds1$MESN %in% c('3','Marzo')] <-'Mar'
-# ds1$MESN[ds1$MESN %in% c('4','Abril')] <-'Apr'
-# ds1$MESN[ds1$MESN %in% c('5','Mayo')] <-'May'
-# ds1$MESN[ds1$MESN %in% c('6','Junio')] <-'Jun'
-# ds1$MESN[ds1$MESN %in% c('7','Julio')] <-'Jul'
-# ds1$MESN[ds1$MESN %in% c('8','Agosto')] <-'Aug'
-# ds1$MESN[ds1$MESN %in% c('9','Septiembre')] <-'Sep'
-# ds1$MESN[ds1$MESN %in% c('10','Octubre')] <-'Oct'
-# ds1$MESN[ds1$MESN %in% c('11','Noviembre')] <-'Nov'
-# ds1$MESN[ds1$MESN %in% c('12','Diciembre')] <-'Dec'
-# saveRDS(ds.combined.u5, './ecuador raw/u5.deaths.2001.2015.rds')
-
 ```
 
 # Tutorial on the use of administrative data
@@ -108,104 +108,208 @@ In this tutorial, you will learn about:
 This tutorial is designed for individuals without extensive experience in R, but if you want to learn about the R software, which underlies these anayses, you can learn some basics in this other tutorial: https://weinbergerlab.shinyapps.io/SurveillanceIntroR/. In this tutorial, we will format and analyze publicly-available data from Ecuador. these data for 2001-2015 were downloaded from the Instituto Nacional de Estadisticas y Censos https://www.ecuadorencifras.gob.ec/defunciones-generales-y-fetales-bases-de-datos/ 
 
 The key variables we will work with are:
--Causa: The main cause of death ('causa basica'), with the first 3-digits of the ICD10 code
--anof: Year of death
--mesf: month of death
--anon: age in years
+-Cause: The main cause of death ('causa basica'), with the first 3-digits of the ICD10 code
+-date: formatted as YYYY-MM-01
+-age.years age in years
 
 This dataset has all deaths for children <59 months of age.
 
+PCV7 in Aug-2010
+PCV10 (2+1) in Feb-2011
+PCV10 (3+0) in Feb-2014
+
+
 The data are stored as an R dataset. 
 
-First read in the data
+## Read in and explore data
+```{r}
+d1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
+```
+
+### Look at the first few lines
+```{r}
+head(d1)
+```
+### Basic explorations. What is the distibution of ages? of Dates? (make a histogram for each)
+```{r hist1}
+hist(d1$age.years)
+hist(d1$date, breaks=10)
+```
+This shows there are some erroneous dates. There shouldn't be any here before Jan 2001. Filter it here
+```{r}
+d1<-d1[d1$date>=as.Date('2001-01-01'),]
+hist(d1$date, breaks=10)
+```
+
+### Which codes are the most commonly used in this databse?
+Make a table of the 50 most common codes
+```{r freq.codes, echo=FALSE}
+sort(table(d1$cause),decreasing=T)[1:50]
+```
+This shows that J18 (pneumonia, cause unspecified) is the most commonly-coded cause of death. P07 is a perinatal code (disorders of neborns related to short gestation and low birthweight, not otherwise specified). A09 is infectious gastroenteritis and colitis. 
+
+The ICD10 codes are organized into broad 'chapters' of related conditions, roughly based on organ system. The first letter of the ICD code indicates the chapter Let's look at the frequency of the ICD10 chapters to see bigger-picture patterns. 
+```{r}
+chapter.prim<-substr(d1$cause,1,1)
+sort(table(chapter.prim),decreasing=T)
+```
+This shows that the perinatal codes (P) are most common, followed by respiratory codes (J), and poorly-specified causes (included in R chapter)
+
+## Create variables that we need for analysis
+###Pneumonia
+```{r}
+#Initialize variables
+d1$j12_j18<-rep(0, nrow(d1))
+d1$j12_j18[d1$cause %in% c('J12', 'J13', 'J14', 'J15', 'J16', 'J17', 'J18') ]<-1
+table(d1$j12_j18)
+```
+Let's aggregate now by date
 
 ```{r}
-ds1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
+d2<-aggregate(d1$j12_j18, by=list('date'=d1$date), FUN=sum) #sum by date
+
 ```
 
-Look at the first few lines
+Plot your time series
 ```{r}
-head(ds1)
+ plot(d2$date,d2$x,  #names of variable
+      type='l', #'l' for line plot
+      bty='l' #turn off the top and right border
+      )
+```
+
+
+### Create some age groups and stratify the data
+0 if <2 mo
+1 if 2-11 mo
+2 if 12-23 mo
+3 if 24-59 mo
+
+Create the variable:
+```{r}
+d1$agec <- d1$Age.group
+
+#d1$agec <- NA
+#d1$agec[d1$age_m>=0 & d1$age_m<2] <-0
+#d1$agec[d1$age_m>=2 & d1$age_m<12] <-1
+#d1$agec[d1$age_m>=12 & d1$age_m<24] <-2
+#d1$agec[d1$age_m>=24 & d1$age_m<60] <-3
+
+age.labels<-c('<2m','2-11m','12-23m','24-59m')
 ```
 
 ```{r}
-birth.date<-as.Date(paste(ds1$ANON, ds1$MESN, '01', sep='-'), '%Y-%b-%d')
-death.date<-as.Date(paste(ds1$ANOF, ds1$MESF, '01', sep='-'), '%Y-%b-%d')
-age.check<-(death.date-birth.date)/365
-plot(age.check, ds1$EDAD)
+d3<-aggregate(d1$j12_j18, by=list('agec'=d1$agec,'date'=d1$date), FUN=sum) 
+
+d3<-d3[order(d3$agec, d3$date), ] #sort the rows of the data frame by age and date
+names(d3)<-c('agec','date','J12_18')
 ```
 
 
+```{r, fig.width=8, fig.height=5}
+d3.spl<-split(d3,d3$agec) #break up dataframe into 4 pieces; 1 for each age group
 
-## Types of administrative data
+par(mfrow=c(2,2), mar=c(2,4,1,1)) #make a plot with arrangement of 2 rows and 2 columns
 
-"Administrative data" comprises a broad set of data sources that are routinely collected as part of healthcare delivery and colletion of vital statistics. These include electronic sources, such as hospital discharge databases, 'electronic health records', insurance databases, as well as data that are not stored electronically, such as paper log books from a health center or hospital.
+for(i in 1:length(d3.spl)){
+   x<-d3.spl[[i]]
+    plot(x$date, x$J12_18, #x-y plot
+       bty='l', #turn off right and top border of plot
+       type='l', #line plot
+       ylab='Number of pneumonia deaths', #label y axis
+       xlab='Date', #label x axis
+       main=age.labels[i] #add title
+       )
+}
+```
 
-###ICD coding
-Many electronic administrative databases (particularly mortality data) use the International Classification of Disease (ICD) to classify causes of illness of death into specific categories. The 10th revision of the ICD (ICD10) is the most commonly used categorization, but some older data sources ue ICD8 or ICD9. 
+### Extract some control variables
+1) Flag any records that has a potential pneumococcal-related code anywhere in the record
+```{r}
+#J12-J18 anywhere in record
+d1$J12_J18_any <- ifelse(apply(d1[,c("dx1","dx2","dx3","dx4","dx5","dx6")], 1,function(x) sum(substr(x, 1, 3) %in% c("J12","J13","J14","J15","J16","J17","J18"))) > 0, 1, 0)
 
-Causes of illness or death are organized into broad categories in ICD10. These groupings of ICD codes are called *chapters*. For examples, the chapter that includes codes A00-B99 covers "certain infectious and parasitic diseases," while the chapter that includes codes J00-J99 covers "Diseases of the respiratory system." The chapters are further subdivided into sub-chapters. The J00-J99 chapter has 11 sub-chapers, which include 'Acute upper Respiratory infections' (J00-J06), 'Influenza and pneumonia' (J09-J18), and 'Chronic lower respiratory diseases' (J40-J47). The subchapters are further subdivided into specific causes, and many of these coes are further subdivided. As an example, J09-J18 has 10 codes 
+table(d1$j12_j18, d1$J12_J18_any)
 
-### Recording of causes of illness or death
-Some databases record just a single cause of illness or death while others have multiple causes listed. For example XXX. This poses a challenge when comparing between databases.
-
-The *specificity* of coding differs by database. For instance, many of the Latin American databases commonly use J18.9 (pneumonia, unspecified organism), which is a non-specific code indicating pneumonia. In contrast, databases from the United States commonly use cause-specific codes such as J13 ("pneumonia due to *Streptococcus pneumoniae*"). This has an important effect on the analysis: if you can only use non-specific codes, then pneumococcus will comprise a relatively small fraction of all cases, and you will therefore detec a small relative decline. But if you can use more pathogen-specific codes, it will usually be easier to detect an effect of vaccine.
-
-## Minimum requirements for a credible analysis
-
-### Number of years
-
-**See section below on baseline length**
-
-### Number of cases
-
-### xxx
-
-## Extracting relevant information
-
-With a database that uses ICD codes to classify causes of death, we can create case definitions based on the presence of absence of individual codes or combinations of cdes (when multiple diagnostic codes are present). In the excercise below, we will search for and flag records that have a diagnosis code indicating a respiratory condition (codes starting with 'J'), as well as codes specific for pneumonia (J12-J18). We will then look at the frequency with which the different codes are used
+# possible_pneumo_code: any pneumo code anywhere
+d1$possible_pneumo_code <- ifelse(d1$J12_J18_any==1, 1, 0)
+d1$possible_pneumo_code <- ifelse(apply(d1[,c("dx1","dx2","dx3","dx4","dx5","dx6")], 1,
+                                       function(x) sum(substr(x, 1, 3) %in% c("A40","A49","B953","R652","H10","H65",
+                                                                              "H66","G00","G01","G02","G03","G04"))) > 0, 
+                                 1, d1$possible_pneumo_code)
+```
 
 
-```{r extract1, exercise=TRUE}
-
-#This will contain an interactive extraction of data
+A00-B99 primary cause of death:
+```{r}
+d1$A00_B99_prim <- ifelse(c(substr(d1$dx1, 1, 1) %in% c("A","B")), 1, 0)
+d1$A00_B99_prim <- ifelse(c(substr(d1$dx1, 1, 2) =="A0" | # Exclude A00-A09 (rotavax)
+                              d1$possible_pneumo_code==1), 0, d1$A00_B99_prim) 
 
 ```
 
-## Formatting the data into time series
+Check your work:
+```{r}
+table(d1$A00_B99_prim, d1$possible_pneumo_code) # Good.
+```
 
-```{r ts.format, exercise=TRUE}
+Also extract some more specific sub-chapter codes
+```{r}
+table(d1$dx1[substr(d1$dx1, 1, 2)=="A1"])
+d1$A15_A19_prim <- ifelse(c(substr(d1$dx1, 1, 2) =="A1"), 1, 0)
+d1$A15_A19_prim <- ifelse(d1$possible_pneumo_code==1, 0, d1$A15_A19_prim) 
+table(d1$dx1[substr(d1$dx1, 1, 2)=="A1"], d1$possible_pneumo_code[substr(d1$dx1, 1, 2)=="A1"])
+```
+Check your work
+```{r}
+table(d1$A15_A19_prim, d1$possible_pneumo_code)
+```
 
-#This will contain an interactive formatting of data
+And let's add in a few more controls
+```{r}
+d1$p_prim<- 1*(substr(d1$dx1,1,1)=='P') #logical test for whether code starts with P
+d1$p_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
+
+d1$q_prim<- 1*(substr(d1$dx1,1,1)=='Q') #logical test for whether code starts with P
+d1$q_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
+
+d1$r_prim<- 1*(substr(d1$dx1,1,1)=='R') #logical test for whether code starts with P
+d1$r_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
+
+d1$w_prim<- 1*(substr(d1$dx1,1,1)=='W') #logical test for whether code starts with P
+d1$w_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
+
+d1$g_prim<- 1*(substr(d1$dx1,1,1)=='G') #logical test for whether code starts with P
+d1$g_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is present
 
 ```
 
-## Performing visual quality checks
-
-```{r qc.plotting, exercise=TRUE}
-
-#This will contain an interactive plotting of data
-
+## Now aggregate the outcome and the controls
+```{r}
+d2<-aggregate(d1[ ,c('j12_j18','A15_A19_prim','A00_B99_prim','p_prim','q_prim','r_prim','w_prim','g_prim')], by=list('agec'=d1$agec, 'date'=d1$date), FUN=sum)
+str(d2)
 ```
 
-##Types of analysis
+## Set up for analysis
+### Install InterventionEvaluatR package
+### Set key parameters
+
+## Run analyses
+### Run ITS analysis
+### Run single control variable analysis
+### Run Synthetic control analysis
+###Sensitivity analysis
+
+## Interpreting results
 
 
 
-## Fitting models to the data to evaluate vaccine impact
 
-```{r model.fitting, exercise=TRUE}
 
-#This will contain an interactive plotting of data
 
-```
 
-## Interpreting the findings and reporting the results
 
-# Problem situations
-## What to do with a short baseline
-If you have a short baseline period (ie <3 years) of pre-vaccine data, it can be difficult or impossible to disentangle trends caused by the vaccine from unrelated trends that were occurring before the vaccine was introduced. Simulation studies demonstrate that performing an interrupted time series analysis in such a situation can lead to extremely low power to detect a change. If there is a control variable that can explain any trends unrelated to the vaccine, this can be used, and the assumption would be that this control variable captures all of the important trends that could confound the results. For instance, in an analysis in The Gambia, the use of number of X-Rays performed as a control for changes in X-Ray-confirmed pneumonia effectively allowed for the estimation of a credible vaccine effect with just ~1 year of pre-vaccine data. The time series analysis needs to be adjusted from the typical setup--it is not possible to include a separate trend variable to capture pre-vaccine changes
-**note to Dan: see Gambia ITS simulations on this topic** 
 
-## How to disentangle effects of higher-valency vaccines
-It is common for a country to introduce 1 vaccine (e.g., PCV7) and then switch to a higher-valency vaccine (PCV10 or PCV13). If this change occurs within a few years, it is not typically possible to disentangle the effects of the first vaccine vs the second. This is because it takes several years for a vaccine program to mature and for disease rates to reach a new equilibirum. If there is not sufficient time between the introduction of the first and second vaccine, it is not possible to disentangle these two effects. Rather, a single overall vaccine impact estimate should be presented. If there are many years between introduction of the two vaccines, than it might be possible to estimate the additional benefit of switching by comparing the trends in the period after introduction of the first vaccine but before introduction of the second vaccine with the period after introduction of the second vaccine. 
+
+
+
