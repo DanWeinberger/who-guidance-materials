@@ -1,7 +1,7 @@
 ---
-title: DRAFT:Measuring the impact of new vaccines using mortality and administrative hospitalization
+title: Tutorial on the evaluation of vaccines with administrative data
   data
-subtitle: Pneumococcal conjugate vaccine as a case study
+subtitle: A companion to the WHO reference guide
 output:
   rmdformats::readthedown:
     code_folding: hide
@@ -94,7 +94,7 @@ library(RCurl)
 # ds1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
 ```
 
-# Tutorial on the use of administrative data
+## Tutorial on the use of administrative data
 
 In this tutorial, you will learn about:
   1. The types of administrative data 
