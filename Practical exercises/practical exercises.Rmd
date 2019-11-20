@@ -124,7 +124,7 @@ PCV10 (3+0) in Feb-2014
 The data are stored as an R dataset. 
 
 ## Read in and explore data
-#CHANGE THIS TO DOWNLOAD FROM GITHUB
+**CHANGE THIS TO DOWNLOAD FROM GITHUB**
 ```{r}
 d1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
 ```
