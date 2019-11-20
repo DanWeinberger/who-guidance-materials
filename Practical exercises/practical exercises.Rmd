@@ -4,7 +4,7 @@ title: Tutorial on the evaluation of vaccines with administrative data
 subtitle: A companion to the WHO reference guide
 output:
   rmdformats::readthedown:
-    code_folding: hide
+    code_folding: show
     self_contained: true
     thumbnails: false
     lightbox: false
@@ -13,7 +13,6 @@ output:
 --- 
 
 ```{r setup, include=FALSE}
-#https://bookdown.org/yihui/rmarkdown/html-document.html#table-of-contents
 knitr::opts_chunk$set(echo = TRUE)
 library(rmdformats)
 ```
@@ -94,7 +93,10 @@ library(RCurl)
 # ds1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
 ```
 
-## Tutorial on the use of administrative data
+##Getting started
+Before starting, you should install R and Rstudio on your computer. 
+
+## Introduction to the tutorial
 
 In this tutorial, you will learn about:
   1. The types of administrative data 
@@ -122,6 +124,7 @@ PCV10 (3+0) in Feb-2014
 The data are stored as an R dataset. 
 
 ## Read in and explore data
+#CHANGE THIS TO DOWNLOAD FROM GITHUB
 ```{r}
 d1<-readRDS( './ecuador raw/u5.deaths.2001.2015.rds')
 ```
