@@ -23,7 +23,6 @@ output:
 library(InterventionEvaluatR)
 library(lubridate)
 library(rmdformats)
-#https://bookdown.org/yihui/rmarkdown/html-document.html#table-of-contents
 knitr::opts_chunk$set(echo = FALSE)
 
 #url1<-getURL("https://raw.githubusercontent.com/weinbergerlab/InterventionEvaluatR/master/data-raw/PNAS/S1-Brazil.csv")
@@ -33,6 +32,8 @@ knitr::opts_chunk$set(echo = FALSE)
 ecuador_mortality$monthdate<-as.Date(ecuador_mortality$monthdate)
 ecuador_mortality$date<-ecuador_mortality$monthdate
 kids<-ecuador_mortality[ecuador_mortality$age_group=='ec 2-59m A',]
+kids<-kids[kids$monthdate<=as.Date('2015-12-01'),]
+
 #<img src="WHO_logo.png" style="position:absolute;top:0px;right:0px;" />
 ```
 
@@ -112,10 +113,10 @@ Likewise, it is ideal to accumulate several years of post-vaccine data prior to 
 All of these methods assume that the disease patterns follow a preditable pattern and can be captured either using a straight line relationship (ITS), or that the relationship with control variables is stable. Therefore, these methods are generally only appropriate for **endemic** diseases. For diseases that are epidemic (e.g., meningococcal meningitis), other approaches might be required that account for the dynamics of the pathogen and the build-up of immunity in the population. If the epidemic is widespread but the intervention is limited to a smaller region, it  might be possible to use the time series from an unvaccinated control population (e.g., another region within the country) as the control variable to generate a counterfactual in a synthetic control-type analysis. Or it might be necessary to use a dynamic transmission model that can capture non-linear dynamics (e.g., a compartmental model with Susceptiple, Infected, and Resistant classes). 
 
 ##	Types of analyses
-In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence. In this example, we have the number of hospitalization coded as having a diagnosis for pneumonia (ICD10 codes J12-J18) in Brazil in infants
+In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence. In this example, we have the number of deaths coded as having a cause of pneumonia (ICD10 codes J12-J18) in Ecuador in children aged 2-59 months
 
 ```{r, fig.wdith=7, fig.height=3}
-plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Time series of pneumonia cases')
+plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Time series of pneumonia deaths')
 abline(v=as.Date('2010-08-01'), lty=2, col='gray')
 ```
 
@@ -126,10 +127,10 @@ The simplest possible analysis approach is to compare the average number of case
 mean.pre<-mean(kids$J12_J18_prim[kids$date<as.Date('2010-08-01')])
 mean.post<-mean(kids$J12_J18_prim[kids$date>=as.Date('2011-08-01')])
 
-plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Pre-post comparison')
+plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Pre-post comparison')
 abline(v=as.Date('2010-08-01'), lty=2, col='gray')
 arrows(x0=as.Date('2005-01-01'), x1=as.Date('2010-07-01') , y0=mean.pre, length=0, col='#1b9e77')
-arrows(x0=as.Date('2011-08-01'), x1=as.Date('2016-12-01') , y0=mean.post, length=0, col='#7570b3')
+arrows(x0=as.Date('2011-08-01'), x1=as.Date('2015-12-01') , y0=mean.post, length=0, col='#7570b3')
 
 ```
 
@@ -139,7 +140,7 @@ arrows(x0=as.Date('2011-08-01'), x1=as.Date('2016-12-01') , y0=mean.post, length
 mean.pre<-mean(kids$J12_J18_prim[kids$date<as.Date('2010-08-01')])
 mean.post<-mean(kids$J12_J18_prim[kids$date>=as.Date('2011-08-01')])
 
-plot(kids$date, kids$J12_J18_prim, type='p',pch=16,cex=0.75, bty='l',col='lightgray', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Counterfactual for pre/post comparisons')
+plot(kids$date, kids$J12_J18_prim, type='p',pch=16,cex=0.75, bty='l',col='lightgray', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Counterfactual for pre/post comparisons')
 arrows(x0=as.Date('2005-01-01'), x1=as.Date('2010-07-01') , y0=mean.pre, length=0, col='#1b9e77')
 arrows(x0=as.Date('2011-08-01'), x1=as.Date('2016-01-01') , y0=mean.post, length=0, col='#7570b3')
 arrows(x0=as.Date('2011-08-01'), x1=as.Date('2016-01-01') , y0=mean.pre, length=0, col='#d95f02', lty=3)
@@ -180,7 +181,7 @@ pred1.post[kids$date<as.Date('2011-08-01')]<-NA
 
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)),main='Pre/post comparison with adjustment for season' )
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)),main='Pre/post comparison with adjustment for season' )
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -207,9 +208,11 @@ There are a number of ways to structure these models, but they typically include
 #### Disjointed ITS
 In a disjointed ITS analysis, dummy variables (encoded 0 before vaccine introduction and 1 after vaccine introduction) are included to allow the level to change, and an interaction term between the dummy variable and the index for time allows the slope to change after vaccine introduction. In this model, the line segments fitted through the data do not connect. In practice, this can lead to strange and implausible shifts in the fitted values as shown in the plots of the rate ratio below. 
 
-```{r, fig.width=5, fig.height=7}
+```{r, fig.width=5 ,fig.height=7  }
 kids$index<-1:nrow(kids) #creates an index for time
-kids$log.offset<-log(kids$acm_noj_prim)
+#kids$log.offset<-log(kids$acm_noj_prim)
+kids$log.offset<-rep(0, nrow(kids))
+
 mod1<-glm(J12_J18_prim~month+as.factor(period)*index,family='quasipoisson', data=kids ,offset=log.offset)
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
@@ -226,7 +229,7 @@ pred1.post<-pred1
 pred1.post[kids$date<as.Date('2011-08-01')]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with disjointed segments')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with disjointed segments')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -271,7 +274,7 @@ pred1.post<-pred1
 pred1.post[kids$date<as.Date('2011-08-01')]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with connected segments')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with connected segments')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -286,7 +289,7 @@ abline(h=1, lty=2, col='gray')
 
 #### ITS with leveling of the slope
 
-This could be further modified to allow the slope to level out after a certain time period (in this example, the post-vaccine trend levels out 36 months after vaccine introduction)
+This could be further modified to allow the slope to level out after a certain time period (in this example, the post-vaccine trend levels out 24 months after vaccine introduction)
 
 ```{r, fig.width=5, fig.height=7}
 kids$index<-1:nrow(kids) #creates an index for time
@@ -299,7 +302,6 @@ kids$spl1[kids$spl1>12]<-12 #effect only in place for 12 months
 kids$spl2[kids$spl2>24]<-24 #Level off after 24 months
 kids$spl1[kids$spl1<0]<-0
 kids$spl2[kids$spl2<0]<-0
-kids$log.offset <- 0 #let's ignore offset for now and just set to 0
 kids$month<-as.factor(month(kids$date))
 
 mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 ,family='quasipoisson', data=kids,offset=log.offset )
@@ -316,10 +318,10 @@ pred1.pre<-pred1
 pred1.pre[kids$date>=as.Date('2010-08-01')]<-NA
 
 pred1.post<-pred1
-pred1.post[kids$date<as.Date('2011-08-01')]<-NA
+pred1.post[kids$date<as.Date('2010-08-01')]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with leveling of the trend')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with leveling of the trend')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -341,8 +343,61 @@ With a control outcome, a different disease that is not affected by the vaccine 
 **Control covariates**
 It is also possible to include other time series as control variables in the ITS regression model. The goal with this approach is to adjust for time-varying confounders. As an example, if the outcome is pneumonia, and smoking rates are changing over time, the rate of smoking in the population at each time point could be included as a covariate. 
 
+As an example, we could include all non-respiratory deaths as a control variable in the model to adjust for changes in reporting/unlderying health of the population/population size. In this example, the rate ratio is 0.92, corresponding to an 8% reduction in deaths due to pneumonia.
+
+```{r, fig.width=4, fig.height=7}
+kids$index<-1:nrow(kids) #creates an index for time
+intro.date<-min(which(kids$date>=as.Date('2010-03-01')))
+eval.date<-min(which(kids$date>=as.Date('2011-03-01')))
+kids$log.offset.acm<- log(kids$acm_noj_prim)
+kids$spl1<- kids$index -  intro.date
+kids$spl2<- kids$index -  eval.date
+kids$spl1[kids$spl1>12]<-12 #effect only in place for 12 months
+kids$spl2[kids$spl2>24]<-24 #Level off after 24 months
+kids$spl1[kids$spl1<0]<-0
+kids$spl2[kids$spl2<0]<-0
+kids$month<-as.factor(month(kids$date))
+
+mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 +log.offset.acm,family='quasipoisson', data=kids )
+pred1<-predict(mod1, type='response')
+kid.counter<-kids
+kid.counter$spl1<-0
+kid.counter$spl2<-0
+pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
+pred1.counter.post<-pred1.counter
+pred1.counter.post[kids$date<=as.Date('2011-08-01')] <-NA
+
+
+pred1.pre<-pred1
+pred1.pre[kids$date>=as.Date('2010-08-01')]<-NA
+
+pred1.post<-pred1
+pred1.post[kids$date<as.Date('2010-08-01')]<-NA
+
+par(mfrow=c(2,1))
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, adjusted for ACM')
+points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
+points(kids$date,pred1.post, type='l' , col='#7570b3' )
+points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
+abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+abline(v=as.Date('2011-08-01'), lty=3, col='gray')
+
+# plot(kids$date, kids$J12_J18_prim/kids$acm_noj_prim, type='p', pch=16, bty='l', ylab="Adj N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim/kids$acm_noj_prim)), main='ITS, adjusted')
+# points(kids$date,pred1.pre/kids$acm_noj_prim, type='l' ,col='#1b9e77' )
+# points(kids$date,pred1.post/kids$acm_noj_prim, type='l' , col='#7570b3' )
+# points(kids$date,pred1.counter/kids$acm_noj_prim, type='l', col='#d95f02', lty=3  )
+# abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+# abline(v=as.Date('2011-08-01'), lty=3, col='gray')
+
+
+plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
+abline(h=1, lty=2, col='gray')
+
+
+```
+
 **Counterfactual** 
-With an ITS model, the assumption is that the trend from the pre-vaccine period would have continued with the same slope into the post-vaccine period. To estimate the value of the counterfactual at each time point, we use the regression model but hold the terms representing post-vaccine changes in trend or level to 0 (no change from the pre-vaccine trends and levels). 
+With an ITS model, the assumption is that the trend from the pre-vaccine period would have continued with the same slope into the post-vaccine period. To estimate the value of the counterfactual at each time point, we use the regression model but hold the terms representing post-vaccine changes in trend or level to 0 (no change from the pre-vaccine trends and levels). For models that include a control variable, the assumption is that the association between the control variable and the outcome variable is the same in the pre- and post- vaccine periods, and the change in mean and change in slope terms effectively capture changes in the outcome variable *after adjusting for* the control variable. 
 
 #### Extensions
 
@@ -359,7 +414,7 @@ There are countless variants of ITS-type models that incorporate information abo
 With the synthetic controls approach, the goal is to use time series that are not influenced by the vaccine to adjust for underlying secular trends in the data. With the "control covariates" approach described above, the control disease is included as an adjustment in the regression model, and the model is set up to detect changes in slope or level of disease after introduction of the vaccine. Synthetic controls analysis is an extenstion of this idea. The main differences are (1) that the models are only fit to data from the pre-vaccine period and used to extrapolate to the post-vaccine period and (2) typically many control time series are included, and variable selection is used to weight these controls. 
 
 **Simple example with a single time series**
-Using the same dataset from Brazil that was used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
+Using the same dataset from Ecuador that was used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
 ```{r}
 kids$j12_18_pre<-kids$J12_J18_prim
 kids$j12_18_pre[kids$date>=as.Date('2010-08-01')]<-NA #set to missing for post period
@@ -368,7 +423,7 @@ kids$log.ach<-log(kids$acm_noj_prim)
 mod1<-glm(j12_18_pre~month+log.ach,family='quasipoisson', data=kids)
 fit.j12_18.pre<-predict(mod1, type='response')
 
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Fit of synthetic control model')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Fit of synthetic control model')
 points(kids$date[kids$date<as.Date('2010-08-01')],fit.j12_18.pre, type='l' ,col='#1b9e77' )
 
 ```
@@ -376,7 +431,7 @@ Now that we have fit the model, we will plug in the observed values of the contr
 ```{r}
 fit.j12_18.post<-predict(mod1, type='response', newdata=kids)
 
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Extrapolation to post-vaccine period')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Extrapolation to post-vaccine period')
 points(kids$date,fit.j12_18.post, type='l' ,col='#d95f02' )
 points(kids$date[kids$date<as.Date('2010-08-01')],fit.j12_18.pre, type='l' ,col='#1b9e77' )
 abline(v=as.Date('2010-07-01'), lty=2, col='gray')
