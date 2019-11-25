@@ -384,12 +384,18 @@ abline(v=as.Date('2010-07-01'), lty=2, col='gray')
 
 The vaccine effect is calculated by taking the difference or ratio between the observed and extrapolated value during the post-vaccine period. The plots shown below give the ratio or difference at each time point. We will typically instead aggregate the observed cases and the extrapolated cases over a certain time period--by year, or during the evaluation period (e.g., excluding the first 12 months of post-vaccine data)
 ```{r}
+eval.start<-as.Date('2011-08-01')
+evalstart.index<-which(kids$date==eval.start)
+evalstart.index<-evalstart.index:nrow(kids)
 ratio<-kids$J12_J18_prim/fit.j12_18.post
+ave.ratio<- sum(kids$J12_J18_prim[evalstart.index])/sum(fit.j12_18.post[evalstart.index])
 difference<-kids$J12_J18_prim-fit.j12_18.post
+
 
 plot(kids$date,ratio, type='l', bty='l', main='Ratio')
 abline(h=1, lty=3, col='gray')
 abline(v=as.Date('2010-07-01'), lty=2, col='gray')
+points(kids$date[evalstart.index], rep(ave.ratio, length(evalstart.index)), type='l',col='#7570b3')
 
 plot(kids$date,difference, type='l', bty='l', main='Difference')
 abline(h=0, lty=3, col='gray')
