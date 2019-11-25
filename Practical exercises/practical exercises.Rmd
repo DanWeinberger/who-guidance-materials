@@ -346,9 +346,9 @@ Here we need to set a few parameters. We use the evaluatr.init() function to spe
 ```{r setup_data, echo=TRUE}
 analysis <- evaluatr.init(
   country = "Ecuador", data = ds,
-  post_period_start = "2010-08-01", #First 'post-intervention' month is Jan 2012
+  post_period_start = "2010-08-01", #First 'post-intervention' month is August 2010
   eval_period_start = "2011-08-01", #We ignore first 12 month of data to allow for vaccine ramp up
-  eval_period_end = "2015-12-01", #The evaluation period lasts 2 years
+  eval_period_end = "2015-12-01", #The evaluation period lasts 4 years
   n_seasons = 12, #This is monthly data, so select 12
   year_def = "cal_year", # we are in southern hemisphere, so aggregate results by calendar year (Jan-Dec)
   group_name = "age_group",  #Strata categry name
