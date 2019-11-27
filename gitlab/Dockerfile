@@ -5,7 +5,7 @@ MAINTAINER ben@artins.org
 RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends curl libcurl4-openssl-dev
 
 # Install rmarkdown
-RUN Rscript -e 'install.packages(c("rmarkdown", "lubridate", "RCurl"))'
+RUN Rscript -e 'install.packages(c("rmarkdown", "lubridate", "RCurl", "rmdformats"))'
 
 ### Install pandoc 2.x
 RUN cd /tmp && \

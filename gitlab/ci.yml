@@ -11,8 +11,8 @@ pages:
   script:
     - dind-run "${GITLAB_DOCKER_BUILD}" --cache-from master build --file gitlab/Dockerfile .
     - mkdir -p "${PAGES_BUILD_DIR}"
-    - dind-run "${BUILD}" Rscript -e 'rmarkdown::render("Main text/WHO guidance on use of administrative data.Rmd")'
-    - cp "WHO-guidance-on-use-of-administrative-data.html" "${PAGES_BUILD_DIR}"/index.html
+    - find . -name '*.Rmd' -and \! -path '*/rsconnect/*' -exec dind-run "${BUILD}" Rscript -e 'rmarkdown::render(commandArgs(TRUE)[1], output_dir=commandArgs(TRUE)[2])' {} "${PAGES_BUILD_DIR}" \;
+    - find "${PAGES_BUILD_DIR}" -name "WHO*guidance*.html" -exec mv {} "${PAGES_BUILD_DIR}"/index.html \; -quit
   artifacts:
     paths:
       - public
