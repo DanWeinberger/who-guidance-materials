@@ -1,31 +1,39 @@
 ---
-title: Measuring the impact of new vaccines using mortality and administrative hospitalization
+title: DRAFT:Measuring the impact of new vaccines using mortality and administrative hospitalization
   data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
-  html_document:
-    css: styles.css
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
+  rmdformats::readthedown:
+    code_folding: hide
+    self_contained: true
+    thumbnails: false
+    lightbox: false
+    css: stylesreadthedown.css
+    toc_depth: '3'
   pdf_document:
     toc: yes
-    toc_depth: '3'
+    toc_depth: '2'
   word_document:
     toc: yes
-    toc_depth: '3'
+    toc_depth: '2'
 --- 
 
 ```{r setup, include=FALSE}
-library(RCurl)
+#library(RCurl)
+library(InterventionEvaluatR)
 library(lubridate)
-#https://bookdown.org/yihui/rmarkdown/html-document.html#table-of-contents
+library(rmdformats)
 knitr::opts_chunk$set(echo = FALSE)
 
-url1<-getURL("https://raw.githubusercontent.com/weinbergerlab/InterventionEvaluatR/master/data-raw/PNAS/S1-Brazil.csv")
-br1 <-read.csv(text=url1)
-br1$date<-as.Date(br1$date)
-kids<-br1[br1$age_group=='9',]
+#url1<-getURL("https://raw.githubusercontent.com/weinbergerlab/InterventionEvaluatR/master/data-raw/PNAS/S1-Brazil.csv")
+#br1 <-read.csv(text=url1)
+#br1$date<-as.Date(br1$date)
+ data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
+ecuador_mortality$monthdate<-as.Date(ecuador_mortality$monthdate)
+ecuador_mortality$date<-ecuador_mortality$monthdate
+kids<-ecuador_mortality[ecuador_mortality$age_group=='ec 2-59m A',]
+kids<-kids[kids$monthdate<=as.Date('2015-12-01'),]
+
 #<img src="WHO_logo.png" style="position:absolute;top:0px;right:0px;" />
 ```
 
@@ -34,7 +42,7 @@ knitr::include_graphics('WHO_logo.png')
 ```
 <br>
 
- WHO working group on the use of administrative data to evaluate the impacts of pneumococcal conjugate vaccines:
+WHO working group on the use of administrative data to evaluate the impact of pneumococcal conjugate vaccines:
  
 * Adam Cohen (World Health Organization)
 * Lucia Helena De Oliveira (Pan American Health Organization)
@@ -73,51 +81,73 @@ In most settings, such controlled roll-outs of vaccine are not possible. Therefo
 ### Counterfactuals: What would have happened without a vaccine?
 With any analysis of vaccine impact, the goal is to compare the observed disease rates in the post-vaccine period with an estimate of what would have happened if the vaccine had not been introduced. This value is called the **counterfactual**. There are many ways to estimate counterfactuals from very simple approaches (as is done in pre/post comparison of incidence) to more complex approaches that adjust for trends and dynamics of the disease. In each of the followinng sections, we will discuss different methods to obtain this quantity.
 
-##	Types of analyses
-In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence. In this example, we have the number of hospitalization coded as having a diagnosis for pneumonia (ICD10 codes J12-J18) in Brazil in infants
 
-```{r, fig.wdith=7, fig.height=3}
-plot(kids$date, kids$J12_18, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_18)), main='Time series of pneumonia cases')
-abline(v=as.Date('2010-03-01'), lty=2, col='gray')
-```
+### Choosing control variables 
+As discussed in the following sections, control variables can be used to strengthen analyses of vaccine impact in several ways. They can help identify data quality issues and also to adjust for time-varying factors that could lead to misleading conclusions. For instance, social welfare programs might influence the general health of the population and drive down rates of pneumonia, independent of a vaccine. Ignoring the effects of this social welfare program would lead one to incorrectly attribute declines in disease rates to the vaccine. A control disease that is also influenced by the general health improvements could allow an analyst to detect and adjust for these improvements when calculating vaccine impact   
 
-### Key considerations for analyses TODO
+The key challenge comes in deciding which control diseases would be appropriate controls for the disease of interest. As a general principle, the control disease and the disease of interest should share relevant risk factors and etiologies. For instance, if the goal is to adjust for the effect of the social welfare program on the risk of infectious diseases, using fractures as a control when estimating the effect of a vaccine against pneumonia might be a poor choice. This is because trends in fractures have a completely different set of causes than trends in acute respiratory infections. Perhaps a different acute infectious event would be more appropriate. Conversely, if the goal is to adjust for changes in healthcare capacity,  trends in fractures could capture important trends. Pathogen-specific time series, such as for influenza or RSV activity, could also be used to adjust pneumonia rates for short-term epidemics and tease out the long term trends. It can sometimes be difficult to determine *a priori* which controls would be appropriate. For instance, in mortality databases, some deaths are attributed to unspecified causes.
+
+A key assumption when selecting control diseases is that the relationship between the outcome of interest (e.g., pneumonia hospitalizations) and the control time series is stable over time, and that the only thing that causes a change between them is the intervention of interest. Therefore, diarrhea might be a poor control variable for pneumonia when evaluating pneumococcal conjugate vaccines if rotavirus vaccine has been introduced recently as well. This is because the rotavirus vaccine changes the relationship between diarrhea and pneumonia. In this example, using diarrhea as a control would lead to a bias towards detecting no effect because diarrhea and pneumonia will both be going down due to their respective vaccines. 
+
+Another key assumption is that the control variables are themselves not influenced by the intervention of interest. Therefore, invasive pneumococcal disease (IPD) would be a poor control for evaluating the impact of pneumococcal conjugate vaccines on pneumonia, because IPD is itself influenced by the same vaccine. The inclusion of a control that is influenced by the same intervention will bias the estimates towards  no effect because both will be going down in parallel due to the same cause.
+
+Low-quality databases often have a large proportion of deaths coded using these junk codes, but in many settings, the quality of coding has changed over time. A decrease in junk codes over time would be expected to be associated with an increase in cause-specific codes. Therefore, the time series of junk codes itself could be useful for adjusting the reported rates of pneumonia deaths for changes in coding practices. Conversely, if actual pneumonia cases are incorrectly coded with a junk code, then the vaccine will cause a decline in the junk codes, and including these junk codes as control variables
+
+**In summary**
+Control diseases should share some relevant etiological drivers with the disease of interest and should themselves not be influenced by the intervention or by other interventions that would change the relationship between the control and the outcome of interest. The sections that follow discuss some specific uses of control diseases in analyses. 
+
+### Key considerations for analyses 
 
 ####Denominators
 It is common when analyzing trend data to analyze changes in incidence (i.e., cases/population size) rather than the raw number of cases. The assumption here is that the number of cases should scale with population size. However, when using administrative data, using a population denominator might not effectively adjust for underlying change. Often, the administrative database does not cover the entire population, or other factors (e.g., access to healthcare) are larger drivers of trends than population size. Using alternative denominators, such as total number of hospitalizations in the system, can sometimes be a more effective approach (see Schuck-Paim et al., *Vaccine* 2017). Whatever the chosen denominator, it can either be included as an offset term (regression coefficient is held to 1), or as a covariate in a regression model. 
 
+#### Transition period 
+After a vaccine is formally introduced into a national immunization program, it typically takes some amount of time to implement the vaccine and vaccinate a large proportion of eligible infants. Additionally, it takes time for children who are vaccinated as infants to age and become toddlers (an age group that might be more important for transmitting pneumococcus). Due to these considerations, a transition period is typically defined to allow the program to reach maturity before trying to estimate changes in disease rates. The data are therefore subset into a pre-vaccine period, a transition period, and a post-vaccine period, and vaccine impact is defined by comparing the post-vaccine period and the pre-vaccine period, while ignoring the transition period. The length of transition period depends on how quickly the vaccine program is implemented. In most settings, 1-2 years are defined as the transition period. In many of the Latin American countries, 3-dose coverage rapidly reached a plateau within a year, so a 12 month transition period was used. 
 
--Rollout period TODO
--Choosing control variables TODO
+#### How many years of data required?
+In many instances, vaccines are introduced in the context of unrleated changes that influence disease rates. Changes in the underlying health of the population (e.g., due to changes in social welfare programs, declines in indoor air pollution), changes in healthcare utilization, and changes in coding can all affect the reported rates of disease. Therefore, it is important to have sufficient data from the pre-vaccine period to detect and adjust for such trends. *At least 4-5 years* of pre-vaccine data are typically needed to adequately adjust for existing trends in the data. This is often context specific and depends on the particular factors driving underlying trends. Analyses using fewer years of pre-vaccine data should be interpreted with *extreme caution*. 
+
+Likewise, it is ideal to accumulate several years of post-vaccine data prior to evaluating vaccine uptake. This allows the vaccine program to mature. Additionally, pneumonia rates during short periods of observation can be strongly influenced by short epidemics such as those cuased by influenza or RSV. This can potentially obscure or exagerate the true vaccine effects.
+
+#### What to do if you have an epidemic disease
+All of these methods assume that the disease patterns follow a preditable pattern and can be captured either using a straight line relationship (ITS), or that the relationship with control variables is stable. Therefore, these methods are generally only appropriate for **endemic** diseases. For diseases that are epidemic (e.g., meningococcal meningitis), other approaches might be required that account for the dynamics of the pathogen and the build-up of immunity in the population. If the epidemic is widespread but the intervention is limited to a smaller region, it  might be possible to use the time series from an unvaccinated control population (e.g., another region within the country) as the control variable to generate a counterfactual in a synthetic control-type analysis. Or it might be necessary to use a dynamic transmission model that can capture non-linear dynamics (e.g., a compartmental model with Susceptiple, Infected, and Resistant classes). 
+
+##	Types of analyses
+In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence. In this example, we have the number of deaths coded as having a cause of pneumonia (ICD10 codes J12-J18) in Ecuador in children aged 2-59 months
+
+```{r, fig.width=5, fig.height=3}
+plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Time series of pneumonia deaths')
+abline(v=as.Date('2010-08-01'), lty=2, col='gray')
+```
 
 ### Pre-Post comparison
 The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre-post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introducion are excluded from the analysis because vaccine coverage has not yet reached full coverage levels. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
 
-```{r, fig.wdith=7, fig.height=3}
-mean.pre<-mean(kids$J12_18[kids$date<as.Date('2010-03-01')])
-mean.post<-mean(kids$J12_18[kids$date>=as.Date('2011-03-01')])
+```{r, fig.width=5, fig.height=3}
+mean.pre<-mean(kids$J12_J18_prim[kids$date<as.Date('2010-08-01')])
+mean.post<-mean(kids$J12_J18_prim[kids$date>=as.Date('2011-08-01')])
 
-plot(kids$date, kids$J12_18, type='l', bty='l', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_18)), main='Pre-post comparison')
-abline(v=as.Date('2010-03-01'), lty=2, col='gray')
-arrows(x0=as.Date('2003-01-01'), x1=as.Date('2010-02-01') , y0=mean.pre, length=0, col='#1b9e77')
-arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.post, length=0, col='#7570b3')
+plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Pre-post comparison')
+abline(v=as.Date('2010-08-01'), lty=2, col='gray')
+arrows(x0=as.Date('2005-01-01'), x1=as.Date('2010-07-01') , y0=mean.pre, length=0, col='#1b9e77')
+arrows(x0=as.Date('2011-08-01'), x1=as.Date('2015-12-01') , y0=mean.post, length=0, col='#7570b3')
 
 ```
 
 **Counterfactual** In this study design, it is assumed that if the vaccine had not been introduced, the incidence rate after vaccine introduction would be the same as the incidence of disease before vaccine introduction. Therefore the counterfactual is simply the average incidence in the pre-vaccine period, and the comparison is with incidence in the post vaccine period. In the plot below, the counterfactual is shown with a dotted line. Comparing the counterfactual with the observed mean for the post-period gives an estimate of the vaccine effect.
 
-```{r, , fig.width=5, fig.height=3}
-mean.pre<-mean(kids$J12_18[kids$date<as.Date('2010-03-01')])
-mean.post<-mean(kids$J12_18[kids$date>=as.Date('2011-03-01')])
+```{r, fig.width=5, fig.height=3}
+mean.pre<-mean(kids$J12_J18_prim[kids$date<as.Date('2010-08-01')])
+mean.post<-mean(kids$J12_J18_prim[kids$date>=as.Date('2011-08-01')])
 
-plot(kids$date, kids$J12_18, type='p',pch=16,cex=0.75, bty='l',col='lightgray', ylab="N hospitalizations", xlab='date', ylim=c(0, max(kids$J12_18)), main='Counterfactual for pre/post comparisons')
-arrows(x0=as.Date('2003-01-01'), x1=as.Date('2010-02-01') , y0=mean.pre, length=0, col='#1b9e77')
-arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.post, length=0, col='#7570b3')
-arrows(x0=as.Date('2011-03-01'), x1=as.Date('2015-01-01') , y0=mean.pre, length=0, col='#d95f02', lty=3)
-abline(v=as.Date('2010-03-01'), lty=3, col='gray')
-abline(v=as.Date('2011-03-01'), lty=3, col='gray')
-text(as.Date('2014-01-01'), 13000, 'Counterfactual', col='#d95f02', cex=0.8,pos=2, offset=0)
-text(as.Date('2014-01-01'), 8000, 'Fitted', col='#7570b3', cex=0.8,pos=2, offset=0)
+plot(kids$date, kids$J12_J18_prim, type='p',pch=16,cex=0.75, bty='l',col='lightgray', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Counterfactual for pre/post comparisons')
+arrows(x0=as.Date('2005-01-01'), x1=as.Date('2010-07-01') , y0=mean.pre, length=0, col='#1b9e77')
+arrows(x0=as.Date('2011-08-01'), x1=as.Date('2016-01-01') , y0=mean.post, length=0, col='#7570b3')
+arrows(x0=as.Date('2011-08-01'), x1=as.Date('2016-01-01') , y0=mean.pre, length=0, col='#d95f02', lty=3)
+abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+abline(v=as.Date('2011-08-01'), lty=3, col='gray')
+text(as.Date('2016-01-01'), 13000, 'Counterfactual', col='#d95f02', cex=0.8,pos=2, offset=0)
+text(as.Date('2016-01-01'), 8000, 'Fitted', col='#7570b3', cex=0.8,pos=2, offset=0)
 
 ```
 
@@ -133,30 +163,30 @@ In this example, the counterfactual is seasonally adjusted, so the counterfactua
 
 month<-as.factor(month(kids$date))
 kids$period<-0
-kids$period[kids$date>=as.Date('2010-03-01')  ] <-1
-kids$period[kids$date>=as.Date('2011-03-01')  ]<-2
-mod1<-glm(J12_18~month+as.factor(period),family='quasipoisson', data=kids )
+kids$period[kids$date>=as.Date('2010-08-01')  ] <-1
+kids$period[kids$date>=as.Date('2011-08-01')  ]<-2
+mod1<-glm(J12_J18_prim~month+as.factor(period),family='quasipoisson', data=kids )
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$period<-as.factor(0)
 pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
 pred1.counter.post<-pred1.counter
-pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
+pred1.counter.post[kids$date<=as.Date('2011-08-01')] <-NA
 
 pred1.pre<-pred1
-pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
+pred1.pre[kids$date>=as.Date('2010-08-01')]<-NA
 
 pred1.post<-pred1
-pred1.post[kids$date<as.Date('2011-03-01')]<-NA
+pred1.post[kids$date<as.Date('2011-08-01')]<-NA
 
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)),main='Pre/post comparison with adjustment for season' )
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)),main='Pre/post comparison with adjustment for season' )
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
-abline(v=as.Date('2010-03-01'), lty=3, col='gray')
-abline(v=as.Date('2011-03-01'), lty=3, col='gray')
+abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+abline(v=as.Date('2011-08-01'), lty=3, col='gray')
 
 plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
 abline(h=1, lty=2, col='gray')
@@ -178,31 +208,33 @@ There are a number of ways to structure these models, but they typically include
 #### Disjointed ITS
 In a disjointed ITS analysis, dummy variables (encoded 0 before vaccine introduction and 1 after vaccine introduction) are included to allow the level to change, and an interaction term between the dummy variable and the index for time allows the slope to change after vaccine introduction. In this model, the line segments fitted through the data do not connect. In practice, this can lead to strange and implausible shifts in the fitted values as shown in the plots of the rate ratio below. 
 
-```{r, fig.width=5, fig.height=7}
+```{r, fig.width=5 ,fig.height=7  }
 kids$index<-1:nrow(kids) #creates an index for time
-kids$log.offset<-log(kids$ach_noj)
-mod1<-glm(J12_18~month+as.factor(period)*index,family='quasipoisson', data=kids ,offset=log.offset)
+#kids$log.offset<-log(kids$acm_noj_prim)
+kids$log.offset<-rep(0, nrow(kids))
+
+mod1<-glm(J12_J18_prim~month+as.factor(period)*index,family='quasipoisson', data=kids ,offset=log.offset)
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$period<-as.factor(0)
 pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
 pred1.counter.post<-pred1.counter
-pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
+pred1.counter.post[kids$date<=as.Date('2011-08-01')] <-NA
 
 
 pred1.pre<-pred1
-pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
+pred1.pre[kids$date>=as.Date('2010-08-01')]<-NA
 
 pred1.post<-pred1
-pred1.post[kids$date<as.Date('2011-03-01')]<-NA
+pred1.post[kids$date<as.Date('2011-08-01')]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)), main='ITS, with disjointed segments')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with disjointed segments')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
-abline(v=as.Date('2010-03-01'), lty=3, col='gray')
-abline(v=as.Date('2011-03-01'), lty=3, col='gray')
+abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+abline(v=as.Date('2011-08-01'), lty=3, col='gray')
 
 plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
 abline(h=1, lty=2, col='gray')
@@ -217,37 +249,37 @@ A better alternative is to use a linear spline, which forces the fitted line seg
 
 ```{r, fig.width=5, fig.height=7}
 kids$index<-1:nrow(kids) #creates an index for time
-intro.date<-min(which(kids$date>=as.Date('2010-03-01')))
-eval.date<-min(which(kids$date>=as.Date('2011-03-01')))
+intro.date<-min(which(kids$date>=as.Date('2010-08-01')))
+eval.date<-min(which(kids$date>=as.Date('2011-08-01')))
 
 kids$spl1<- kids$index -  intro.date
 kids$spl2<- kids$index -  eval.date
 kids$spl1[kids$spl1<0]<-0
 kids$spl2[kids$spl2<0]<-0
 
-mod1<-glm(J12_18~month+ index +spl1 + spl2 ,family='quasipoisson', data=kids,offset=log.offset )
+mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 ,family='quasipoisson', data=kids,offset=log.offset )
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$spl1<-0
 kid.counter$spl2<-0
 pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
 pred1.counter.post<-pred1.counter
-pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
+pred1.counter.post[kids$date<=as.Date('2011-08-01')] <-NA
 
 
 pred1.pre<-pred1
-pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
+pred1.pre[kids$date>=as.Date('2010-08-01')]<-NA
 
 pred1.post<-pred1
-pred1.post[kids$date<as.Date('2011-03-01')]<-NA
+pred1.post[kids$date<as.Date('2011-08-01')]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)), main='ITS, with connected segments')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with connected segments')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
-abline(v=as.Date('2010-03-01'), lty=3, col='gray')
-abline(v=as.Date('2011-03-01'), lty=3, col='gray')
+abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+abline(v=as.Date('2011-08-01'), lty=3, col='gray')
 
 plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
 abline(h=1, lty=2, col='gray')
@@ -257,7 +289,7 @@ abline(h=1, lty=2, col='gray')
 
 #### ITS with leveling of the slope
 
-This could be further modified to allow the slope to level out after a certain time period (in this example, the post-vaccine trend levels out 36 months after vaccine introduction)
+This could be further modified to allow the slope to level out after a certain time period (in this example, the post-vaccine trend levels out 24 months after vaccine introduction)
 
 ```{r, fig.width=5, fig.height=7}
 kids$index<-1:nrow(kids) #creates an index for time
@@ -270,30 +302,31 @@ kids$spl1[kids$spl1>12]<-12 #effect only in place for 12 months
 kids$spl2[kids$spl2>24]<-24 #Level off after 24 months
 kids$spl1[kids$spl1<0]<-0
 kids$spl2[kids$spl2<0]<-0
+kids$month<-as.factor(month(kids$date))
 
-mod1<-glm(J12_18~month+ index +spl1 + spl2 ,family='quasipoisson', data=kids,offset=log.offset )
+mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 ,family='quasipoisson', data=kids,offset=log.offset )
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$spl1<-0
 kid.counter$spl2<-0
 pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
 pred1.counter.post<-pred1.counter
-pred1.counter.post[kids$date<=as.Date('2011-03-01')] <-NA
+pred1.counter.post[kids$date<=as.Date('2011-08-01')] <-NA
 
 
 pred1.pre<-pred1
-pred1.pre[kids$date>=as.Date('2010-03-01')]<-NA
+pred1.pre[kids$date>=as.Date('2010-08-01')]<-NA
 
 pred1.post<-pred1
-pred1.post[kids$date<as.Date('2011-03-01')]<-NA
+pred1.post[kids$date<as.Date('2010-08-01')]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_18, type='p', pch=16, bty='l', ylab="N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_18)), main='ITS, with leveling of the trend')
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with leveling of the trend')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
-abline(v=as.Date('2010-03-01'), lty=3, col='gray')
-abline(v=as.Date('2011-03-01'), lty=3, col='gray')
+abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+abline(v=as.Date('2011-08-01'), lty=3, col='gray')
 
 plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
 abline(h=1, lty=2, col='gray')
@@ -302,16 +335,69 @@ abline(h=1, lty=2, col='gray')
 ```
 
 #### The use of controls in ITS analysis
-With this type of ITS analysis, there is a good chance that there are changes in the time series that are not well-captured by the linear trend assumption. There are 2 approaches that can be used to detect and control for such patterns: control outcomes and control covariates
+With this type of ITS analysis, there is a good chance that there are changes in the time series that are not well-captured by the linear trend assumption. There are 2 approaches that can be used to detect and control for such patterns: control outcomes and control covariates.
 
 **Control Outcomes**
-With a control outcome, a different disease that is not affected by the vaccine is chosen, and the same model that was fit to the main outcome of interest is fit to this control time series. The 'vaccine effect' is estimated for both the outcome of interest and the control. The inference is typically made by comparing these vaccine effects. If the control series shows no vaccine effect, and the outcome of interest does, this would be taken as evidence that the estimate is not biased by unrelated trends. This requires that a control is chosen that would be influenced by relevant confounding factors. The control disease and the disease of interest should share relevant risk factor and etiologies. For instance, if th goal is to adjust for underlying susceptibility of the population, using fractures as a control would be a poor choice because trends in fractures has a completely different set of causes than trends in acute respiratory infections.
+With a control outcome, a different disease that is not affected by the vaccine is chosen, and the same model that was fit to the main outcome of interest is fit to this control time series. The 'vaccine effect' is estimated for both the outcome of interest and the control. The inference is typically made by comparing these vaccine effects. If the control series shows no vaccine effect, and the outcome of interest does, this would be taken as evidence that the estimate is not biased by unrelated trends. This requires that a control is chosen that would be influenced by relevant confounding factors. See the 'special considerations' section above for a discussion about selecting control variables.
 
 **Control covariates**
 It is also possible to include other time series as control variables in the ITS regression model. The goal with this approach is to adjust for time-varying confounders. As an example, if the outcome is pneumonia, and smoking rates are changing over time, the rate of smoking in the population at each time point could be included as a covariate. 
 
+As an example, we could include all non-respiratory deaths as a control variable in the model to adjust for changes in reporting/unlderying health of the population/population size. In this example, the rate ratio is 0.92, corresponding to an 8% reduction in deaths due to pneumonia.
+
+```{r, fig.width=4, fig.height=7}
+kids$index<-1:nrow(kids) #creates an index for time
+intro.date<-min(which(kids$date>=as.Date('2010-03-01')))
+eval.date<-min(which(kids$date>=as.Date('2011-03-01')))
+kids$log.offset.acm<- log(kids$acm_noj_prim)
+kids$spl1<- kids$index -  intro.date
+kids$spl2<- kids$index -  eval.date
+kids$spl1[kids$spl1>12]<-12 #effect only in place for 12 months
+kids$spl2[kids$spl2>24]<-24 #Level off after 24 months
+kids$spl1[kids$spl1<0]<-0
+kids$spl2[kids$spl2<0]<-0
+kids$month<-as.factor(month(kids$date))
+
+mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 +log.offset.acm,family='quasipoisson', data=kids )
+pred1<-predict(mod1, type='response')
+kid.counter<-kids
+kid.counter$spl1<-0
+kid.counter$spl2<-0
+pred1.counter<-predict(mod1, type='response', newdata=kid.counter)
+pred1.counter.post<-pred1.counter
+pred1.counter.post[kids$date<=as.Date('2011-08-01')] <-NA
+
+
+pred1.pre<-pred1
+pred1.pre[kids$date>=as.Date('2010-08-01')]<-NA
+
+pred1.post<-pred1
+pred1.post[kids$date<as.Date('2010-08-01')]<-NA
+
+par(mfrow=c(2,1))
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, adjusted for ACM')
+points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
+points(kids$date,pred1.post, type='l' , col='#7570b3' )
+points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
+abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+abline(v=as.Date('2011-08-01'), lty=3, col='gray')
+
+# plot(kids$date, kids$J12_J18_prim/kids$acm_noj_prim, type='p', pch=16, bty='l', ylab="Adj N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim/kids$acm_noj_prim)), main='ITS, adjusted')
+# points(kids$date,pred1.pre/kids$acm_noj_prim, type='l' ,col='#1b9e77' )
+# points(kids$date,pred1.post/kids$acm_noj_prim, type='l' , col='#7570b3' )
+# points(kids$date,pred1.counter/kids$acm_noj_prim, type='l', col='#d95f02', lty=3  )
+# abline(v=as.Date('2010-08-01'), lty=3, col='gray')
+# abline(v=as.Date('2011-08-01'), lty=3, col='gray')
+
+
+plot(kids$date, pred1/pred1.counter, type='l', bty='l', ylab="Rate Ratio", xlab='date',main='Rate ratio', ylim=c(0.5,1.2))
+abline(h=1, lty=2, col='gray')
+
+
+```
+
 **Counterfactual** 
-With an ITS model, the assumption is that the trend from the pre-vaccine period would have continued with the same slope into the post-vaccine period. To estimate the value of the counterfactual at each time point, we use the regression model but hold the terms representing post-vaccine changes in trend or level to 0 (no change from the pre-vaccine trends and levels). 
+With an ITS model, the assumption is that the trend from the pre-vaccine period would have continued with the same slope into the post-vaccine period. To estimate the value of the counterfactual at each time point, we use the regression model but hold the terms representing post-vaccine changes in trend or level to 0 (no change from the pre-vaccine trends and levels). For models that include a control variable, the assumption is that the association between the control variable and the outcome variable is the same in the pre- and post- vaccine periods, and the change in mean and change in slope terms effectively capture changes in the outcome variable *after adjusting for* the control variable. 
 
 #### Extensions
 
@@ -325,26 +411,74 @@ There are countless variants of ITS-type models that incorporate information abo
 
 
 ### Synthetic controls
-With the synthetic controls approach, the goal is to usetime series that are not influenced by the vaccine to adjust for underlying secular trends in the data. 
+With the synthetic controls approach, the goal is to use time series that are not influenced by the vaccine to adjust for underlying secular trends in the data. With the "control covariates" approach described above, the control disease is included as an adjustment in the regression model, and the model is set up to detect changes in slope or level of disease after introduction of the vaccine. Synthetic controls analysis is an extenstion of this idea. The main differences are (1) that the models are only fit to data from the pre-vaccine period and used to extrapolate to the post-vaccine period and (2) typically many control time series are included, and variable selection is used to weight these controls. 
+
+**Simple example with a single time series**
+Using the same dataset from Ecuador that was used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
+```{r}
+kids$j12_18_pre<-kids$J12_J18_prim
+kids$j12_18_pre[kids$date>=as.Date('2010-08-01')]<-NA #set to missing for post period
+kids$log.ach<-log(kids$acm_noj_prim)
+
+mod1<-glm(j12_18_pre~month+log.ach,family='quasipoisson', data=kids)
+fit.j12_18.pre<-predict(mod1, type='response')
+
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Fit of synthetic control model')
+points(kids$date[kids$date<as.Date('2010-08-01')],fit.j12_18.pre, type='l' ,col='#1b9e77' )
+
+```
+
+Now that we have fit the model, we will plug in the observed values of the control variable into the model to get an estimate of pneumonia  during the post-vaccine months
+
+```{r}
+fit.j12_18.post<-predict(mod1, type='response', newdata=kids)
+
+plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Extrapolation to post-vaccine period')
+points(kids$date,fit.j12_18.post, type='l' ,col='#d95f02' )
+points(kids$date[kids$date<as.Date('2010-08-01')],fit.j12_18.pre, type='l' ,col='#1b9e77' )
+abline(v=as.Date('2010-07-01'), lty=2, col='gray')
+```
+
+The vaccine effect is calculated by taking the difference or ratio between the observed and extrapolated value during the post-vaccine period. The plots shown below give the ratio or difference at each time point. We will typically instead aggregate the observed cases and the extrapolated cases over a certain time period--by year, or during the evaluation period (e.g., excluding the first 12 months of post-vaccine data)
+```{r}
+eval.start<-as.Date('2011-08-01')
+evalstart.index<-which(kids$date==eval.start)
+evalstart.index<-evalstart.index:nrow(kids)
+ratio<-kids$J12_J18_prim/fit.j12_18.post
+ave.ratio<- sum(kids$J12_J18_prim[evalstart.index])/sum(fit.j12_18.post[evalstart.index])
+difference<-kids$J12_J18_prim-fit.j12_18.post
+
+
+plot(kids$date,ratio, type='l', bty='l', main='Ratio')
+abline(h=1, lty=3, col='gray')
+abline(v=as.Date('2010-07-01'), lty=2, col='gray')
+points(kids$date[evalstart.index], rep(ave.ratio, length(evalstart.index)), type='l',col='#7570b3')
+
+plot(kids$date,difference, type='l', bty='l', main='Difference')
+abline(h=0, lty=3, col='gray')
+abline(v=as.Date('2010-07-01'), lty=2, col='gray')
+
+```
+
+**Use of multiple controls**
+In the example above, we have a single control time series. However, it is often difficult to choose a single control *a priori*, and there are often a number of possible candidates. With a typical synthetic control analysis, a large number of possible control variables are included in the regression, and Bayesian variable selection is used to give more or less weight to different controls. Controls that do not capture key variation in the outcome will receive a weight of 0. Controls that are more important will receive weights closer to 1. Controls are not 'excluded' from the model as they would be using classicla forward or backward variable selection. Rather they just receive more or less weight. Thus the final model is a composite that includes all of candidate controls.
 
 **Counterfactual** 
-TODO
+The counterfactual is generated by plugging the observed values for the control time series during the post-vaccine period into the model. If the relationship between the outcome disease and the controls is stable over time, this represents an estimate of number of pneumonia cases that would be expected if the vaccine had not been introduced.
+
 **Calculation of vaccine impact** 
-TODO
+The vaccine effect is calculated by taking the ratio or difference between the observed cases and the extrapolated number of cases estimated from the regression model (the counterfactual). This can be done for each time point (as in the plots above). We will typically instead aggregate the observed cases and the extrapolated cases over a certain time period--by year, or during the evaluation period (e.g., excluding the first 12 months of post-vaccine data). 
 
 **Assumptions**
-TODO
+The synthetic controls model relaxes the assumption used in the ITS model that the trends following a linear pattern. However, synthetic controls has its ow asusmptions that need to be met for the results to be valid. 
 
-***Extensions**
-TODO
+1. The control variables are not influenced by the vaccine. If the control variable is influenced by the target vaccine, then rates of disease for both the outcome and control will decline, and the estimate of the difference between the observed data and the counterfactual will be biased towards seeing no effect. Controls should be screened in advance to identify those that might be influenced by the vaccine 
 
+2. The association between the outcome and the controls is stable over time. Or to put it another way, the only factor that changes the relationship between the control disease and the outcome over time is the target vaccine.  This is a key assumption. If, we are evaluating the effect of PCVs against pneumonia, and diarrhea is a control variable, this could be a problem if rotavirus vaccine was introduced around the same time. That is because we would have 2 factors that change the relationship between pneumonai and diarrhea: PCV introduction and rotavirus vaccine introduction. In this instance, both diseases would be driven down by their respective vaccines, so the counterfactual would be biased down, and the vaccine effect would be under-estimated. Control variable should be screened in advance to identify those that might be influenced by targeted interventions. 
+  Broad interventions (e.g., social welfare programs) will affect both the outcome and control disease. In this instance, we *want* to include the control variables that are influenced by the intervention because it will help to adjust for trends in the outcome variable that are unrelated to vaccination.
 
-### Special considerations.
-**How many years of data required?**
--Requires pre-vaccine data
+3. The controls share key causal drivers with the controls and capture relevant variation that is unaffected by the vaccine. If there are trend sin the outcome that are not captured by the controls, the estimates will be biased. This bias could go in either direction. For instance, in many populations, reported pneumonia rates in the elderly have been increasing for unexplained reasons. If the controls cannot capture this increase, one might (incorrectly) conclude that the vaccine causes an increase in pneumonia rates.  Likewise, if the outcome disease exhibits wild fluctuations due to unexplained factors, and the controls don't adjust for this, there will remain a lot of unexplained variability, and it will be difficult to obtain an estimate of vaccine impact
 
-**What to do if you have an epidemic disease**
-All of these methods assume that the disease patterns follow a preditable pattern and can be captured either using a straight line relationship (ITS), or that the relationship with control variables is stable. Therefore, these methods are generally only appropriate for **endemic** diseases. For diseases that are epidemic (e.g., meningococcal meningitis), other approaches might be required that account for the dynamics of the pathogen and the build-up of immunity in the population. If the epidemic is widespread but the intervention is limited to a smaller region, it  might be possible to use the time series from an unvaccinated control population (e.g., another region within the country) as the control variable to generate a counterfactual in a synthetic control-type analysis. Or it might be necessary to use a dynamic transmission model that can capture non-linear dynamics (e.g., a compartmental model with Susceptiple, Infected, and Resistant classes). 
 
 ##	Defining the study question and objectives (CRISTIANA)
 
@@ -355,41 +489,52 @@ All of these methods assume that the disease patterns follow a preditable patter
 
 ##	Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts) (CRISTIANA)
 
-
 ## Data management (MOSTLY CRISTIANA)
 
+## Data analysis (DAN TODO)
 
-## Data analysis (text + web based tutorial) (DAN)
+In the sections below, we will describe how to format the data for analysis and how to interpret the results from different analyses. In these examples, we will use mortality data from Ecuador. If you want more details on how to actually implement these analyses in R or in a web-based interface, see the following:
+
+- For a detailed, guided example that shows how to format your data, run analyses, and interpret results in R, see the Practical Exercise (TODO LINK). In that Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls. 
+
+-To learn how to implement and interpret the analyses using a point-and-click web-based interface, click here (TODO link). 
+
 ###	Data formatting
 
-To evaluate changes in disease rates associated with an intervention, the first step is to format the data into a **time series**. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data, creating a variable that has the date rounded rown to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period. 
+When evaluating changes in disease rates associated with an intervention, the first step is to format the data into a **time series**. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data (i.e., one row per hospitalization or death), creating a variable that has the date rounded down to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period. 
 
-Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases that we want to enumerate
+Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases or cause sof death that we want to enumerate. If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 2 age groups. Each date/age group combination should have only 1 row in this dataset, *and all date/age combinations should be represented, even if no cases were observed during a particular time period*. Here we can see the first 3 months of data for age groups 2-23m and 2-59m in Ecuador.
+
 ```{r, echo=F}
-dataset<-cbind.data.frame( 'date'=seq.Date(from=as.Date('2010-01-01'), length.out=15, by='month'), 'pneumonia'=rpois(15, lambda=50), 'control1'=rpois(15, lambda=200))
-print(dataset)
+
+ data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
+ecuador_mortality$monthdate<-as.Date(ecuador_mortality$monthdate)
+dataset<-ecuador_mortality
+print(head(ecuador_mortality[ecuador_mortality$monthdate<=as.Date('2005-03-01'),1:5] ))
 ```
 
-If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 3 age groups, each with 5 observations. Each date/age group combination should have only 1 row in this dataset.
-```{r, echo=F}
-dataset<-cbind.data.frame( 'age_group'= rep(1:3, each=5), 'date'=seq.Date(from=as.Date('2010-01-01'), length.out=5, by='month'), 'pneumonia'=rpois(15, lambda=50), 'control1'=rpois(15, lambda=200))
-print(dataset)
+
+###	Descriptive analysis
+The most useful thing to do to ensure the data are appropriately formatted is to plot the data as a time series line plot, where we have time on the x-axis and number of cases on the y-axis. These plots show the time series for deaths due to pneumonia (J12-J18) or due to non-respiratory causes.      
+
+```{r, echo=F, fig.width=6, fig.height=2 }
+par(mfrow=c(1,2) ,mar=c(2,4,1,1))
+ds.sub<-dataset[dataset$age_group=='ec 2-59m A',]
+plot(ds.sub$monthdate,ds.sub$J12_J18_prim, type='l', bty='l', col='blue', xlab='Date', ylab='J12-18', ylim=c(0, max(ds.sub$J12_J18_prim)))
+
+plot(ds.sub$monthdate,ds.sub$acm_noj_prim, type='l', bty='l', col='blue', xlab='Date', ylab='All non-resp.', ylim=c(0, max(ds.sub$acm_noj_prim)))
 ```
 
-In the *exercise*, we will learn how to take a individual-level dataset that has 1 observation for each hospitalization/death and convert it to a time series dataset.
+### Analyzing the data
 
--	Descriptive analysis
--	Time series models
-- Synthetic Control analysis
--	Incorporating co-variates into the analyses
--	Exercises
-#### Converting individual-level data to time series
+As discussed in the previous sections, there are a number of ways to evaluate the impact of PCVs. In Ecuador, PCV was introduced in August 2010. We will ignore the first year of post-vaccine data to allow vaccine uptake to increase before we start evaluating the effect of the vaccine on rates of death.
 
-## Interpreting results (DAN)
+### Interpreting results (DAN)
 	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1)
-o	Communicating and Presenting results effectively (including suggested templates) (DAN AND CRIS)
-```{r}
-#https://bookdown.org/yihui/rmarkdown/layout.html#story-boards
-```
+
+
+##	Communicating and Presenting results effectively (including suggested templates) (DAN AND CRIS)
+
+
 
 
