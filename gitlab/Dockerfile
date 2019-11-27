@@ -4,8 +4,11 @@ MAINTAINER ben@artins.org
 # Install curl
 RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends curl libcurl4-openssl-dev libz-dev
 
-# Install rmarkdown
+# Install needed R packages
 RUN Rscript -e 'install.packages(c("rmarkdown", "lubridate", "RCurl", "rmdformats"))'
+RUN Rscript -e 'install.packages(c("devtools"))'
+RUN Rscript -e 'install.packages(c("htmlTable"))'
+RUN Rscript -e 'devtools::install_github("weinbergerlab/InterventionEvaluatR")'
 
 ### Install pandoc 2.x
 RUN cd /tmp && \
