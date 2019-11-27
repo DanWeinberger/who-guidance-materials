@@ -8,7 +8,7 @@ RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends curl
 RUN Rscript -e 'install.packages(c("rmarkdown", "lubridate", "RCurl", "rmdformats"))'
 
 RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends \
-  libcurl4-openssl-dev \
+  libcurl4-gnutls-dev \
   libgit2-dev \
   libssl-dev \
   libssh2-1-dev \
