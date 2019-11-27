@@ -6,6 +6,14 @@ RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends curl
 
 # Install needed R packages
 RUN Rscript -e 'install.packages(c("rmarkdown", "lubridate", "RCurl", "rmdformats"))'
+
+RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends \
+  libcurl4-openssl-dev \
+  libgit2-dev \
+  libssl-dev \
+  libssh2-1-dev \
+  libxml2-dev
+
 RUN Rscript -e 'install.packages(c("devtools"))'
 RUN Rscript -e 'install.packages(c("htmlTable"))'
 RUN Rscript -e 'devtools::install_github("weinbergerlab/InterventionEvaluatR")'
