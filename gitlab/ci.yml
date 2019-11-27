@@ -1,7 +1,7 @@
 stages:
   - pages
 
-pages:
+.pages:
   extends: .docker
   stage: pages
   variables:
@@ -16,12 +16,20 @@ pages:
   artifacts:
     paths:
       - public
+# Only master commits are deployed
+pages:
+  extends: .pages
   environment:
     name: "guidance.interventionevaluatr.com"
     url: "http://guidance.interventionevaluatr.com"
   only:
     - master
-    - gitlab
+
+# But all commits are built    
+pages (no deployment):
+  extends: .pages
+  except: 
+    - master
 
 .docker:
   tags:
