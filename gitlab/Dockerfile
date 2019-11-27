@@ -2,7 +2,7 @@ FROM "rocker/r-ver:latest"
 MAINTAINER ben@artins.org
 
 # Install curl
-RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends curl libcurl4-openssl-dev
+RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends curl libcurl4-openssl-dev libz-dev
 
 # Install rmarkdown
 RUN Rscript -e 'install.packages(c("rmarkdown", "lubridate", "RCurl", "rmdformats"))'
