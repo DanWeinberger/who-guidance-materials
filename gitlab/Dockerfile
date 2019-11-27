@@ -1,22 +1,28 @@
 FROM "rocker/r-ver:latest"
 MAINTAINER ben@artins.org
 
-# Install curl
-RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends curl libcurl4-openssl-dev libz-dev
-
-# Install needed R packages
-RUN Rscript -e 'install.packages(c("rmarkdown", "lubridate", "RCurl", "rmdformats"))'
-
+# Install needed OS packages
 RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends \
+  curl \
   libcurl4-gnutls-dev \
   libgit2-dev \
-  libssl-dev \
   libssh2-1-dev \
-  libxml2-dev
+  libssl-dev \
+  libxml2-dev \
+  libz-dev
 
-RUN Rscript -e 'install.packages(c("devtools"))'
-RUN Rscript -e 'install.packages(c("htmlTable"))'
-RUN Rscript -e 'devtools::install_github("weinbergerlab/InterventionEvaluatR")'
+# Install needed R packages
+RUN Rscript -e 'install.packages(c(\
+  "htmlTable", \
+  "devtools", \
+  "rmarkdown", \
+  "lubridate", \
+  "RCurl", \
+  "rmdformats" \
+))'
+RUN Rscript -e 'devtools::install_github(\
+  "weinbergerlab/InterventionEvaluatR" \
+)'
 
 ### Install pandoc 2.x
 RUN cd /tmp && \
