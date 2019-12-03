@@ -8,7 +8,7 @@ output:
     self_contained: true
     thumbnails: false
     lightbox: false
-    css: stylesreadthedown.css
+    css: ../stylesreadthedown.css
     toc_depth: '3'
 --- 
 
