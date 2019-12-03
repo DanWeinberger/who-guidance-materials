@@ -406,11 +406,14 @@ abline(h=1, lty=2, col='gray')
 
 ```
 
-Let's just compare the Rate ratio estimates from the different ITS models we have tested so far. TODO::CHECK DATES USED HERE--KNOTS SEEMS TO BE DIFFERENT
+Let's just compare the Rate ratio estimates from the different ITS models we have tested so far. 
 ```{r}
 
 its.comp<-cbind.data.frame(its.rr.control, its.rr.connected1, its.rr.disjoint, its.rr.level,rr.pre.post)
 matplot(its.comp, type='l', bty='l')
+legend('bottomleft', legend=c("ITS:control", "ITS:smooth","ITS:Disjointed",'ITS:plateau', 'Pre/Post'),
+        cex=0.8,
+       box.lty=0)
 ```
 
 
@@ -548,6 +551,7 @@ plot(ds.sub$monthdate,ds.sub$acm_noj_prim, type='l', bty='l', col='blue', xlab='
 As discussed in the previous sections, there are a number of ways to evaluate the impact of PCVs. In Ecuador, PCV was introduced in August 2010. We will ignore the first year of post-vaccine data to allow vaccine uptake to increase before we start evaluating the effect of the vaccine on rates of death.
 
 ### Interpreting results (DAN)
+
 	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1)
 
 

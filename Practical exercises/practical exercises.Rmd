@@ -138,7 +138,7 @@ The data are stored as an R dataset.
 ## Read in and explore data
 **CHANGE THIS TO DOWNLOAD FROM GITHUB**
 ```{r}
-githubURL <- ("https://raw.githubusercontent.com/DanWeinberger/who-guidance-materials/format1/Practical%20exercises/ecuador%20raw/u5.deaths.2001.2015.rds")
+githubURL <- ("https://raw.githubusercontent.com/DanWeinberger/who-guidance-materials/master/Practical%20exercises/ecuador%20raw/u5.deaths.2001.2015.rds")
 download.file(githubURL,"ecuador_raw.rds", method="curl") #downloads file to working directory
 d1 <- readRDS("ecuador_raw.rds") #imports file into R and saves as object 'd1'
 ```
@@ -371,7 +371,7 @@ set.seed(1)
 
 This function runs Interrupted time series analysis, an alternative time trend analysis, synthetic controls, and STL+PCA. All of these results are saved in the object 'impact_results'.
 ```{r}
-impact_results = evaluatr.impact(analysis)
+#impact_results = evaluatr.impact(analysis)
 
 ```
 
@@ -383,14 +383,14 @@ impact_results = evaluatr.impact(analysis)
 Before getting into more complicated analyses, we will first try to fit a simple Poisson regression model (with overdispersion) where we adjust for seasonality and 1 control variable at a time. this allows us to see how the use of different controls influences the results
 
 ```{r univariate, echo = T, results = 'hide',warning=FALSE}
- glmer_results= evaluatr.univariate(analysis)
+# glmer_results= evaluatr.univariate(analysis)
 ```
 Then plot the results. The results are ordered by goodness of fit (based on AIC scores), with best fitting covariates on top. Each plot represents a different age group. Overall, we see a generally consistent pattern. The use of the subchapter R00-09 as a control variable leads to estimates that are closer to 1 (no effect). This subchapter is "Symptoms and signs involving the circulatory and respiratory systems". These are often considered non-specific 'junk' codes. There could be arguments for or against using this subchapter as a control. On the downside, it is possible that actual pneumonia deaths incorrectly were assigned a code of R00-99, and the vaccine could therefore reduce the incidence of R00-09 codes and bias the estimates towards no effect. On the upside, the use of these junk codes as a control could help to adjust for underlying improvements or changes in coding quality.   
 
 ```{r univariate_plot,fig.width=4, fig.height=5}
-par(mar=c(4,5,1,1)) #fix margins
-group.labels<-as.character(unique(analysis$input_data[,analysis$group_name]))
-lapply(glmer_results,evaluatr.univariate.plot)
+# par(mar=c(4,5,1,1)) #fix margins
+# group.labels<-as.character(unique(analysis$input_data[,analysis$group_name]))
+# lapply(glmer_results,evaluatr.univariate.plot)
 ```
 
 
@@ -402,13 +402,13 @@ lapply(glmer_results,evaluatr.univariate.plot)
 Check model convergence
 These models are fit using Markov Chain Monte Carlo (MCMC). It is important to evaluate the convergence of the model. A quick way to check this is to evaluate the trace plots for rate ratio estimates from the synthetic controls model (or for the other model variants). We use Geweke’s diagnostic, which tests whether the mean estimate for the rate ratio in the first 10% of the iterations is equal to the mean estimate for the rate ration in the last 50% of the iterations. If the model has not converged, you might need to add more iterations or a longer burn in period
 ```{r}
-all.traces<-sapply(impact_results,'[[', 'rr_iter')
-cats<-dimnames(all.traces[[1]])[[1]]
-all.converge.status<-sapply(impact_results,'[[', 'converge')
-for(j in c('full','time','pca')){
-for(i in 1: nrow(all.traces[[1]])){
-   plot(all.traces[[j]][i,], type='l', main=paste0(j,' ',cats[i],' ' ,all.converge.status[[j]][i,2] ), bty='l', ylim=c(0.2,2))
-}
-}
+# all.traces<-sapply(impact_results,'[[', 'rr_iter')
+# cats<-dimnames(all.traces[[1]])[[1]]
+# all.converge.status<-sapply(impact_results,'[[', 'converge')
+# for(j in c('full','time','pca')){
+# for(i in 1: nrow(all.traces[[1]])){
+#    plot(all.traces[[j]][i,], type='l', main=paste0(j,' ',cats[i],' ' ,all.converge.status[[j]][i,2] ), bty='l', ylim=c(0.2,2))
+# }
+# }
 ```
 
