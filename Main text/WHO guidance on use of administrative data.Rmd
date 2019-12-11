@@ -54,16 +54,140 @@ WHO working group on the use of administrative data to evaluate the impact of pn
 * Daniel Weinberger (Yale School of Public Health)
 
 ## Introduction (Cris)
-Once vaccines or other public health interventions are deployed, it is often desirable to measure their impact on health. This information is often critical for policy-makers who prioritize funding and implementation of different programs. However, conducting robust and credible evaluations of the public health impact of interventions is challenging. Real-world data are complex, and decisions about how to clean, format, analyze, and interpret the data can influence the conclusions about the impact of the intervention. 
+Pneumococcal infections cause significant morbidity and mortality in children under 5 years of age in countries throughout the world, being the leading cause of vaccine-preventable deaths worldwide [Liu L, Lancet 2016].  Streptococcus pneumoniae (S. pneumoniae or pneumococcus) causes a variety of clinical syndromes, including pneumonia, meningitis, and bacteremia, as well as milder but more common illnesses such as otitis media and sinusitis [O’Brien KL, Lancet 2009]. All age groups are affected but most of the burden affects infants, young children and the elderly.
 
-In this manual, we discuss issues in performing impact analyses using routinely-collected administrative data sources. As a specific case study, we discuss challenges in evaluating the impact of the introduction of pneumococcal conjugate vaccines among children on rates of hospitalization and death due to pneumonia. 
+The World Health Organization (WHO) estimated, in 2005, that pneumococcal disease was the leading cause of vaccine-preventable deaths worldwide. A more recent disease burden study estimated that 14.5 million cases of serious pneumococcal disease occur each year worldwide, resulting in approximately 826,000 deaths [O’Brien KL, Lancet 2009]. Bacteremia is the most common invasive clinical presentation of pneumococcal infection in children aged 2 years or less, whereas pneumonia is the most common clinical presentation in adults. Invasive pneumococcal disease (IPD) implies the morbidity associated with isolation of pneumococci from normally sterile body sites, such as the blood stream, or those secondary to bloodstream spread, e.g. meningitis or septic arthritis.
+
+Pneumococcal conjugate vaccines (PCVs) were first licensed in 2000. There are currently two commercially available vaccines, Synflorix (10-valent, PCV10) and Prevnar (13-valent, PCV13), both of which were introduced in the market in 2010. All available vaccines have demonstrated excellent safety and efficacy profiles in clinical trials [WER, 2019].
+The World Health Organization (WHO) in 2012 recommended the introduction of pneumococcal conjugate vaccines (PCVs) in childhood immunization programs with high priority to countries with mortality rate >50 deaths/1000 births in children under 5 years of age [WER, 2012]. In, SAGE updated its recommendation, urging all countries in the world to introduce PCVs, in either 3+0 or 2+1 schedules, regardless of disease burden and mortality rates [WER, 2019].
+
+To date, more than 140 countries in the world have introduced PCV into its national immunization programs, including many low- and middle-income countries [IVAC - View-hub report, 2019].Impact assessment studies are crucial after the introduction of new technologies. This is particularly true for new vaccines which have been made available in the past decade and are associated with higher costs when compared to traditional vaccines [Penfold RB, Acad Pediatr 2013; Bruhn CA, Epidemiology 2017]. 
+
+Demonstrating vaccine impact on disease occurrence is crucial to inform decision making and allow the sustainability of immunization programs. In addition to providing evidence for decision makers, vaccine impact studies are crucial to allow all stakeholders to appreciate the benefits of vaccination; to assess the programmatic use of vaccine; and monitor progress towards national and international child health goals. 
+
+After PCV introduction in several countries, many studies to assess their effectiveness and impact on the various relevant clinical outcomes have been conducted. To this end, many studies benefited from guidance provided by the WHO manual “Measuring impact of Streptococcus pneumoniae and Haemophilus influenzae type b conjugate vaccination”, published in 2012 [WHO, 2012]. In this manual, selected approaches to measuring PCV and Hib impact on disease occurrence and a framework for determining the best methodology for measuring that impact for different country or epidemiologic settings are presented, including using secondary data sources such as vital statistics and administrative records of hospitalizations. However, ecologic study designs are not explored and may be a useful method for measuring vaccine impact, as recently demonstrated by several studies, particularly assessing available secondary data such as mortality registries and administrative hospitalization databases.
+
+A significant body of evidence is currently available demonstrating PCV effectiveness and impact on acute otitis media, pneumonia, invasive bacterial diseases, including both cases managed in the outpatient setting and more severe disease requiring hospitalization [de Oliveira, 2016; Loo, JD, 2014 ]. However, to date, there is scarce evidence on the impact of PCVs on mortality and morbidity in children under 5 years of age, using available secondary mortality and hospitalization data-sources, particularly in middle and low income countries. This is mainly due to challenges in availability, access to, and analysis of secondary sources of morbidity and mortality data. 
+
+A recent multi-national study led by PAHO conducted in 10 low and middle income countries in the Latin American Region was recently completed, with the aim of determining the impact of PCVs on pneumonia mortality in children under 5 years of age, following their introduction into the national routine immunization program targeting infants. This study has been able to demonstrate, as a proof of concept, that it is possible to use available mortality data to evaluate the impact of PCVs on all-cause pneumonia mortality in children under the age of 5 years in selected countries, by means of time series analysis methodology [de Oliveira, Lancet Global Health, 2020]. In addition, similar studies are being undertaken by AFRO, EURO, and SEARO with countries in their regions [REFS CDC - CID, 2019].
+
+The use of nationwide data from secondary sources, including the National Mortality Information Systems and Hospitalization Information systems, from pre- and post-vaccine introduction periods is possible, granted various aspects of data availability, extraction, quality, and other methodological challenges are adequately addressed and overcome.  
+
+As such, this document provides guidance on approaches to measuring PCV impact using mortality and hospitalization, including minimum data requirements, and a framework for ensuring adequate application of relevant methodological aspects required for the use of time series methodology. This may serve to policy makers who will use results of impact assessment studies to make decisions regarding vaccine introduction and sustainability; Ministry of Health technical officers directly involved with requesting and/or conducting data management, epidemiologic studies and data analysis; as well as professionals working in academic institutions supporting the Ministry of Health in conducting research impact assessment evaluation. 
+
 
 ## What is vaccine 'impact'?
-Many vaccines influence disease rates in 2 ways. Direct effects reduce the risk for an individual to become ill and directly results from the immune response from the vaccine. Indirect effects are the benefit that an individual receives as a result of decreased transmission of the pathogen. Both vaccinated and unvaccinated individuals benefit from this indirect protection. When we refer to *vaccine impact* we are referring to the overall change in disease rates in the population that results from the combination of direct and indirect effects.  
+Efficacy studies are needed for licensure of new health technologies, including vaccines. Such studies, conducted as clinical trials, provide a measure of proportional reduction of disease in a vaccinated group compared to an unvaccinated group. However, in addition to being conducted in a scenario of “ideal conditions”, efficacy studies are limited to etiologically confirmed disease, and focuses on individual level effects only.  Once a vaccine is licensed and introduced in the population, post-licensure studies are required to measure vaccine effectiveness and impact of vaccination programs on the population [Hanquet G, 2013]. 
 
-## Mortality data from Vital Statistics (Cris)
+Given some confusion in the literature regarding definitions and terminology, and considering the active discussion in the public health community on how to assess and incorporate, in addition to safety and measures of protective efficacy, the full public health value of a vaccination program, the conference “Beyond efficacy: the full public health impact of vaccines in addition to efficacy measures in trials” was held in France in 2015 to addressed this issue and provided recommendations [Saadatian-Elahi M, 2016]. 
 
-##	Hospitalization data from administrative sources (Cris)
+Vaccine effectiveness are post-licensure studies in which the actual performance of a vaccine at population level is measured. Both vaccine efficacy and effectiveness can be based on individual or cluster randomized designs and can report direct and indirect effects of vaccines. Direct effect is the direct protective effect in a vaccinated subject. Indirect effects correspond to the reduction of infection or disease transmission in unimmunized subjects due to the presence of immune individuals. Total vaccine effectiveness is the combined effects of the chosen vaccination strategy and direct protective effect in vaccinated subjects while overall vaccine effectiveness (i.e. herd effect) is the effect of vaccine in the population with immunized and unimmunized subjects as compared to if the population had not had the vaccination strategy [Saadatian-Elahi M, 2016]. 
+
+Distinction should also be made between effects due to exposure to individual vaccination from that of exposure to a vaccination program, as the latter depends on vaccine coverage, other population factors and includes indirect effects as well. Vaccine (direct) effectiveness is estimated by comparing vaccinated and unvaccinated individuals exposed to the same vaccination program.
+
+Once vaccines or other public health interventions are deployed, it is often desirable to measure their impact on health. This information is often critical for policy-makers who prioritize funding and implementation of different programs. 
+
+The impact of a vaccination program, defined here as the population prevented fraction when exposure is the program, is measured by comparing populations with and without a vaccination program, most commonly the same population before and after vaccination. [Hanquet, 2013]
+
+However, conducting robust and credible evaluations of the public health impact of interventions is challenging. Real-world data are complex, and decisions about how to clean, format, analyze, and interpret the data can influence the conclusions about the impact of the intervention.
+
+The assessment of vaccination through ecologic study design using aggregate data, such as interrupted time series and before-after studies, provide measures of impact that combine direct effects, related to individual protection from immune response, and indirect effects including non-vaccinated subjects who benefitted from reduced circulation of S. pneumoniae achieved with high vaccine coverage. On the other hand, effectiveness measurements based on observational study designs, such as cohort and case-control studies, estimates the proportion of cases prevented in vaccinated subjects that were attributable to vaccination excluding indirect effects [Hanquet, Vaccine 2013] 
+
+Different types of data can be used for health impact assessment purposes. Primary data involve prospectively-gathered data from a variety of sources, including population-based surveillance, sentinel site surveillance, periodic surveys, or nationally notifiable disease surveillance. 
+
+Secondary data sources are existing data collected for another purpose, such as routine hospital clinical and administrative data, hospitalization data from a network of hospitals of a given healthcare system, and national mortality data. Such secondary data sources are a potential source of information which have been successfully used to assess the impact of various vaccines, including rotavirus vaccines on diarrheal disease, Hib vaccines on invasive bacterial disease, and PCV on pneumonia hospitalization and mortality. One type of secondary data is administrative data, which are data routinely collected for administrative purposes (including claims, billing, and  health records), which may or may not be electronic. 
+
+Considering available electronic administrative data in health care, Figure 1 below depicts the spectrum of data considering availability, type of data, data processing and cleaning requirements prior to analysis, complexity, and costs.
+
+<<TODO INSERT FIG 1 HERE (Spectrum of Admin Data)>>
+
+
+A significant increase in the number of studies on vaccine impact has been observed in recent years. Most published studies on vaccine impact assessment used secondary data from health information systems, surveillance systems, and others sources, while few studies used primary data. 
+
+Several are the outcomes that can be considered when assessing vaccine impact. For PCV impact, as pneumococcal is related to a variety of syndromes, these can include acute otitis media events, invasive bacterial disease (suspected, probable or confirmed), pneumonia (clinical or X-ray confirmed), severe pneumonia (usually measured as hospitalized pneumonia), and mortality (due to invasive bacterial disease, pneumonia, or all-cause mortality). 
+
+One must consider the estimated effect of the vaccine in the various outcomes of interest in the pre-licensure clinical trials, in order to plan the outcome of interest to be considered in impact assessment studies. 
+
+<<TODO insert table comparing efficacy in trials>>
+
+As severe disease (hospitalization) and mortality outcomes are the most relevant outcomes of interest from a public health perspective, it is expected that secondary data will be the most used data sources for the purpose of PCV impact assessment. 
+
+In most countries in world where routinely collected secondary data on hospitalization and mortality is available, it is possible to evaluate vaccine impact after its introduction into the program. We thus focus this guidance document in these two data types and its potential  sources.
+
+
+##	Defining the study question and objectives (CRISTIANA)
+In order to assess the impact of an intervention in a given population, the investigator should structure the study question considering the PICO strategy. As such, the following should be identified:
+
+*	the target population in which the impact of the intervention is to be measured
+*	the intervention and date of intervention
+*	the outcome of interest, i.e., what is the condition being evaluated which is expected to be impacted by the intervention
+
+The comparator considered will depend on the methodology of the study and will be discusses in further detail in the methods section of this document.
+
+For pneumonia in children as the case study for the assessment of PCV, the study question would be what is the impact of PCV in pneumonia hospitalizations or deaths in children of a given age group of interest, in country X, in a given time period (consider the time being assessed after PCV introduction).
+
+Study objectives will be structured considering the research question above, and include:
+
+**Main objective**: Evalute the impact of PCV vaccination (INTERVENTION) in pneumonia mortality (OUTCOME) in children younger tan 5 years of age (POPULATION) in CONTRY X through the assessment of available secondary mortality data.
+Secondary objectives:
+
+1.	Describe the pneumonia mortality disease burden in Country X in children <5 years of age and by sub-groups of age
+2.	Describe the pneumonia mortality burden in Country X considering any cause of death reported and considering only the main cause of death reported.  
+3.	Characterize the temporal trends of PCV vaccine coverage (3rd dose) in children aged 1 year of age over time in Country X.
+4.	Others 
+
+## Data Sources (international and national for both mortality and hospitalization) (Cristiana)
+
+TODO formatting od this section
+
+There are various data sources which can be considered for impact assessment studies. In addition to the outcome of interest, data on disease burden, vaccine coverage, and population should be obtained when embarking in such analysis. 
+As already mentioned above, for mortality data there are international data sources to which countries report and share data, and that cleans, compiles, and evaluate data quality in a standardized fashion.
+1)	WHO website - mortality data 
+
+WHO: https://www.who.int/healthinfo/statistics/en/ 
+a.	Click on "WHO Mortality Database" and then "Access the online database"
+b.	Then you enter the page below, where you should follow the steps
+ <<TODO: insert fig screenshot of WHO website here>>
+c.	The number of deaths or the standardized rate can be accessed. In this case we will select ASDSR for Pneumonia, both sexes, in Colombia, 2000-2002.
+
+d.	Click on ok to return to the WHO Mortality database page and click on graph or table B (all countries are shown in table A).
+
+
+2)	WHO website - data on vaccination coverage 
+
+WHO: https://www.who.int/immunization/monitoring_surveillance/data/en/ 
+a.	Download and review official country estimates of national coverages (4.1 Official country reported coverage estimates time series are available in html and in excel)
+b.	Download and review official reports of administrative coverages by country (4.2 Download country reported administrative data time series in excel)
+c.	Prepare a table summarizing PCV3 coverage in your country using data from these sources.
+d.	Now, download and review the reports prepared according to the method of estimating national immunization coverage by WHO / UNICEF (WUENIC) (4.5 WHO / UNICEF Estimates of National Immunization Coverage (WUENIC) are available in html and in excel. the country summaries (in pdf), content of PDF in excel and the method.)
+i.	How do the reported WHO / UNICEF estimates and administrative coverage estimates differ?
+ii.	Are you familiar with the methods for estimating WHO / UNICEF coverage? The country summaries and methods are available on this page.
+
+3)	United Nations, Division of Population (UNPOP) - Population data
+UNPOP: Main page of the UN Population website with several links for publications, data, manuals, papers, maps, among others.
+https://www.un.org/en/development/desa/population/publications/dataset/index.asp
+
+Among them, the link to access the databases and demographic / population information:
+https://population.un.org/wpp/
+a.	“Graphs”, “demographic profiles”, select your country
+Review and discuss the figures generated under “lines charts” and “population pyramids”
+b.	“Interactive data”, click in “Population by age and sex”
+i.	select “Latin America and the Caribbean”, select your country
+ii.	select the time period in years (ex. 2005-2019)
+iii.	select “both sexes combined”
+iv.	select the age group of your interest for the analysis (or all for curiosity)
+v.	Validate/confirm the suggested format provided by the webpage for the pivot table to be generated for presenting the  data
+vi.	Evaluate the results and use this information to generate the information which will be used for the final product of the workshop, as described in further detail below  
+
+c.	Click in “Data Sources”, select your country. Evalua the description of the available data, its sources, and methods used for population estimation.  
+
+d.	OBSERVATION: If you want to download datasets, click in “Download files”, “Standard Projections” and “Population Indicators”
+i.	under “Age Composition”, the databases  in .xls “Population by age groups” can be dowloaded
+
+4)	WHO – toolkit for health facility information analysis  
+The WHO has recently launched a toolkit including a set of resources to optimize the analysis and use of data collected through routine health facility information systems, also known as health management information systems (HMIS). The comprehensive toolkit includes a series of integrated modules including program specific analysis (immunization and non-communicable diseases among them), standards for measurement/analysis, and integrated health services analysis. Modules can be used individually or together, according to the needs. [WHO, Analysis and use of Health Facility Data].
+HOSPITALIZATION DATA AND EXAMPLES FROM THE ABOVE
+
 
 
 ## Study design (DAN) 
@@ -501,7 +625,6 @@ The synthetic controls model relaxes the assumption used in the ITS model that t
 3. The controls share key causal drivers with the controls and capture relevant variation that is unaffected by the vaccine. If there are trend sin the outcome that are not captured by the controls, the estimates will be biased. This bias could go in either direction. For instance, in many populations, reported pneumonia rates in the elderly have been increasing for unexplained reasons. If the controls cannot capture this increase, one might (incorrectly) conclude that the vaccine causes an increase in pneumonia rates.  Likewise, if the outcome disease exhibits wild fluctuations due to unexplained factors, and the controls don't adjust for this, there will remain a lot of unexplained variability, and it will be difficult to obtain an estimate of vaccine impact
 
 
-##	Defining the study question and objectives (CRISTIANA)
 
 
 
@@ -560,3 +683,41 @@ As discussed in the previous sections, there are a number of ways to evaluate th
 
 
 
+## References 
+TODO: Order and format
+Liu L, Oza S, Hogan D, et al. Global, regional, and national causes of under-5 mortality in 2000-15: an updated systematic analysis with implications for the Sustainable Development Goals. Lancet (London, England) 2016; 388(10063): 3027-35.
+O'Brien KL, Wolfson LJ, Watt JP, et al. Burden of disease caused by Streptococcus pneumoniae in children younger than 5 years: global estimates. Lancet (London, England) 2009; 374(9693): 893-902.
+Wahl B, O'Brien KL, Greenbaum A, et al. Burden of Streptococcus pneumoniae and Haemophilus influenzae type b disease in children in the era of conjugate vaccines: global, regional, and national estimates for 2000-15. Lancet Glob Health 2018; 6(7): e744-e57.
+Johns Hopkins Bloomberg School of Public Health International Vaccine Access Center (IVAC). View-hub report: Global vaccine introduction and Implementation, March 2019. 2019. https://www.technet-21.org/fr/library/explore/global-initiatives/5010-september-2018-view-hub-report-global-vaccine-introduction-and-implementation 2019).
+World Health Organization. Pneumococcal vaccines WHO position paper--2012. Releve epidemiologique hebdomadaire 2012; 87(14): 129-44.
+World Health Organization. Pneumococcal vaccines WHO position paper--2019. Releve epidemiologique hebdomadaire 2019; 8(94): 85-104.
+de Oliveira L, Camacho L, Coutinho E, et al. Impact and Effectiveness of 10 and 13-Valent Pneumococcal Conjugate Vaccines on Hospitalization and Mortality in Children Aged Less than 5 Years in Latin American Countries: A Systematic Review. PloS one 2016; 11(12).
+Loo JD, Conklin L, Fleming-Dutra KE, et al. Systematic review of the effect of pneumococcal conjugate vaccine dosing schedules on prevention of pneumonia. The Pediatric infectious disease journal 2014; 33 Suppl 2: S140-51.
+Phillips D, Lozano R, Naghavi M, et al. A composite metric for assessing data on mortality and causes of death: the vital statistics performance index. Popul Health Metr 2014; 12(14): 1478-7954.
+Shioda K, Schuck-Paim C, Taylor R, et al. Challenges in Estimating the Impact of Vaccination with Sparse Data. Epidemiology 2019; 30(1): 61-8.
+Pan American Health Organization/World Health Organization. Lineamientos básicos para el análisis de la mortalidad. In: Pan American Health Organization, editor. Washington, DC: OPS/PAHO; 2017.
+Pan American Health Organization/World Health Organization. PLISA Database. Health Situation in the Americas: Core Indicators 2018. In: Organization PAH, editor. Washington, DC: PAHO; 2018.
+Penfold RB, Zhang F. Use of interrupted time series analysis in evaluating health care quality improvements. Acad Pediatr. 2013;13:S38-44.
+Bruhn CA, Schuck-Paim C, Kürüm E, Taylor RJ, Simonsen L, Weinberger DM. Improving Assessments of Population-level Vaccine Impact. Epidemiology. 2017 Mar;28(2):233-236.
+Saadatian-Elahi M, Horstick O, Breiman RF, et al. Beyond Efficacy: The Full Public Health Impact of Vaccines. Vaccine. 2016;34(9):1139-1147.
+Hanquet G, Valenciano M, Simondon F, Moren A. Vaccine effects and impact of vaccination programmes in post-licensure studies. Vaccine. 2013;31(48):5634-42. 
+Sartori AM, Nascimento AF, Yuba TY, Soarez PC, Novaes HM. Methods and challenges for the health impact assessment of vaccination programs in Latin America. Rev Saude Publica. 2015;49.
+Schuck-Paim C, Taylor RJ, Simonsen L, Lustig R, Kürüm E, Bruhn CA, Weinberger DM. Challenges to estimating vaccine impact using hospitalization data. Vaccine. 2017 Jan 3;35(1):118-124. 
+de Oliveira LH, Camacho LA, Coutinho ES, Martinez-Silveira MS, Carvalho AF, Ruiz-Matus C, Toscano CM.Impact and Effectiveness of 10 and 13-Valent Pneumococcal Conjugate Vaccines on Hospitalization and Mortality in Children Aged Less than 5 Years in Latin American Countries: A Systematic Review. PLoS One. 2016 Dec 12;11(12):e0166736.
+Bruhn CA, Hetterich S, Schuck-Paim C, Kürüm E, Taylor RJ, Lustig R, Shapiro ED, Warren JL, Simonsen L, Weinberger DM. Estimating the population-level impact of vaccines using synthetic controls. Proc Natl Acad Sci USA. 2017 Feb 14;114(7):1524-1529.
+United Nations Population Division (UNPOP). Available at https://esa.un.org/unpd/wpp/ 
+Alonso WJ, López D, Schuck-Paim. Popweaver: a program for interpolation and visualization of census and other sparsely collected data. Journal of Population Research, 2017 (In press) 
+WHO. Measuring impact of Streptococcus pneumoniae and Haemophilus influenza type b conjugate vaccination. Geneva, 2012. WHO/IVB/12.08
+de Oliveira LH, Shioda K, Valenzuela MT, Janusz CB, Rearte A, Sbarra AN, et al. Declines in pneumonia mortality following the introduction of pneumococcal conjugate vaccines in Latin American and Caribbean countries. Lancet Global Health, 2020. Submitted.
+
+•	Published papers using administrative data to assesws PCV in Africa
+•	Rwanda (Gatera et al, 2016)
+•	Malawi (McCollum et al, 2017)
+•	South Africa (Izu et al, 2017)
+
+Pan American Health Organization. Basic guidelines for the analysis of mortality. Washington, D.C.: PAHO; 2018. Available at http://iris.paho.org/xmlui/handle/123456789/34985
+
+World Health Organization. (2005). Health statistics and information systems. Statistics. Mortality raw data, available at 
+https://www.who.int/healthinfo/statistics/mortality_rawdata/en/#
+World Health Organization. (2004). ICD-10 : international statistical classification of diseases and related health problems: tenth revision, 2nd ed. World Health Organization. https://apps.who.int/iris/handle/10665/42980
+World Health Organization. (2018). International classification of diseases for mortality and morbidity statistics (11th Revision). Available at https://icd.who.int/browse11/l-m/en 
