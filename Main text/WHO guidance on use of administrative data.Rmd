@@ -3,6 +3,9 @@ title: DRAFT:Measuring the impact of new vaccines using mortality and administra
   hospitalization data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
+  word_document:
+    toc: yes
+    toc_depth: '2'
   rmdformats::readthedown:
     code_folding: hide
     css: ../stylesreadthedown.css
@@ -10,15 +13,11 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
-    keep_tex: true
   html_document:
     df_print: paged
     toc: yes
     toc_depth: '2'
-  word_document:
+  pdf_document:
     toc: yes
     toc_depth: '2'
 --- 
@@ -46,7 +45,7 @@ kids$month<-as.factor(month(kids$date))
 ```
 
 ```{r knitr-logo, out.width='50%', fig.show='hold',fig.align="center"}
-knitr::include_graphics('WHO_logo.png')
+knitr::include_graphics('./figs/WHO_logo.png')
 ```
 <br>
 
@@ -60,7 +59,7 @@ WHO working group on the use of administrative data to evaluate the impact of pn
 * Cristiana Toscano (Universidade Federal de Goiás)
 * Daniel Weinberger (Yale School of Public Health)
 
-## Introduction (Cris)
+## Introduction 
 Pneumococcal infections cause significant morbidity and mortality in children under 5 years of age in countries throughout the world, being the leading cause of vaccine-preventable deaths worldwide [Liu L, Lancet 2016].  Streptococcus pneumoniae (S. pneumoniae or pneumococcus) causes a variety of clinical syndromes, including pneumonia, meningitis, and bacteremia, as well as milder but more common illnesses such as otitis media and sinusitis [O’Brien KL, Lancet 2009]. All age groups are affected but most of the burden affects infants, young children and the elderly.
 
 The World Health Organization (WHO) estimated, in 2005, that pneumococcal disease was the leading cause of vaccine-preventable deaths worldwide. A more recent disease burden study estimated that 14.5 million cases of serious pneumococcal disease occur each year worldwide, resulting in approximately 826,000 deaths [O’Brien KL, Lancet 2009]. Bacteremia is the most common invasive clinical presentation of pneumococcal infection in children aged 2 years or less, whereas pneumonia is the most common clinical presentation in adults. Invasive pneumococcal disease (IPD) implies the morbidity associated with isolation of pneumococci from normally sterile body sites, such as the blood stream, or those secondary to bloodstream spread, e.g. meningitis or septic arthritis.
@@ -106,8 +105,8 @@ Secondary data sources are existing data collected for another purpose, such as 
 
 Considering available electronic administrative data in health care, Figure 1 below depicts the spectrum of data considering availability, type of data, data processing and cleaning requirements prior to analysis, complexity, and costs.
 
-```{r, out.width='80%', fig.align="center"}
-knitr::include_graphics('fig1.jpg')
+```{r, out.width='100%', fig.align="center"}
+knitr::include_graphics('./figs/fig1.jpg')
 ```
 
 *Source: from Jennifer Verani, Centers for Disease Control and Prevention – Kenya, slideset on “Using administrative data to measure PCV impact in Africa”*
@@ -121,6 +120,17 @@ One must consider the estimated effect of the vaccine in the various outcomes of
 
 <<TODO insert table comparing efficacy in trials>>
 ```{r}
+ds<- cbind.data.frame(
+  c("California-PCV7","Gambia-PCV9 (PCV7+1,5)", "South Africa-PCV9", "Philippines-PCV11 (never licensed)", "Latin America- PCV10"),
+  c('21%', '35%*', '21%', '23%','23%'),
+  c(NA, '18%',NA , NA, NA),
+  c(NA, "13%", NA, NA, NA)
+)
+rownames(ds)<-NULL
+names(ds)<-c('Trial', 'Effect on radiological pneumonia', 'Effect on severe/hospitalized pneumonia', 'Effect on mortality' )
+htmlTable(ds, align=c('l','c','c','c'),
+          tfoot="*Mackenzie GA, Vaccine 2014"
+)
 
 ```
 
@@ -129,7 +139,7 @@ As severe disease (hospitalization) and mortality outcomes are the most relevant
 In most countries in world where routinely collected secondary data on hospitalization and mortality is available, it is possible to evaluate vaccine impact after its introduction into the program. We thus focus this guidance document in these two data types and its potential  sources.
 
 
-##	Defining the study question and objectives (CRISTIANA)
+##	Defining the study question and objectives 
 In order to assess the impact of an intervention in a given population, the investigator should structure the study question considering the PICO strategy. As such, the following should be identified:
 
 *	the target population in which the impact of the intervention is to be measured
@@ -150,59 +160,52 @@ Secondary objectives:
 3.	Characterize the temporal trends of PCV vaccine coverage (3rd dose) in children aged 1 year of age over time in Country X.
 4.	Others 
 
-## Data Sources (international and national for both mortality and hospitalization) (Cristiana)
 
-TODO formatting od this section
+## Mortality data from Vital Statistics 
 
-There are various data sources which can be considered for impact assessment studies. In addition to the outcome of interest, data on disease burden, vaccine coverage, and population should be obtained when embarking in such analysis. 
-As already mentioned above, for mortality data there are international data sources to which countries report and share data, and that cleans, compiles, and evaluate data quality in a standardized fashion.
-1)	WHO website - mortality data 
+Many decision-makers are very interested in the ability of PCVs to prevent deaths. However, mortality is a less frequent and very non-specific outcome, as many diseases and conditions are causes of deaths, varying mostly by age group but also by income and development level of countries. One alternative is to evaluate the impact of PCVs on mortality due to pneumonia, which is also challenging as pneumococcus is just one of many pathogens that can cause pneumonia. Therefore the relative decline in disease rates due to the vaccine might be modest.
 
-WHO: https://www.who.int/healthinfo/statistics/en/ 
-a.	Click on "WHO Mortality Database" and then "Access the online database"
-b.	Then you enter the page below, where you should follow the steps
- <<TODO: insert fig screenshot of WHO website here>>
-c.	The number of deaths or the standardized rate can be accessed. In this case we will select ASDSR for Pneumonia, both sexes, in Colombia, 2000-2002.
+Information on mortality, natality, and migration is fundamental to the study of a population’s demographic dynamic. Together with information from population censuses, it also provides the basic data for estimating life expectancy and constructing other important sociodemographic and health indicators. Mortality statistics are widely used in health situation analysis, whether for different populations at a single point in time or for a single population at different times. This analysis is usually accompanied by specific information disaggregated by age, sex, causes of death. (PAHO, 2018) 
 
-d.	Click on ok to return to the WHO Mortality database page and click on graph or table B (all countries are shown in table A).
+The availability of nationally representative mortality data from mortality registries render mortality as an important outcome measure to evaluate health programs and interventions.
 
+Vital statistics systems based on civil registration are the basic source of information for mortality analysis. The majority of countries in the world have vital statistics systems based on civil registration, an act whose legal purpose is the official registration of vital events (births, deaths, marriages, divorces, adoptions, etc.). (PAHO, 2018) 
+In the mid-20th century, in order to provide countries with uniform statistical standards, concepts, and definitions to improve international comparability, the United Nations published a Handbook of Vital Statistics Methods. This was followed by the Principles and Recommendations for a Vital Statistics System, approved in 1970 and published by the UN in 1973. (PAHO, 2018)
 
-2)	WHO website - data on vaccination coverage 
+According to the United Nations definition, “Civil registration is defined as the continuous, permanent, compulsory and universal recording of the occurrence and characteristics of vital events, in particular, events concerning the marital status of persons, as provided by decree or regulation, in accordance with the legal requirements in each country.” (United Nations, 2003:7).
 
-WHO: https://www.who.int/immunization/monitoring_surveillance/data/en/ 
-a.	Download and review official country estimates of national coverages (4.1 Official country reported coverage estimates time series are available in html and in excel)
-b.	Download and review official reports of administrative coverages by country (4.2 Download country reported administrative data time series in excel)
-c.	Prepare a table summarizing PCV3 coverage in your country using data from these sources.
-d.	Now, download and review the reports prepared according to the method of estimating national immunization coverage by WHO / UNICEF (WUENIC) (4.5 WHO / UNICEF Estimates of National Immunization Coverage (WUENIC) are available in html and in excel. the country summaries (in pdf), content of PDF in excel and the method.)
-i.	How do the reported WHO / UNICEF estimates and administrative coverage estimates differ?
-ii.	Are you familiar with the methods for estimating WHO / UNICEF coverage? The country summaries and methods are available on this page.
+A vital statistic system in defined as “the total process consisting of a) collecting information by civil registration or enumeration on the frequency of occurrence of specified and defined vital events, as well as relevant characteristics of the events themselves and of the person or persons concerned, and b) compiling, processing, to analyzing, evaluating, presenting and disseminating these data in statistical form.” (United Nations, 2003:5)
+This process is mandated by law, and is standardized across countries, requiring deaths to be registered through a medical death certificate that must be completed by a physician or legally authorized individual. The death certificate must contain information on characteristics of the deceased, the circumstances of the death, and, primarily, the cause or causes of death. The death certificate is and the reporting of deaths are standardized, with most countries in the world following the United Nations’ Principles and Recommendations for a Vital Statistics System (United Nations, 2003).  
+The international medical certificate of death is internationally used and recognized, consisting of 2 parts. Part I, devoted to the causes intervening in the causal chain, and Part II, devoted to the causes that, outside the chain, contributed to the fatal outcome. 
 
-3)	United Nations, Division of Population (UNPOP) - Population data
-UNPOP: Main page of the UN Population website with several links for publications, data, manuals, papers, maps, among others.
-https://www.un.org/en/development/desa/population/publications/dataset/index.asp
+The figure below shows an example of a completed form of Medical Certificate of cause of death.
 
-Among them, the link to access the databases and demographic / population information:
-https://population.un.org/wpp/
-a.	“Graphs”, “demographic profiles”, select your country
-Review and discuss the figures generated under “lines charts” and “population pyramids”
-b.	“Interactive data”, click in “Population by age and sex”
-i.	select “Latin America and the Caribbean”, select your country
-ii.	select the time period in years (ex. 2005-2019)
-iii.	select “both sexes combined”
-iv.	select the age group of your interest for the analysis (or all for curiosity)
-v.	Validate/confirm the suggested format provided by the webpage for the pivot table to be generated for presenting the  data
-vi.	Evaluate the results and use this information to generate the information which will be used for the final product of the workshop, as described in further detail below  
+<<TODO INSERT FIGURE--screen shot>>
 
-c.	Click in “Data Sources”, select your country. Evalua the description of the available data, its sources, and methods used for population estimation.  
+```{r}
 
-d.	OBSERVATION: If you want to download datasets, click in “Download files”, “Standard Projections” and “Population Indicators”
-i.	under “Age Composition”, the databases  in .xls “Population by age groups” can be dowloaded
+```
+ 
+From the first to last line, Part I indicates the following causes of deaths: a) direct cause of death: the one that finalizes the process and, without leading to another cause, directly ends the person’s life. b) Intermediate or intervening cause(s): as the name indicates, the cause or causes in the middle of the process. c) Originating antecedent cause (OAC): this is what is entered on the last line, because it engendered all the causes entered on the lines above it.
 
-4)	WHO – toolkit for health facility information analysis  
-The WHO has recently launched a toolkit including a set of resources to optimize the analysis and use of data collected through routine health facility information systems, also known as health management information systems (HMIS). The comprehensive toolkit includes a series of integrated modules including program specific analysis (immunization and non-communicable diseases among them), standards for measurement/analysis, and integrated health services analysis. Modules can be used individually or together, according to the needs. [WHO, Analysis and use of Health Facility Data].
-HOSPITALIZATION DATA AND EXAMPLES FROM THE ABOVE
+Part II of the certificate will record other pathological states or diseases that, not having been part of the causal chain, contributed to the death simply because they were present. These states are known as contributing causes.
+The underlying cause of death (UDC) is defined as: “(a) The disease or injury which initiated the train of morbid events leading directly to death, or (b) the circumstances of the accident or violence which produced the fatal injury.” If the causes were entered correctly into the cause of death form/death certificate, the cause on the last line (OAC) will be the one selected as the UCD.
 
+Most countries use the International Statistical Classification of Diseases (ICD), a nomenclature system for diseases standardized by World Health Organization (WHO) for reporting diseases and health conditions. Different diseases, injuries, disorders and other medical conditions are classified under ICD. There ICD has approximately 15,000 unique codes. The ICD has different revisions, the one currently in used by most countries being the 10th edition (ICD-10). 
+A specific ICD-10 code will be assigned for each cause entered on the death certificate, considering the diverse ways in which the different causes can be stated by the physician. The cause of death for primary tabulation by a single cause will be the underlying cause of death (UCD). (WHO, 2004)
 
+The 11th edition of the ICD (ICD-11) has been launched recently, but very few countries in the world are using the updated edition (WHO, 2018). ICD is the foundation for the identification of health trends and statistics globally, and the international standard for reporting diseases and health conditions. It is the diagnostic classification standard for all clinical and research purposes. ICD defines the universe of diseases, disorders, injuries and other related health conditions, listed in a comprehensive, hierarchical fashion that allows for easy storage, retrieval and analysis of health information for evidenced-based decision-making; sharing and comparing health information between hospitals, regions, settings and countries; and data comparisons in the same location across different time periods. (WHO, 2018)
+
+The countries’ death information is usually compiled in electronic files containing all registered deaths. Mortality data repositories are available at National and International level, as all countries report and share their mortality data with WHO Regional offices. The WHO provides raw data files on its website. These files contain a regional mortality database. The data are presented in a standard format that can be processed with most of the available computer software. The data contain annual information on deaths for each country in the Region, disaggregated by country of origin, sex, age of the deceased, cause of death (through various groupings), and details about the information sources and their availability (some countries submit information from estimates and others, from permanent universal registries) (WHO, 2015).
+
+## Hospitalization data from administrative sources 
+Pneumonia hospitalizations are proxies to severe pneumonia. In most settings, administrative data from hospitalizations are recorded, and can contain individual level basic information of each patient, including age, date of hospitalization and discharge and admission/discharge diagnosis, coded by ICD codes. Thus, data from single hospitals, from a network of hospitals from a healthcare provider, and from national public healthcare systems, are useful sources of information to evaluate trends of hospitalizations and assess impact of vaccines in severe disease over time. 
+
+Hospitals are reimbursed for healthcare services provided, and thus detailed administrative data on every hospitalization is collected, for medical claims. This is different and in addition to surveillance of selected syndromes and health conditions that may be in place in a given hospital or network of healthcare service providers. The hospital reimbursement process is complex and various approaches exist, varying by country and even within countries by healthcare structure and type. Furthermore, coverage, access, quality of healthcare service are variables that may change over time influencing significantly hospitalization rates. 
+
+As such, in addition to the challenges of obtaining good quality hospitalization data, estimates of vaccine impact based on hospitalization data may be particularly prone to confounding, as hospitalization rates are tightly linked to changes in the quality, access and use of the healthcare system, which often occur simultaneously with the introduction of new vaccines [Schuck-Paim, Vaccine 2017].
+
+Different than mortality data from vital statistics, hospitalization data is usually not standardized and very rarely shared with international organizations or other institutions outside of the country. Although the type and quality of the data collected varies, most hospitals collect information on the age, date of admission and discharge, outcome (discharged, transferred, died), and admission and discharge diagnosis for each individual hospitalization claim. Newly admitted patients are assigned with an admission diagnosis code upon hospitalization. Usually, diagnosis are recorded using standardized ICD codes. This code on the institutional claim indicates the beneficiary’s initial diagnosis at the time of admission. The principal discharge diagnosis is the condition that occasioned the need for hospitalization and is determined after the patient has been thoroughly examined and completed the diagnostic examinations. The admission and discharge diagnosis may differ – and evidence support that in fact they are often in discord. This is particularly true for hospitalizations due to respiratory conditions, among which pneumonias [Zikos 2019].
 
 ## Study design (DAN) 
 
@@ -216,6 +219,13 @@ The analysis goal is to disentangle changes in disease rates that are caused by 
 In a *post-licensure setting*, the cluster-randomized design can be approximated by using a 'step-wedge' study design. This design can be implemented in settings where the vaccine has not yet be introduced and where it might not be feasible to introduce to the entire population at the same time. With this design, geographic areas are randomized to receive the vaccine earlier or later. All geographic units eventually receive the vaccine. With this phased rollout, the geographic units that introduce the vaccine later serve as controls for the geographics units that introduce the vaccine earlier. Because the control group is changing over time and the comparisons between the vaccinated and unvaccinated groups is taking place over some time period, estimates of vaccine impact could be cofounded by underlying temporal trends. Therefore, it is important to appropriately adjust for time-varying rates of disease when analyzing these studies. 
 
 In most settings, such controlled roll-outs of vaccine are not possible. Therefore, the most common study designs are purely observational, in which changes in disease rates are evaluated over time or between regions. Extreme caution needs to be used when performing and interpreting these studies to ensure that factors unrelated to vaccination are appropriately adjusted in the analysis. This guide will focus on the analysis situation where there is a single time series of interest from a country or region and the goal is to detect changes in incidence following vaccine introduction from this time series. When time series from multiple subnational regions are available, additional types of analyses are possible, including performing spatiotemporal analyses in which the declines in regions with higher or lower coverage are compared.  
+
+Interrupted time series analysis is among the most common and strongest approach to assess population-level impact of new vaccines [Bruhn, PNAS 2017; Penfold, Acad Pediatr 2013]. Among other potential methods for such purpose, interrupted time series analysis allow for adjustments in annual variations, secular disease trends and changes in health care use, among others [Hanquet, Vaccine 2013]. Nonetheless, as other authors have reported in developed countries, methodological challenges exist when assessing vaccination impact, particularly considering PCVs [Hanquet, Vaccine 2013].
+
+Recently, with the aims of mitigating the effect of confounding factors in time series analyses, a new methodological strategy denominated 'synthetic controls' has been proposed [Bruhn, PNAS 2017]. In this strategy, multiple comparator groups are integrated into a single constructed control variable through the weighted sum of each result. The weighting is done according to the individual capacity of each comparator group to predict the outcome of interest (eg pneumonia) in the pre-vaccination period identified through regression analysis.
+
+Further, additional methodological recommendations have been proposed for improving the assessment of population level vaccine impact analyses, which could increase the accuracy, reproducibility, and comparability of such studies [Bruhn, Epidemiology 2017]. 
+
 
 ### Counterfactuals: What would have happened without a vaccine?
 With any analysis of vaccine impact, the goal is to compare the observed disease rates in the post-vaccine period with an estimate of what would have happened if the vaccine had not been introduced. This value is called the **counterfactual**. There are many ways to estimate counterfactuals from very simple approaches (as is done in pre/post comparison of incidence) to more complex approaches that adjust for trends and dynamics of the disease. In each of the followinng sections, we will discuss different methods to obtain this quantity.
@@ -642,7 +652,62 @@ The synthetic controls model relaxes the assumption used in the ITS model that t
 
 
 
-##	Data Sources (international and national for both mortality and hospitalization) (Cristiana)
+## Data Sources (international and national for both mortality and hospitalization) (Cristiana)
+
+TODO formatting od this section
+
+There are various data sources which can be considered for impact assessment studies. In addition to the outcome of interest, data on disease burden, vaccine coverage, and population should be obtained when embarking in such analysis. 
+As already mentioned above, for mortality data there are international data sources to which countries report and share data, and that cleans, compiles, and evaluate data quality in a standardized fashion.
+1.	**WHO website - mortality data **
+
+**WHO**: https://www.who.int/healthinfo/statistics/en/ 
+a.	Click on "WHO Mortality Database" and then "Access the online database"
+b.	Then you enter the page below, where you should follow the steps
+
+```{r knitr-logo, out.width='50%', fig.show='hold',fig.align="center"}
+knitr::include_graphics('./figs/who website mortality.png')
+```
+
+c.	The number of deaths or the standardized rate can be accessed. In this case we will select ASDSR for Pneumonia, both sexes, in Colombia, 2000-2002.
+
+
+d.	Click on ok to return to the WHO Mortality database page and click on graph or table B (all countries are shown in table A).
+
+
+2.	**WHO website - data on vaccination coverage** 
+
+**WHO**: https://www.who.int/immunization/monitoring_surveillance/data/en/ 
+a.	Download and review official country estimates of national coverages (4.1 Official country reported coverage estimates time series are available in html and in excel)
+b.	Download and review official reports of administrative coverages by country (4.2 Download country reported administrative data time series in excel)
+c.	Prepare a table summarizing PCV3 coverage in your country using data from these sources.
+d.	Now, download and review the reports prepared according to the method of estimating national immunization coverage by WHO / UNICEF (WUENIC) (4.5 WHO / UNICEF Estimates of National Immunization Coverage (WUENIC) are available in html and in excel. the country summaries (in pdf), content of PDF in excel and the method.)
+i.	How do the reported WHO / UNICEF estimates and administrative coverage estimates differ?
+ii.	Are you familiar with the methods for estimating WHO / UNICEF coverage? The country summaries and methods are available on this page.
+
+3.	**United Nations, Division of Population (UNPOP) - Population data**
+**UNPOP**: Main page of the UN Population website with several links for publications, data, manuals, papers, maps, among others.
+https://www.un.org/en/development/desa/population/publications/dataset/index.asp
+
+Among them, the link to access the databases and demographic / population information:
+https://population.un.org/wpp/
+a.	“Graphs”, “demographic profiles”, select your country
+Review and discuss the figures generated under “lines charts” and “population pyramids”
+b.	“Interactive data”, click in “Population by age and sex”
+i.	select “Latin America and the Caribbean”, select your country
+ii.	select the time period in years (ex. 2005-2019)
+iii.	select “both sexes combined”
+iv.	select the age group of your interest for the analysis (or all for curiosity)
+v.	Validate/confirm the suggested format provided by the webpage for the pivot table to be generated for presenting the  data
+vi.	Evaluate the results and use this information to generate the information which will be used for the final product of the workshop, as described in further detail below  
+
+c.	Click in “Data Sources”, select your country. Evalua the description of the available data, its sources, and methods used for population estimation.  
+
+d.	OBSERVATION: If you want to download datasets, click in “Download files”, “Standard Projections” and “Population Indicators”
+i.	under “Age Composition”, the databases  in .xls “Population by age groups” can be dowloaded
+
+4.	**WHO – toolkit for health facility information analysis ** 
+The WHO has recently launched a toolkit including a set of resources to optimize the analysis and use of data collected through routine health facility information systems, also known as health management information systems (HMIS). The comprehensive toolkit includes a series of integrated modules including program specific analysis (immunization and non-communicable diseases among them), standards for measurement/analysis, and integrated health services analysis. Modules can be used individually or together, according to the needs. [WHO, Analysis and use of Health Facility Data].
+HOSPITALIZATION DATA AND EXAMPLES FROM THE ABOVE
 
 
 ##	Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts) (CRISTIANA)
@@ -724,7 +789,7 @@ Alonso WJ, López D, Schuck-Paim. Popweaver: a program for interpolation and vis
 WHO. Measuring impact of Streptococcus pneumoniae and Haemophilus influenza type b conjugate vaccination. Geneva, 2012. WHO/IVB/12.08
 de Oliveira LH, Shioda K, Valenzuela MT, Janusz CB, Rearte A, Sbarra AN, et al. Declines in pneumonia mortality following the introduction of pneumococcal conjugate vaccines in Latin American and Caribbean countries. Lancet Global Health, 2020. Submitted.
 
-•	Published papers using administrative data to assesws PCV in Africa
+•	Published papers using administrative data to assess PCV in Africa
 •	Rwanda (Gatera et al, 2016)
 •	Malawi (McCollum et al, 2017)
 •	South Africa (Izu et al, 2017)
