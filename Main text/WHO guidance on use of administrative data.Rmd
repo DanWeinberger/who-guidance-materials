@@ -3,6 +3,12 @@ title: DRAFT:Measuring the impact of new vaccines using mortality and administra
   data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
+  word_document:
+    toc: yes
+    toc_depth: '2'
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
   rmdformats::readthedown:
     code_folding: hide
     self_contained: true
@@ -10,12 +16,6 @@ output:
     lightbox: false
     css: ../stylesreadthedown.css
     toc_depth: '3'
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
-  word_document:
-    toc: yes
-    toc_depth: '2'
 --- 
 
 ```{r setup, include=FALSE}
