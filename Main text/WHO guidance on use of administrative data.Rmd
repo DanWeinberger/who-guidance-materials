@@ -1,21 +1,26 @@
 ---
-title: DRAFT:Measuring the impact of new vaccines using mortality and administrative hospitalization
-  data
+title: DRAFT:Measuring the impact of new vaccines using mortality and administrative
+  hospitalization data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
-  word_document:
-    toc: yes
-    toc_depth: '2'
+  rmdformats::readthedown:
+    code_folding: hide
+    css: ../stylesreadthedown.css
+    lightbox: no
+    self_contained: yes
+    thumbnails: no
+    toc_depth: '3'
   pdf_document:
     toc: yes
     toc_depth: '2'
-  rmdformats::readthedown:
-    code_folding: hide
-    self_contained: true
-    thumbnails: false
-    lightbox: false
-    css: ../stylesreadthedown.css
-    toc_depth: '3'
+    keep_tex: true
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '2'
+  word_document:
+    toc: yes
+    toc_depth: '2'
 --- 
 
 ```{r setup, include=FALSE}
@@ -23,6 +28,7 @@ output:
 library(InterventionEvaluatR)
 library(lubridate)
 library(rmdformats)
+library(htmlTable)
 knitr::opts_chunk$set(echo = FALSE)
 
 #url1<-getURL("https://raw.githubusercontent.com/weinbergerlab/InterventionEvaluatR/master/data-raw/PNAS/S1-Brazil.csv")
@@ -36,9 +42,10 @@ kids<-kids[kids$monthdate<=as.Date('2015-12-01'),]
 kids$month<-as.factor(month(kids$date))
 
 #<img src="WHO_logo.png" style="position:absolute;top:0px;right:0px;" />
+#https://medium.com/@arinbasu/a-tutorial-on-how-to-interface-an-r-notebook-with-overleaf-11f23c306cfd
 ```
 
-```{r knitr-logo, out.width='32.8%', fig.show='hold',fig.align="center"}
+```{r knitr-logo, out.width='50%', fig.show='hold',fig.align="center"}
 knitr::include_graphics('WHO_logo.png')
 ```
 <br>
@@ -99,7 +106,11 @@ Secondary data sources are existing data collected for another purpose, such as 
 
 Considering available electronic administrative data in health care, Figure 1 below depicts the spectrum of data considering availability, type of data, data processing and cleaning requirements prior to analysis, complexity, and costs.
 
-<<TODO INSERT FIG 1 HERE (Spectrum of Admin Data)>>
+```{r, out.width='80%', fig.align="center"}
+knitr::include_graphics('fig1.jpg')
+```
+
+*Source: from Jennifer Verani, Centers for Disease Control and Prevention – Kenya, slideset on “Using administrative data to measure PCV impact in Africa”*
 
 
 A significant increase in the number of studies on vaccine impact has been observed in recent years. Most published studies on vaccine impact assessment used secondary data from health information systems, surveillance systems, and others sources, while few studies used primary data. 
@@ -109,6 +120,9 @@ Several are the outcomes that can be considered when assessing vaccine impact. F
 One must consider the estimated effect of the vaccine in the various outcomes of interest in the pre-licensure clinical trials, in order to plan the outcome of interest to be considered in impact assessment studies. 
 
 <<TODO insert table comparing efficacy in trials>>
+```{r}
+
+```
 
 As severe disease (hospitalization) and mortality outcomes are the most relevant outcomes of interest from a public health perspective, it is expected that secondary data will be the most used data sources for the purpose of PCV impact assessment. 
 
