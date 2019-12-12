@@ -3,6 +3,9 @@ title: DRAFT:Measuring the impact of new vaccines using mortality and administra
   hospitalization data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
+  word_document:
+    toc: yes
+    toc_depth: '2'
   rmdformats::readthedown:
     code_folding: hide
     css: ../stylesreadthedown.css
@@ -10,9 +13,6 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
-  word_document:
-    toc: yes
-    toc_depth: '2'
   html_document:
     df_print: paged
     toc: yes
@@ -30,15 +30,14 @@ library(rmdformats)
 library(htmlTable)
 knitr::opts_chunk$set(echo = FALSE)
 
-#url1<-getURL("https://raw.githubusercontent.com/weinbergerlab/InterventionEvaluatR/master/data-raw/PNAS/S1-Brazil.csv")
-#br1 <-read.csv(text=url1)
-#br1$date<-as.Date(br1$date)
+data(pnas_brazil, package = "InterventionEvaluatR") #load the data
+br1<-pnas_brazil
+br1$date<-as.Date(br1$date)
+
  data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
 ecuador_mortality$monthdate<-as.Date(ecuador_mortality$monthdate)
 ecuador_mortality$date<-ecuador_mortality$monthdate
-kids<-ecuador_mortality[ecuador_mortality$age_group=='ec 2-59m A',]
-kids<-kids[kids$monthdate<=as.Date('2015-12-01'),]
-kids$month<-as.factor(month(kids$date))
+
 
 #<img src="WHO_logo.png" style="position:absolute;top:0px;right:0px;" />
 #https://medium.com/@arinbasu/a-tutorial-on-how-to-interface-an-r-notebook-with-overleaf-11f23c306cfd
@@ -264,11 +263,38 @@ All of these methods assume that the disease patterns follow a preditable patter
 ##	Types of analyses
 In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence. In this example, we have the number of deaths coded as having a cause of pneumonia (ICD10 codes J12-J18) in Ecuador in children aged 2-59 months
 
-```{r, fig.width=5, fig.height=3}
-intro.date<-as.Date('2010-08-01')
-eval.date<-as.Date('2011-08-01')
+```{r}
+#Setup the data
 
-plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Time series of pneumonia deaths')
+# intro.date<-as.Date('2010-03-01')
+# intro.date.minus.one<-intro.date %m-% months(1)
+# eval.date<-as.Date('2011-03-01')
+# outcome.name<-'J12_18'
+# offset.name<- "ach_noj" 
+# first.date<-as.Date("2004-01-01")
+# last.date<-as.Date("2013-12-01")
+# kids<-br1[br1$age_group==1,]
+# kids<-kids[kids$date<=last.date & kids$date>=first.date,]
+
+intro.date<-as.Date('2010-08-01')
+intro.date.minus.one<-intro.date %m-% months(1)
+eval.date<-as.Date('2011-08-01')
+outcome.name<-'J12_J18_prim'
+offset.name<-'acm_noj_prim'
+first.date<-as.Date("2005-01-01")
+last.date<-as.Date("2015-12-01")
+kids<-ecuador_mortality[ecuador_mortality$age_group=='ec 2-59m A',]
+kids<-kids[kids$monthdate<=last.date,]
+kids$month<-as.factor(month(kids$date))
+
+
+
+
+```
+
+```{r, fig.width=5, fig.height=3}
+
+plot(kids$date, kids[,outcome.name], type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Time series of pneumonia deaths')
 abline(v=intro.date, lty=2, col='gray')
 ```
 
@@ -276,30 +302,30 @@ abline(v=intro.date, lty=2, col='gray')
 The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre-post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introducion are excluded from the analysis because vaccine coverage has not yet reached full coverage levels. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
 
 ```{r, fig.width=5, fig.height=3}
-mean.pre<-mean(kids$J12_J18_prim[kids$date< intro.date])
-mean.post<-mean(kids$J12_J18_prim[kids$date>=eval.date])
+mean.pre<-mean(kids[,outcome.name][kids$date< intro.date])
+mean.post<-mean(kids[,outcome.name][kids$date>=eval.date])
 
-plot(kids$date, kids$J12_J18_prim, type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Pre-post comparison')
+plot(kids$date, kids[,outcome.name], type='l', bty='l', ylab="N Deaths", xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Pre-post comparison')
 abline(v=intro.date, lty=2, col='gray')
-arrows(x0=as.Date('2005-01-01'), x1=as.Date('2010-07-01') , y0=mean.pre, length=0, col='#1b9e77')
-arrows(x0=eval.date, x1=as.Date('2015-12-01') , y0=mean.post, length=0, col='#7570b3')
+arrows(x0=first.date, x1=intro.date.minus.one , y0=mean.pre, length=0, col='#1b9e77')
+arrows(x0=eval.date, x1=last.date , y0=mean.post, length=0, col='#7570b3')
 
 ```
 
 **Counterfactual** In this study design, it is assumed that if the vaccine had not been introduced, the incidence rate after vaccine introduction would be the same as the incidence of disease before vaccine introduction. Therefore the counterfactual is simply the average incidence in the pre-vaccine period, and the comparison is with incidence in the post vaccine period. In the plot below, the counterfactual is shown with a dotted line. Comparing the counterfactual with the observed mean for the post-period gives an estimate of the vaccine effect.
 
 ```{r, fig.width=5, fig.height=3}
-mean.pre<-mean(kids$J12_J18_prim[kids$date<intro.date])
-mean.post<-mean(kids$J12_J18_prim[kids$date>=eval.date])
+mean.pre<-mean(kids[,outcome.name][kids$date<intro.date])
+mean.post<-mean(kids[,outcome.name][kids$date>=eval.date])
 
-plot(kids$date, kids$J12_J18_prim, type='p',pch=16,cex=0.75, bty='l',col='lightgray', ylab="N Deaths", xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Counterfactual for pre/post comparisons')
-arrows(x0=as.Date('2005-01-01'), x1=as.Date('2010-07-01') , y0=mean.pre, length=0, col='#1b9e77')
-arrows(x0=eval.date, x1=as.Date('2016-01-01') , y0=mean.post, length=0, col='#7570b3')
-arrows(x0=eval.date, x1=as.Date('2016-01-01') , y0=mean.pre, length=0, col='#d95f02', lty=3)
+plot(kids$date, kids[,outcome.name], type='p',pch=16,cex=0.75, bty='l',col='lightgray', ylab="N Deaths", xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Counterfactual for pre/post comparisons')
+arrows(x0=first.date, x1=intro.date.minus.one , y0=mean.pre, length=0, col='#1b9e77')
+arrows(x0=eval.date, x1=last.date , y0=mean.post, length=0, col='#7570b3')
+arrows(x0=eval.date, x1=last.date , y0=mean.pre, length=0, col='#d95f02', lty=3)
 abline(v=intro.date, lty=3, col='gray')
 abline(v=eval.date, lty=3, col='gray')
-text(as.Date('2016-01-01'), 13000, 'Counterfactual', col='#d95f02', cex=0.8,pos=2, offset=0)
-text(as.Date('2016-01-01'), 8000, 'Fitted', col='#7570b3', cex=0.8,pos=2, offset=0)
+text(last.date, mean.pre*1.2, 'Counterfactual', col='#d95f02', cex=0.8,pos=2, offset=0)
+text(last.date, mean.post*0.8, 'Fitted', col='#7570b3', cex=0.8,pos=2, offset=0)
 
 ```
 
@@ -317,7 +343,8 @@ month<-as.factor(month(kids$date))
 kids$period<-0
 kids$period[kids$date>=intro.date  ] <-1
 kids$period[kids$date>=eval.date  ]<-2
-mod1<-glm(J12_J18_prim~month+as.factor(period),family='quasipoisson', data=kids )
+form1<-as.formula(paste0(outcome.name,'~month+as.factor(period)'))
+mod1<-glm(form1,family='quasipoisson', data=kids )
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$period<-as.factor(0)
@@ -333,7 +360,7 @@ pred1.post[kids$date<eval.date]<-NA
 
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)),main='Pre/post comparison with adjustment for season' )
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])),main='Pre/post comparison with adjustment for season' )
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -366,7 +393,8 @@ kids$index<-1:nrow(kids) #creates an index for time
 #kids$log.offset<-log(kids$acm_noj_prim)
 kids$log.offset<-rep(0, nrow(kids))
 
-mod1<-glm(J12_J18_prim~month+as.factor(period)*index,family='quasipoisson', data=kids ,offset=log.offset)
+form1<-as.formula(paste0(outcome.name,'~month+as.factor(period)*index'))
+mod1<-glm(form1,family='quasipoisson', data=kids ,offset=log.offset)
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$period<-as.factor(0)
@@ -382,7 +410,7 @@ pred1.post<-pred1
 pred1.post[kids$date<eval.date]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with disjointed segments')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='ITS, with disjointed segments')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -411,7 +439,8 @@ kids$spl2<- kids$index -  eval.date.index + 1
 kids$spl1[kids$spl1<0]<-0
 kids$spl2[kids$spl2<0]<-0
 
-mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 ,family='quasipoisson', data=kids,offset=log.offset )
+form1<-as.formula(paste0(outcome.name,'~month+ index +spl1 + spl2'))
+mod1<-glm(form1 ,family='quasipoisson', data=kids,offset=log.offset )
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$spl1<-0
@@ -428,7 +457,7 @@ pred1.post<-pred1
 pred1.post[kids$date<eval.date]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with connected segments')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='ITS, with connected segments')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -459,7 +488,8 @@ kids$spl2[kids$spl2<0]<-0
 kids$spl1[kids$spl1>36]<-36 #level off 24 months after spl2 starts
 kids$spl2[kids$spl2>24]<-24 #Level off after 24 months
 
-mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 ,family='quasipoisson', data=kids,offset=log.offset )
+form1<-as.formula(paste0(outcome.name,'~month+ index +spl1 + spl2'))
+mod1<-glm(form1 ,family='quasipoisson', data=kids,offset=log.offset )
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$spl1<-0
@@ -476,7 +506,7 @@ pred1.post<-pred1
 pred1.post[kids$date<intro.date]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, with leveling of the trend')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='ITS, with leveling of the trend')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -506,7 +536,7 @@ kids$index<-1:nrow(kids) #creates an index for time
 intro.date.index<-min(which(kids$date>=intro.date))
 eval.date.index<-min(which(kids$date>=eval.date))
 
-kids$log.offset.acm<- log(kids$acm_noj_prim)
+kids$log.offset<- log(kids[,offset.name]+0.5)
 kids$spl1<- kids$index -  intro.date.index +1
 kids$spl2<- kids$index -  eval.date.index +1
 kids$spl1[kids$spl1>36]<-36 #level off 24 m after spl2 start
@@ -515,7 +545,9 @@ kids$spl1[kids$spl1<0]<-0
 kids$spl2[kids$spl2<0]<-0
 kids$month<-as.factor(month(kids$date))
 
-mod1<-glm(J12_J18_prim~month+ index +spl1 + spl2 +log.offset.acm,family='quasipoisson', data=kids )
+form1<-as.formula(paste0(outcome.name,'~month+ index +spl1 + spl2 +log.offset'))
+
+mod1<-glm(form1,family='quasipoisson', data=kids )
 pred1<-predict(mod1, type='response')
 kid.counter<-kids
 kid.counter$spl1<-0
@@ -532,14 +564,14 @@ pred1.post<-pred1
 pred1.post[kids$date<intro.date]<-NA
 
 par(mfrow=c(2,1))
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='ITS, adjusted for ACM')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='ITS, adjusted for ACM')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
 abline(v=intro.date, lty=3, col='gray')
 abline(v=eval.date, lty=3, col='gray')
 
-# plot(kids$date, kids$J12_J18_prim/kids$acm_noj_prim, type='p', pch=16, bty='l', ylab="Adj N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim/kids$acm_noj_prim)), main='ITS, adjusted')
+# plot(kids$date, kids[,outcome.name]/kids$acm_noj_prim, type='p', pch=16, bty='l', ylab="Adj N hospitalizations", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name]/kids$acm_noj_prim)), main='ITS, adjusted')
 # points(kids$date,pred1.pre/kids$acm_noj_prim, type='l' ,col='#1b9e77' )
 # points(kids$date,pred1.post/kids$acm_noj_prim, type='l' , col='#7570b3' )
 # points(kids$date,pred1.counter/kids$acm_noj_prim, type='l', col='#d95f02', lty=3  )
@@ -585,27 +617,28 @@ With the synthetic controls approach, the goal is to use time series that are no
 **Simple example with a single time series**
 Using the same dataset from Ecuador that was used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
 ```{r}
-kids$j12_18_pre<-kids$J12_J18_prim
-kids$j12_18_pre[kids$date>=intro.date]<-NA #set to missing for post period
-kids$log.ach<-log(kids$acm_noj_prim)
+kids$outcome_pre<-kids[,outcome.name]
+kids$outcome_pre[kids$date>=intro.date]<-NA #set to missing for post period
+kids$log.ach<-log(kids[,offset.name]+0.5)
 
-mod1<-glm(j12_18_pre~month+log.ach,family='quasipoisson', data=kids)
-fit.j12_18.pre<-predict(mod1, type='response')
+form1<-as.formula(paste0('outcome_pre','~month+ index +spl1 + spl2 +log.offset'))
+mod1<-glm(form1,family='quasipoisson', data=kids)
+fit.outcome.pre<-predict(mod1, type='response')
 
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Fit of synthetic control model')
-points(kids$date[kids$date<intro.date],fit.j12_18.pre, type='l' ,col='#1b9e77' )
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Fit of synthetic control model')
+points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
 
 ```
 
 Now that we have fit the model, we will plug in the observed values of the control variable into the model to get an estimate of pneumonia  during the post-vaccine months
 
 ```{r}
-fit.j12_18.post<-predict(mod1, type='response', newdata=kids)
+fit.outcome.post<-predict(mod1, type='response', newdata=kids)
 
-plot(kids$date, kids$J12_J18_prim, type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids$J12_J18_prim)), main='Extrapolation to post-vaccine period')
-points(kids$date,fit.j12_18.post, type='l' ,col='#d95f02' )
-points(kids$date[kids$date<intro.date],fit.j12_18.pre, type='l' ,col='#1b9e77' )
-abline(v=as.Date('2010-07-01'), lty=2, col='gray')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Extrapolation to post-vaccine period')
+points(kids$date,fit.outcome.post, type='l' ,col='#d95f02' )
+points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
+abline(v=intro.date.minus.one, lty=2, col='gray')
 ```
 
 The vaccine effect is calculated by taking the difference or ratio between the observed and extrapolated value during the post-vaccine period. The plots shown below give the ratio or difference at each time point. We will typically instead aggregate the observed cases and the extrapolated cases over a certain time period--by year, or during the evaluation period (e.g., excluding the first 12 months of post-vaccine data)
@@ -613,19 +646,19 @@ The vaccine effect is calculated by taking the difference or ratio between the o
 eval.start<-eval.date
 evalstart.index<-which(kids$date==eval.start)
 evalstart.index<-evalstart.index:nrow(kids)
-ratio<-kids$J12_J18_prim/fit.j12_18.post
-ave.ratio<- sum(kids$J12_J18_prim[evalstart.index])/sum(fit.j12_18.post[evalstart.index])
-difference<-kids$J12_J18_prim-fit.j12_18.post
+ratio<-kids[,outcome.name]/fit.outcome.post
+ave.ratio<- sum(kids[,outcome.name][evalstart.index])/sum(fit.outcome.post[evalstart.index])
+difference<-kids[,outcome.name]-fit.outcome.post
 
 
 plot(kids$date,ratio, type='l', bty='l', main='Ratio')
 abline(h=1, lty=3, col='gray')
-abline(v=as.Date('2010-07-01'), lty=2, col='gray')
+abline(v=intro.date.minus.one, lty=2, col='gray')
 points(kids$date[evalstart.index], rep(ave.ratio, length(evalstart.index)), type='l',col='#7570b3')
 
 plot(kids$date,difference, type='l', bty='l', main='Difference')
 abline(h=0, lty=3, col='gray')
-abline(v=as.Date('2010-07-01'), lty=2, col='gray')
+abline(v=intro.date.minus.one, lty=2, col='gray')
 
 ```
 
@@ -743,7 +776,7 @@ The most useful thing to do to ensure the data are appropriately formatted is to
 ```{r, echo=F, fig.width=6, fig.height=2 }
 par(mfrow=c(1,2) ,mar=c(2,4,1,1))
 ds.sub<-dataset[dataset$age_group=='ec 2-59m A',]
-plot(ds.sub$monthdate,ds.sub$J12_J18_prim, type='l', bty='l', col='blue', xlab='Date', ylab='J12-18', ylim=c(0, max(ds.sub$J12_J18_prim)))
+plot(ds.sub$monthdate,ds.sub[,outcome.name], type='l', bty='l', col='blue', xlab='Date', ylab='J12-18', ylim=c(0, max(ds.sub[,outcome.name])))
 
 plot(ds.sub$monthdate,ds.sub$acm_noj_prim, type='l', bty='l', col='blue', xlab='Date', ylab='All non-resp.', ylim=c(0, max(ds.sub$acm_noj_prim)))
 ```
