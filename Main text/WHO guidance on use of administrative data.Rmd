@@ -3,9 +3,6 @@ title: DRAFT:Measuring the impact of new vaccines using mortality and administra
   hospitalization data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
-  word_document:
-    toc: yes
-    toc_depth: '2'
   rmdformats::readthedown:
     code_folding: hide
     css: ../stylesreadthedown.css
@@ -13,6 +10,9 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
+  word_document:
+    toc: yes
+    toc_depth: '2'
   html_document:
     df_print: paged
     toc: yes
@@ -658,13 +658,13 @@ TODO formatting od this section
 
 There are various data sources which can be considered for impact assessment studies. In addition to the outcome of interest, data on disease burden, vaccine coverage, and population should be obtained when embarking in such analysis. 
 As already mentioned above, for mortality data there are international data sources to which countries report and share data, and that cleans, compiles, and evaluate data quality in a standardized fashion.
-1.	**WHO website - mortality data **
+**1)	WHO website - mortality data **
 
 **WHO**: https://www.who.int/healthinfo/statistics/en/ 
 a.	Click on "WHO Mortality Database" and then "Access the online database"
 b.	Then you enter the page below, where you should follow the steps
 
-```{r knitr-logo, out.width='50%', fig.show='hold',fig.align="center"}
+```{r, out.width='50%', fig.show='hold',fig.align="center"}
 knitr::include_graphics('./figs/who website mortality.png')
 ```
 
@@ -674,7 +674,7 @@ c.	The number of deaths or the standardized rate can be accessed. In this case w
 d.	Click on ok to return to the WHO Mortality database page and click on graph or table B (all countries are shown in table A).
 
 
-2.	**WHO website - data on vaccination coverage** 
+**2)	WHO website - data on vaccination coverage** 
 
 **WHO**: https://www.who.int/immunization/monitoring_surveillance/data/en/ 
 a.	Download and review official country estimates of national coverages (4.1 Official country reported coverage estimates time series are available in html and in excel)
@@ -684,7 +684,7 @@ d.	Now, download and review the reports prepared according to the method of esti
 i.	How do the reported WHO / UNICEF estimates and administrative coverage estimates differ?
 ii.	Are you familiar with the methods for estimating WHO / UNICEF coverage? The country summaries and methods are available on this page.
 
-3.	**United Nations, Division of Population (UNPOP) - Population data**
+**3)	United Nations, Division of Population (UNPOP) - Population data**
 **UNPOP**: Main page of the UN Population website with several links for publications, data, manuals, papers, maps, among others.
 https://www.un.org/en/development/desa/population/publications/dataset/index.asp
 
@@ -705,7 +705,7 @@ c.	Click in “Data Sources”, select your country. Evalua the description of t
 d.	OBSERVATION: If you want to download datasets, click in “Download files”, “Standard Projections” and “Population Indicators”
 i.	under “Age Composition”, the databases  in .xls “Population by age groups” can be dowloaded
 
-4.	**WHO – toolkit for health facility information analysis ** 
+**4)	WHO – toolkit for health facility information analysis ** 
 The WHO has recently launched a toolkit including a set of resources to optimize the analysis and use of data collected through routine health facility information systems, also known as health management information systems (HMIS). The comprehensive toolkit includes a series of integrated modules including program specific analysis (immunization and non-communicable diseases among them), standards for measurement/analysis, and integrated health services analysis. Modules can be used individually or together, according to the needs. [WHO, Analysis and use of Health Facility Data].
 HOSPITALIZATION DATA AND EXAMPLES FROM THE ABOVE
 
