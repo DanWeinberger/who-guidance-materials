@@ -31,6 +31,9 @@ pages:
     url: "http://guidance.interventionevaluatr.com"
   script:
    - mv html public
+  artifacts:
+    paths:
+      - public
   only:
     - master
 
