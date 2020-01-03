@@ -10,14 +10,7 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
-  html_document:
-    df_print: paged
-    toc: yes
-    toc_depth: '2'
   word_document:
-    toc: yes
-    toc_depth: '2'
-  pdf_document:
     toc: yes
     toc_depth: '2'
 --- 
