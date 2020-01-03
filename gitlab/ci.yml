@@ -4,7 +4,7 @@ stages:
 
 rmarkdown:
   extends: .docker
-  stage: pages
+  stage: rmarkdown
   variables:
     BUILD_DIR: "output"
     GITLAB_DOCKER_BUILD: ${CI_REGISTRY}/ci-utilities/ci-commands/gitlab-docker-build
@@ -24,6 +24,7 @@ rmarkdown:
 
 # Only master commits are deployed
 pages:
+  stage: pages
   environment:
     name: "guidance.interventionevaluatr.com"
     url: "http://guidance.interventionevaluatr.com"
