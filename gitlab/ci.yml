@@ -1,34 +1,40 @@
 stages:
+  - rmarkdown
   - pages
 
-.pages:
+rmarkdown:
   extends: .docker
-  stage: pages
+  stage: rmarkdown
   variables:
-    PAGES_BUILD_DIR: "public"
+    BUILD_DIR: "output"
     GITLAB_DOCKER_BUILD: ${CI_REGISTRY}/ci-utilities/ci-commands/gitlab-docker-build
     BUILD: ${CI_REGISTRY}/${CI_PROJECT_PATH}/build-ci:iid-${CI_PIPELINE_IID}
   script:
     - dind-run "${GITLAB_DOCKER_BUILD}" --cache-from master build --file gitlab/Dockerfile .
-    - mkdir -p "${PAGES_BUILD_DIR}"
-    - find . -name '*.Rmd' -and \! -path '*/rsconnect/*' -exec dind-run "${BUILD}" Rscript -e 'rmarkdown::render(commandArgs(TRUE)[1], output_dir=commandArgs(TRUE)[2])' {} "${PAGES_BUILD_DIR}" \;
-    - find "${PAGES_BUILD_DIR}" -name "WHO*guidance*.html" -exec mv {} "${PAGES_BUILD_DIR}"/index.html \; -quit
+    - mkdir -p "${BUILD_DIR}"
+    - find . -name '*.Rmd' -and \! -path '*/rsconnect/*' -exec dind-run "${BUILD}" Rscript -e 'rmarkdown::render(commandArgs(TRUE)[1], output_format="all", output_dir=commandArgs(TRUE)[2])' {} "${BUILD_DIR}" \;
+    - find "${BUILD_DIR}" -name "WHO*guidance*.html" -exec mv {} "${BUILD_DIR}"/index.html \; -quit
+    - mkdir html word
+    - mv "${BUILD_DIR}"/*.docx word
+    - mv "${BUILD_DIR}"/* html
   artifacts:
+    name: "WHO Guidance ${CI_COMMIT_REF_SLUG} ${CI_COMMIT_SHORT_SHA}"
     paths:
-      - public
+      - word
+      - html
+
 # Only master commits are deployed
 pages:
-  extends: .pages
+  stage: pages
   environment:
     name: "guidance.interventionevaluatr.com"
     url: "http://guidance.interventionevaluatr.com"
+  script:
+   - mv html public
+  artifacts:
+    paths:
+      - public
   only:
-    - master
-
-# But all commits are built    
-pages (no deployment):
-  extends: .pages
-  except: 
     - master
 
 .docker:
