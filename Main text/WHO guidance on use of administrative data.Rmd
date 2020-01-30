@@ -423,7 +423,7 @@ abline(h=1, lty=2, col='gray')
 
 
 ### Interrupted time series analysis (ITS) 
-In many instances, there is an underlying trend in the time series that is unrelated to vaccination. Such a trend can be caused by a number of factors, including changes in healthcare access, changes in susceptibility of the population, and changes in the sensitivity of surveillance. Such trends can bias the estimates of vaccine impact if they are not properly controlled. The simplest approach to adjust for trends is to fit a straight line through the data and then test whether the slope of the line or the level of the line changes after vaccine introduction. This can be accomplished by fitting a Poisson or negative binomial regression model. A number of quantities can be estimated sing these models, including the change in the slope of the trend line or in the average number of cases. However, it is often most useful to use the model to calculate the decline in incidence (rate ratio or rate difference) compared to what would be expected if the trend/level had remained constant. Seasonal variations and known trends can be adjusted for in this model using regression covariates.
+In many instances, there is an underlying trend in the time series that is unrelated to vaccination. Such a trend can be caused by a number of factors, including changes in healthcare access, changes in susceptibility of the population, and changes in the sensitivity of surveillance. Such trends can bias the estimates of vaccine impact if they are not properly controlled. The simplest approach to adjust for trends is to fit a straight line through the data and then test whether the slope of the line or the level of the line changes after vaccine introduction. This tyope of analysis is called 'segmented regression" and can be accomplished by fitting a Poisson or negative binomial regression model. A number of quantities can be estimated using these models, including the change in the slope of the trend line or in the average number of cases. However, it is often most useful to use the model to calculate the decline in incidence (rate ratio or rate difference) compared to what would be expected if the trend/level had remained constant. Seasonal variations and known trends can be adjusted for in this model using regression covariates.
 
 **Assumptions of ITS analysis**
 A key assumption is that the linear trend in the pre-vaccine period captures the important underlying trends and that these trends would have continued at the same rate if the vaccine had not been introduced.  Assumptions also need to be made about which time periods to include in the ramp-up period and whether the slope should level out after a certain amount of time (and how much time should be allowed). Some of these assumptions about the timing and shape of the trajectory can be relaxed by using a flexible spline to capture post-vaccine changes   
@@ -769,58 +769,83 @@ There are a number of variants on these approaches that can, in some circumstanc
 With the ITS model described, the user needs to specify the time at which the vaccine-associated change begins. In some circumstances, even if the change occurs before the introduction of a vaccine, the decline is incorrectly attributed to the vaccine. Change point analyses are effectively ITS models, where the timing of the change in slope or change in mean is estimated from the data. This provides an additional piece of information: how much disease rates change and **when** disease rates begin to change. The model are also more felxible and could rpovide a more accurate estimate of the decline, if the guess about when rates will decline is incorrect in the ITS model. This approach can provide a helpful check to ensure that the change is actually occurring after the data of intervention at a plausible time point. Kurum et al, *Epidemiology* 2017 provides an example of how these models can be used to estimate effects of pneumococcal vaccines against pneumonia.
 
 **Holt-Winters models and ARIMA models**
-There are countless variants of ITS-type models that incorporate information about the time series as well. With the Holt-Winters approach, time points closer to the date of vaccine introduction are given more weight when estimating the slope and mean cases in the pre-vaccine period and can thus more effectively adjust for changes in the population that occur close to the time of vaccine introduction. See Andrade et al, *PLOS One* 2017 for an example of this model. ARIMA models also explicitly account for the time series characteristics of the data and decompose the series into different components. This approach allows the confidence intervals to expand appropriately as we move further away from the date of vaccine introduction.  
-
+There are countless variants of ITS-type models that incorporate information about the time series. With the Holt-Winters approach, time points closer to the date of vaccine introduction are given more weight when estimating the slope and mean cases in the pre-vaccine period and can thus more effectively adjust for changes in the population that occur close to the time of vaccine introduction. See Andrade et al, *PLOS One* 2017 for an example of this model. ARIMA models also explicitly account for the time series characteristics of the data and decompose the series into different components. This approach allows the confidence intervals to expand appropriately as we move further away from the date of vaccine introduction. In practice, trying to include autoregressive terms and control time series in the same model can lead to issues where the estimate for the association with the control time series is biased towards 0. As a result, trends in the data are "explained" by the autoregressive term rather than the control time series, and this can lead to biased estimates of the counterfactual. 
 
 ### Synthetic controls
-With the synthetic controls approach, the goal is to use time series that are not influenced by the vaccine to adjust for underlying secular trends in the data. With the "control covariates" approach described above, the control disease is included as an adjustment in the regression model, and the model is set up to detect changes in slope or level of disease after introduction of the vaccine. Synthetic controls analysis is an extenstion of this idea. The main differences are (1) that the models are only fit to data from the pre-vaccine period and used to extrapolate to the post-vaccine period and (2) typically many control time series are included, and variable selection is used to weight these controls. 
+The ITS models described above are fit to the full time series of data, including pre- and post-vaccine periods. And we discussed how "control covariates" can be included as an adjustment in the regression model. The model is set up to detect changes in slope or level of disease after introduction of the vaccine. Synthetic controls analysis is an extenstion of this idea. The main differences are (1) that the models are only fit to data from the pre-vaccine period, and the model is used to extrapolate to the post-vaccine period and (2) typically many control time series are included, and variable selection is used to weight these controls. This approach has certain advantages, including that no assumptions are made that the pre-vaccine is linear or about the timing or shape of the trajectory of the post-vaccine change. 
 
 **Simple example with a single time series**
-Using the same dataset from Ecuador that was used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
-```{r}
+Using the same datasets from Brazil and Ecuador that were used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
+```{r, fig.width=10, fig.height=3.5}
+par(mfrow=c(1,2))
 kids$outcome_pre<-kids[,outcome.name]
 kids$outcome_pre[kids$date>=intro.date]<-NA #set to missing for post period
 kids$log.ach<-log(kids[,offset.name]+0.5)
-
-form1<-as.formula(paste0('outcome_pre','~month+ index +spl1 + spl2 +log.offset'))
+form1<-as.formula(paste0('outcome_pre','~month+ log.offset'))
 mod1<-glm(form1,family='quasipoisson', data=kids)
 fit.outcome.pre<-predict(mod1, type='response')
-
-plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Fit of synthetic control model')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Fit of synthetic control model')
 points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
 
+
+kids2$outcome_pre<-kids2[,outcome.name2]
+kids2$outcome_pre[kids2$monthdate>=intro.date2]<-NA #set to missing for post period
+kids2$log.offset<-log(kids2[,offset.name2]+0.5)
+form2<-as.formula(paste0('outcome_pre','~month+  log.offset'))
+mod2<-glm(form2,family='quasipoisson', data=kids2)
+fit.outcome.pre2<-predict(mod2, type='response')
+plot(kids2$date, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Fit of synthetic control model')
+points(kids2$monthdate[kids2$monthdate<intro.date2],fit.outcome.pre2, type='l' ,col='#1b9e77' )
 ```
 
 Now that we have fit the model, we will plug in the observed values of the control variable into the model to get an estimate of pneumonia  during the post-vaccine months
 
-```{r}
+```{r, fig.width=10, fig.height=3.5}
+par(mfrow=c(1,2))
 fit.outcome.post<-predict(mod1, type='response', newdata=kids)
-
-plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Extrapolation to post-vaccine period')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Extrapolation to post-vaccine period')
 points(kids$date,fit.outcome.post, type='l' ,col='#d95f02' )
 points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
 abline(v=intro.date.minus.one, lty=2, col='gray')
+
+fit.outcome.post2<-predict(mod2, type='response', newdata=kids2)
+plot(kids2$monthdate, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Extrapolation to post-vaccine period')
+points(kids2$monthdate,fit.outcome.post2, type='l' ,col='#d95f02' )
+points(kids2$monthdate[kids2$monthdate<intro.date2],fit.outcome.pre2, type='l' ,col='#1b9e77' )
+abline(v=intro.date.minus.one2, lty=2, col='gray')
 ```
 
 The vaccine effect is calculated by taking the difference or ratio between the observed and extrapolated value during the post-vaccine period. The plots shown below give the ratio or difference at each time point. We will typically instead aggregate the observed cases and the extrapolated cases over a certain time period--by year, or during the evaluation period (e.g., excluding the first 12 months of post-vaccine data)
-```{r}
+```{r, fig.width=10, fig.height=3.5}
+par(mfcol=c(1,2))
 eval.start<-eval.date
 evalstart.index<-which(kids$date==eval.start)
 evalstart.index<-evalstart.index:nrow(kids)
 ratio<-kids[,outcome.name]/fit.outcome.post
 ave.ratio<- sum(kids[,outcome.name][evalstart.index])/sum(fit.outcome.post[evalstart.index])
 difference<-kids[,outcome.name]-fit.outcome.post
-
-
-plot(kids$date,ratio, type='l', bty='l', main='Ratio')
+plot(kids$date,ratio, type='l', bty='l', main='Rate ratio (Brazil)',ylim=c(0.5,1.5),xlab='', ylab='Ratio')
 abline(h=1, lty=3, col='gray')
 abline(v=intro.date.minus.one, lty=2, col='gray')
 points(kids$date[evalstart.index], rep(ave.ratio, length(evalstart.index)), type='l',col='#7570b3')
+# plot(kids$date,difference, type='l', bty='l', main='Difference')
+# abline(h=0, lty=3, col='gray')
+# abline(v=intro.date.minus.one, lty=2, col='gray')
 
-plot(kids$date,difference, type='l', bty='l', main='Difference')
-abline(h=0, lty=3, col='gray')
-abline(v=intro.date.minus.one, lty=2, col='gray')
 
+eval.start2<-eval.date2
+evalstart.index2<-which(kids2$monthdate==eval.start2)
+evalstart.index2<-evalstart.index2:nrow(kids2)
+ratio2<-kids2[,outcome.name2]/fit.outcome.post2
+ave.ratio2<- sum(kids2[,outcome.name2][evalstart.index2])/sum(fit.outcome.post2[evalstart.index2])
+difference2<-kids2[,outcome.name2]-fit.outcome.post2
+plot(kids2$monthdate,ratio2, type='l', bty='l', main='Rate ratio (Ecuador)',ylim=c(0.5,1.5), xlab='', ylab='Ratio')
+abline(h=1, lty=3, col='gray')
+abline(v=intro.date.minus.one2, lty=2, col='gray')
+points(kids2$monthdate[evalstart.index2], rep(ave.ratio2, length(evalstart.index2)), type='l',col='#7570b3')
+# plot(kids2$monthdate,difference2, type='l', bty='l', main='Difference')
+# abline(h=0, lty=3, col='gray')
+# abline(v=intro.date.minus.one2, lty=2, col='gray')
 ```
 
 **Use of multiple controls**
@@ -948,11 +973,45 @@ As discussed in the previous sections, there are a number of ways to evaluate th
 
 ### Interpreting results (DAN)
 
-	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1)
+For all of the analyses that we have reviewed, there is a comparison between the number of cases (or incidence) in a post-vaccine evaluation period, compared to an **expected** number of cases. The expected number of cases can be derived by extrapolating the trend line (interrupted time series or pre-post analyses) or by tracking trends in comparison diseases. In either case, it is important to keep in mind what the comparison is when drawing conclusions. With any statistical analysis, there will be a measure of uncertainty in the estimates. These give an indication of the precision of the estimates and are specific to the model used and the underlying data. 
+
+Typically for evaluation studies, the results are used to obtain an estimate of impact, not to make a dichotomous decision. Results *should not be interpreted in terms of statistical significance*. Rather, the results should give an estimate of the magnitude of the effect, and the uncertainty intervals provide a measure of the degree of confidence in the estimates. 
+
+An uncertainty interval that includes the null (e.g. a vlue of 1 for a rate ratio) does not neecesarily mean that the intervantion did not have an effect--it could also mean that the characteristics of the data do not allow for more precise estimates.
+
+When describing the results,  it is more useful with this type of study to present the estimate of interest (e.g., rate ratio, cases averted), along with the uncertainty intervals, and then discuss the size of the effect and the robustness of the results. The uncertainty intervals around the rate ratio capture just some of the sources of error and uncertainty in the analyses.  
+
+As a concrete example, here are rate ratio estimates from 4 different sets of analyses. Rate ratio A has a value of 0.65 (0.58, 0.72). This represents a strong decline of 35%, with little uncertainty in the estimates. Rate ratio 2 also has a value of 0.65, but with much wider confidence intervals, which cross 1. It would be incorrect to say that there is no decline, just because the confidence interval crosses 1. Rather, we can say that there was an estimated 35% decline, with a high degree of uncertainty in the estimate, with plausible estimates ranging from no effect (-1%) to a very strong effect (70% decline).
+
+As a comparison, rate ratios C and D represent smaller effects (10% decline). C has narrow confidence intervals (ranging from 0.85-0.95), while rate ratio D has wider confidence intervals (ranging from 0.8-1.1). In this instance, we would say that C shows evidence of a small decline, with a moderate degree of certainty, while for D, it is difficult to draw a firm conclusion--we could say that there is some evidence for a small decline, but there is a high degree of uncertinty in the estimates, but we can't say with confidence that there was a notable decline.
+
+Finally, for E, there is no evidence of a decline (RR=1), with a small degree of uncertainty.
+
+```{r}
+rr1<- c(0.65, 0.58, 0.72)
+rr2<-c(0.65, 0.3, 1.01)
+rr3<- c(0.9, 0.85, 0.95)
+rr4<-c(0.9, 0.8, 1.1)
+rr5<-c(1.0, 0.9, 1.1)
+
+all.rrs<-rbind(rr1, rr2, rr3, rr4,rr5)
+plot(all.rrs[,1], ylim=range(all.rrs), bty='l', pch=16, ylab='Rate Ratio', xaxt='n', xlab='')
+axis(1, at=c(1:nrow(all.rrs)), labels=c("A", "B","C","D", "E"))
+arrows(x0<-1:nrow(all.rrs) ,y0=all.rrs[,2], y1=all.rrs[,3], length=0   )
+abline(h=1, lty=2, col='gray')
+```
+Finally, as illustrated in the previous sections, different analysis approaches can yield different estimates. It can be helpful to discuss where the results agree between methods, and if they disagree, discuss possible reasons why. 
+
+
+TODO	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1); also where estimates diverge between studies
 
 
 ##	Communicating and Presenting results effectively (including suggested templates) (DAN AND CRIS)
 
+When presenting the results from an evaluation study, it is important to convey the magnitude of the effect, and the uncertainty in the estimates. It is also important to convey caution that these are observational results and to describe them with sufficient caution 
+
+- Present the relative decline as a percent reduction in disease rates. Indicate what time period the evaluation is done, and, and also indicate over what period. For instance for an interreupted time series or synthetic control analysis, say "pneumonia rates declined by 23% following the introduction of pneumococcal conjugate vaccines during the period January 2011-December 2013 compared to the expected number of cases)
+- Describe "declines in disease  rates **associated** with the introduction of the vaccine", rather than "declines in disease rates **caused** by the vaccine. The wording can explicity say the decline is associated with vaccine introduction, or could states that the decline occurred following the introduction o the vaccine.
 
 
 
