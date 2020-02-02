@@ -18,8 +18,9 @@ RUN Rscript -e 'install.packages(c(\
   "rmarkdown", \
   "lubridate", \
   "RCurl", \
-  "rmdformats" \
-))'
+  "rmdformats", \
+  "INLA" \
+), repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"))'
 RUN Rscript -e 'devtools::install_github(\
   "weinbergerlab/InterventionEvaluatR" \
 )'
