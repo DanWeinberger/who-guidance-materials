@@ -3,6 +3,9 @@ title: DRAFT:Measuring the impact of new vaccines using mortality and administra
   hospitalization data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
+  word_document:
+    toc: yes
+    toc_depth: '2'
   rmdformats::readthedown:
     code_folding: hide
     css: ../stylesreadthedown.css
@@ -10,9 +13,6 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
-  word_document:
-    toc: yes
-    toc_depth: '2'
 --- 
 
 ```{r setup, include=FALSE}
@@ -866,8 +866,6 @@ The synthetic controls model relaxes the assumption used in the ITS model that t
 
 ## Data Sources (international and national for both mortality and hospitalization) (Cristiana)
 
-TODO formatting od this section
-
 There are various data sources which can be considered for impact assessment studies. In addition to the outcome of interest, data on disease burden, vaccine coverage, and population should be obtained when embarking in such analysis. 
 As already mentioned above, for mortality data there are international data sources to which countries report and share data, and that cleans, compiles, and evaluate data quality in a standardized fashion.
 **1)	WHO website - mortality data **
@@ -928,7 +926,7 @@ HOSPITALIZATION DATA AND EXAMPLES FROM THE ABOVE
 
 ## Data analysis (DAN TODO)
 
-In the sections below, we will describe how to format the data for analysis and how to interpret the results from different analyses. In these examples, we will use mortality data from Ecuador. If you want more details on how to actually implement these analyses in R or in a web-based interface, see the following:
+A brief overview of the steps needed to perform an evaluation analysis are outlined below. 
 
 - For a detailed, guided example that shows how to format your data, run analyses, and interpret results in R, see the Practical Exercise (TODO LINK). In that Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls. 
 
@@ -938,7 +936,7 @@ In the sections below, we will describe how to format the data for analysis and 
 
 When evaluating changes in disease rates associated with an intervention, the first step is to format the data into a **time series**. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data (i.e., one row per hospitalization or death), creating a variable that has the date rounded down to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period. 
 
-Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases or cause sof death that we want to enumerate. If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 2 age groups. Each date/age group combination should have only 1 row in this dataset, *and all date/age combinations should be represented, even if no cases were observed during a particular time period*. Here we can see the first 3 months of data for age groups 2-23m and 2-59m in Ecuador.
+Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases or cause sof death that we want to enumerate. If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 2 age groups. Each date/age group combination should have only 1 row in this dataset, *and all date/age combinations should be represented, even if there were 0 cases observed during a particular time period*. Here we can see the first 3 months of data for age groups 2-23m and 2-59m in Ecuador.
 
 ```{r, echo=F}
 
@@ -962,19 +960,33 @@ plot(ds.sub$monthdate,ds.sub[,offset.name2], type='l', bty='l', col='blue', xlab
 
 ### Analyzing the data
 
-As discussed in the previous sections, there are a number of ways to evaluate the impact of PCVs. In Ecuador, PCV was introduced in August 2010. We will ignore the first year of post-vaccine data to allow vaccine uptake to increase before we start evaluating the effect of the vaccine on rates of death.
+As discussed in the previous sections, there are a number of ways to evaluate the impact of PCVs. These include pre-post comparisons, interrupted time series analyses, and synthetic controls; and there are many variants of these approaches. 
 
-### Interpreting results (DAN)
+For all of the analysis types that we have reviewed, the analysis involves a comparison between the number of cases (or incidence) in a post-vaccine evaluation period, compared to an **expected** number of cases. The expected number of cases can be derived by extrapolating the trend line (interrupted time series or pre-post analyses) or by tracking trends in comparison diseases.
 
-For all of the analyses that we have reviewed, there is a comparison between the number of cases (or incidence) in a post-vaccine evaluation period, compared to an **expected** number of cases. The expected number of cases can be derived by extrapolating the trend line (interrupted time series or pre-post analyses) or by tracking trends in comparison diseases. In either case, it is important to keep in mind what the comparison is when drawing conclusions. With any statistical analysis, there will be a measure of uncertainty in the estimates. These give an indication of the precision of the estimates and are specific to the model used and the underlying data. 
+regardless of the analytical framework used, it is critical to adjust for underlying trends in the data that are unrelated to vaccine introduction. If the underlying trend is linear or log-linear, a standard interrupted time series analysis might be appropriate. However, the trends unrelated to vaccine introduction often follow patterns that are not readily captured with a straight line. Ignoring these trends can lead to incorrect results. Therefore, it is critical to identify control variables that can be used to adjust for unrelated factors. This can be accomplished in a number of ways, as discussed above.
 
-Typically for evaluation studies, the results are used to obtain an estimate of impact, not to make a dichotomous decision. Results *should not be interpreted in terms of statistical significance*. Rather, the results should give an estimate of the magnitude of the effect, and the uncertainty intervals provide a measure of the degree of confidence in the estimates. 
+Several summary measures can be reported from the main analysis. These include
+1. The relative change in incidence during a specified evaluation period, also known as the "Rate Ratio". The rate ratio is calculated by summing the number of cases that occurred after the intervention and dividing by the expected number of cases.
+2. The absolute change in incidence during a specified evaluation period, also known as the "Rate difference". The rate difference is calculated by summing the number of cases that occurred after the intervention and subtracting the expected number of cases.
+3. Reports from interrupted time series analysis often also report on the change in the slope of the line from the pre-vaccine period to the post-vaccine period. While this does provide evidence of a change, it is a somewhat abstract quantity that can be difficult to interpret from a public health standpoint and can be difficult to compare between studies
 
-An uncertainty interval that includes the null (e.g. a vlue of 1 for a rate ratio) does not neecesarily mean that the intervantion did not have an effect--it could also mean that the characteristics of the data do not allow for more precise estimates.
+It is also important to conduct sensitivity analyses to determine the robustness of the findings. These can include
+1. Shifting the specified date of vaccine introduction or the evaluation period forward or backward in time
+2. Using different controls or sets of control diseases
+3. Using different analytical approaches. For instance, if the main analysis uses synthetic controls, an interrupted time series could be performed as a comparison
 
-When describing the results,  it is more useful with this type of study to present the estimate of interest (e.g., rate ratio, cases averted), along with the uncertainty intervals, and then discuss the size of the effect and the robustness of the results. The uncertainty intervals around the rate ratio capture just some of the sources of error and uncertainty in the analyses.  
+### Interpreting results in light of uncertainty (DAN)
 
-As a concrete example, here are rate ratio estimates from 4 different sets of analyses. Rate ratio A has a value of 0.65 (0.58, 0.72). This represents a strong decline of 35%, with little uncertainty in the estimates. Rate ratio 2 also has a value of 0.65, but with much wider confidence intervals, which cross 1. It would be incorrect to say that there is no decline, just because the confidence interval crosses 1. Rather, we can say that there was an estimated 35% decline, with a high degree of uncertainty in the estimate, with plausible estimates ranging from no effect (-1%) to a very strong effect (70% decline).
+With any statistical analysis, there will be a measure of uncertainty in the estimates. These give an indication of the precision of the estimates and are specific to the model used and the underlying data. 
+
+When performing a randomized controlled trial for the purposes of licensing a vaccine the goal is to determine whether the vaccine works as intended, and this is determined through a formal statistical test. The question in that situation is whether the efficacy of the vaccine is greater than 0, and a 95% confidence interval for vaccine efficacy that does not cross 0 is taken as evidence for a 'significant' effect.
+
+In post-licensure studies of vaccine impact, the goals of the analyses and uses of the results are different than they are in a trial. The results are used to obtain an estimate of the magnitude of impact (e.g., percent reduction or number of cases averted); the results are not typically used to make a dichotomous decision. Moreover, impact evaluations are observational studies using available data and are therefore not designed to have a specified statistical power. Therefore, the estimates of vaccine impact and the uncertainty intervals should be used to give an indication of the magnitude of the effect and the strength of the evidence. *Results should not be interpreted   in terms of statistical significance*. 
+
+When describing the results,  it is most useful with this type of study to present the estimate of interest (e.g., rate ratio, cases averted), along with the uncertainty intervals, and then discuss the size of the effect and the robustness of the results. The uncertainty intervals around the rate ratio capture just some of the sources of error and uncertainty in the analyses.  
+
+As a concrete example, here are rate ratio estimates from 4 different sets of analyses. Rate ratio A has a value of 0.65 (0.58, 0.72). This represents a strong decline of 35%, with little uncertainty in the estimates. Rate ratio 2 also has a value of 0.65, but with much wider confidence intervals, which cross 1 (i.e., no effect). It would be incorrect to say that there is no decline, just because the confidence interval crosses 1. Rather, we can say that there was an estimated 35% decline, with a high degree of uncertainty in the estimate, with plausible estimates ranging from no effect (-1%) to a very strong effect (70% decline).
 
 As a comparison, rate ratios C and D represent smaller effects (10% decline). C has narrow confidence intervals (ranging from 0.85-0.95), while rate ratio D has wider confidence intervals (ranging from 0.8-1.1). In this instance, we would say that C shows evidence of a small decline, with a moderate degree of certainty, while for D, it is difficult to draw a firm conclusion--we could say that there is some evidence for a small decline, but there is a high degree of uncertinty in the estimates, but we can't say with confidence that there was a notable decline.
 
@@ -995,13 +1007,11 @@ abline(h=1, lty=2, col='gray')
 ```
 Finally, as illustrated in the previous sections, different analysis approaches can yield different estimates. It can be helpful to discuss where the results agree between methods, and if they disagree, discuss possible reasons why. 
 
-
-TODO	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1); also where estimates diverge between studies
-
+It is important to remember that the uncertainty intervals presented in an evaluation study typically capture just one or a few sources of error, which are related to the fit of the model and the characteristics of the data. Issues with data quality are not as easily captured by a summary measure of uncertainty, and uncertainty related to the choice of which analytical framework to use are also not typically captured. 
 
 ##	Communicating and Presenting results effectively (including suggested templates) (DAN AND CRIS)
 
-When presenting the results from an evaluation study, it is important to convey the magnitude of the effect, and the uncertainty in the estimates. It is also important to convey caution that these are observational results and to describe them with sufficient caution 
+When presenting the results from an evaluation study, it is important to convey the magnitude of the effect, and the uncertainty in the estimates. It is also important to convey caution that these are observational results and to describe them with sufficient caution. 
 
 - Present the relative decline as a percent reduction in disease rates. Indicate what time period the evaluation is done, and, and also indicate over what period. For instance for an interreupted time series or synthetic control analysis, say "pneumonia rates declined by 23% following the introduction of pneumococcal conjugate vaccines during the period January 2011-December 2013 compared to the expected number of cases)
 - Describe "declines in disease  rates **associated** with the introduction of the vaccine", rather than "declines in disease rates **caused** by the vaccine. The wording can explicity say the decline is associated with vaccine introduction, or could states that the decline occurred following the introduction o the vaccine.
