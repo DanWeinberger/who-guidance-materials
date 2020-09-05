@@ -12,7 +12,7 @@ rmarkdown:
   script:
     - dind-run "${GITLAB_DOCKER_BUILD}" --cache-from master build --file gitlab/Dockerfile .
     - mkdir -p "${BUILD_DIR}"
-    - find . -name '*.Rmd' -and \! -path '*/rsconnect/*' -exec dind-run "${BUILD}" Rscript -e 'rmarkdown::render(commandArgs(TRUE)[1], output_format="all", output_dir=commandArgs(TRUE)[2])' {} "${BUILD_DIR}" \;
+    - find . -name '*.Rmd' -and \! -path '*/rsconnect/*' -exec dind-run "${BUILD}" Rscript -e 'd = dirname(commandArgs(TRUE)[1]); f = basename(commandArgs(TRUE)[1]); o = normalizePath(commandArgs(TRUE)[2]); setwd(d); rmarkdown::render(f, output_format="all", output_dir=o)' {} "${BUILD_DIR}" \;
     - find "${BUILD_DIR}" -name "WHO*guidance*.html" -exec mv {} "${BUILD_DIR}"/index.html \; -quit
     - mkdir html word
     - mv "${BUILD_DIR}"/*.docx word
