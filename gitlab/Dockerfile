@@ -9,7 +9,8 @@ RUN apt-get update -y -qq && apt-get install -y -qq --no-install-recommends \
   libssh2-1-dev \
   libssl-dev \
   libxml2-dev \
-  libz-dev
+  libz-dev \
+  libxt6
 
 # Install needed R packages
 RUN Rscript -e 'install.packages(c(\
@@ -19,6 +20,7 @@ RUN Rscript -e 'install.packages(c(\
   "lubridate", \
   "RCurl", \
   "rmdformats", \
+  "Gmisc", \
   "INLA" \
 ), repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"))'
 RUN Rscript -e 'devtools::install_github(\
