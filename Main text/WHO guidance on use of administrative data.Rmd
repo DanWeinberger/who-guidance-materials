@@ -3,6 +3,9 @@ title: DRAFT:Measuring the impact of new vaccines using mortality and administra
   hospitalization data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
+  word_document:
+    toc: yes
+    toc_depth: '2'
   rmdformats::readthedown:
     code_folding: hide
     css: ../stylesreadthedown.css
@@ -10,24 +13,27 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
-  word_document:
+  html_document:
+    df_print: paged
     toc: yes
     toc_depth: '2'
 --- 
 
 ```{r setup, include=FALSE}
 #library(RCurl)
+#devtools::install_github("gforge/c")
 library(InterventionEvaluatR)
 library(lubridate)
 library(rmdformats)
 library(htmlTable)
+library(Gmisc)
 knitr::opts_chunk$set(echo = FALSE)
 
 data(pnas_brazil, package = "InterventionEvaluatR") #load the data
 br1<-pnas_brazil
 br1$date<-as.Date(br1$date)
 
- data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
+data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
 ecuador_mortality$monthdate<-as.Date(ecuador_mortality$monthdate)
 ecuador_mortality$date<-ecuador_mortality$monthdate
 
@@ -67,7 +73,7 @@ After PCV introduction in several countries, many studies to assess their effect
 
 A significant body of evidence is currently available demonstrating PCV effectiveness and impact on acute otitis media, pneumonia, invasive bacterial diseases, including both cases managed in the outpatient setting and more severe disease requiring hospitalization [de Oliveira, 2016; Loo, JD, 2014 ]. However, to date, there is scarce evidence on the impact of PCVs on mortality and morbidity in children under 5 years of age, using available secondary mortality and hospitalization data-sources, particularly in middle and low income countries. This is mainly due to challenges in availability, access to, and analysis of secondary sources of morbidity and mortality data. 
 
-A recent multi-national study led by PAHO conducted in 10 low and middle income countries in the Latin American Region was recently completed, with the aim of determining the impact of PCVs on pneumonia mortality in children under 5 years of age, following their introduction into the national routine immunization program targeting infants. This study has been able to demonstrate, as a proof of concept, that it is possible to use available mortality data to evaluate the impact of PCVs on all-cause pneumonia mortality in children under the age of 5 years in selected countries, by means of time series analysis methodology [de Oliveira, Lancet Global Health, 2020]. In addition, similar studies are being undertaken by AFRO, EURO, and SEARO with countries in their regions [REFS CDC - CID, 2019].
+A recent multi-national study led by PAHO conducted in 10 low and middle income countries in the Latin American Region was recently completed, with the aim of determining the impact of PCVs on pneumonia mortality in children under 5 years of age, following their introduction into the national routine immunization program targeting infants. This study has been able to demonstrate, as a proof of concept, that it is possible to use available mortality data to evaluate the impact of PCVs on all-cause pneumonia mortality in children under the age of 5 years in selected countries, by means of time series analysis methodology [de Oliveira, CID, 2020]. In addition, similar studies are being undertaken by AFRO, EURO, and SEARO with countries in their regions [Gatera, Vaccine 2016; Izu, Bull World Health Organization 2017].
 
 The use of nationwide data from secondary sources, including the National Mortality Information Systems and Hospitalization Information systems, from pre- and post-vaccine introduction periods is possible, granted various aspects of data availability, extraction, quality, and other methodological challenges are adequately addressed and overcome.  
 
@@ -106,12 +112,12 @@ knitr::include_graphics('./figs/fig1.jpg')
 
 A significant increase in the number of studies on vaccine impact has been observed in recent years. Most published studies on vaccine impact assessment used secondary data from health information systems, surveillance systems, and others sources, while few studies used primary data. 
 
-Several are the outcomes that can be considered when assessing vaccine impact. For PCV impact, as pneumococcal is related to a variety of syndromes, these can include acute otitis media events, invasive bacterial disease (suspected, probable or confirmed), pneumonia (clinical or X-ray confirmed), severe pneumonia (usually measured as hospitalized pneumonia), and mortality (due to invasive bacterial disease, pneumonia, or all-cause mortality). 
+Several outcomes can be considered when assessing vaccine impact. For PCV impact, as pneumococcus causes a variety of syndromes, these can include acute otitis media events, invasive bacterial disease (suspected, probable or confirmed), pneumonia (clinical or X-ray confirmed), severe pneumonia (usually measured as hospitalized pneumonia), and mortality (due to invasive bacterial disease, pneumonia, or all-cause mortality). 
 
-One must consider the estimated effect of the vaccine in the various outcomes of interest in the pre-licensure clinical trials, in order to plan the outcome of interest to be considered in impact assessment studies. 
+One must consider the estimated effect of the vaccine in the various outcomes of interest in the pre-licensure clinical trials, in order to plan the outcome of interest to be considered in impact assessment studies. For instance, randomized controlled trials in the Gambia estimated a 35% decline on radiological pneumonia, 18% decline on hospitalized/severe pneumonia, and 13% decline in mortality [MacKenzie, Vaccine, 2014]. With a larger relative effect, it will often be easier to detect this decline in analyses of population-level trends. With smaller effects, the analyses become more challenging.
+```{r, eval=F}
+#<<TODO insert table comparing efficacy in trials>>
 
-<<TODO insert table comparing efficacy in trials>>
-```{r}
 ds<- cbind.data.frame(
   c("California-PCV7","Gambia-PCV9 (PCV7+1,5)", "South Africa-PCV9", "Philippines-PCV11 (never licensed)", "Latin America- PCV10"),
   c('21%', '35%*', '21%', '23%','23%'),
@@ -120,9 +126,10 @@ ds<- cbind.data.frame(
 )
 rownames(ds)<-NULL
 names(ds)<-c('Trial', 'Effect on radiological pneumonia', 'Effect on severe/hospitalized pneumonia', 'Effect on mortality' )
-htmlTable(ds, align=c('l','c','c','c'),
+tab1 <- htmlTable(ds, 
           tfoot="*Mackenzie GA, Vaccine 2014"
 )
+tab1
 
 ```
 
@@ -144,7 +151,7 @@ For pneumonia in children as the case study for the assessment of PCV, the study
 
 Study objectives will be structured considering the research question above, and include:
 
-**Main objective**: Evalute the impact of PCV vaccination (INTERVENTION) in pneumonia mortality (OUTCOME) in children younger tan 5 years of age (POPULATION) in CONTRY X through the assessment of available secondary mortality data.
+**Main objective**: Evaluate the impact of PCV vaccination (INTERVENTION) in pneumonia mortality (OUTCOME) in children younger tan 5 years of age (POPULATION) in CONTRY X through the assessment of available secondary mortality data.
 Secondary objectives:
 
 1.	Describe the pneumonia mortality disease burden in Country X in children <5 years of age and by sub-groups of age
@@ -170,12 +177,10 @@ A vital statistic system in defined as “the total process consisting of a) col
 This process is mandated by law, and is standardized across countries, requiring deaths to be registered through a medical death certificate that must be completed by a physician or legally authorized individual. The death certificate must contain information on characteristics of the deceased, the circumstances of the death, and, primarily, the cause or causes of death. The death certificate is and the reporting of deaths are standardized, with most countries in the world following the United Nations’ Principles and Recommendations for a Vital Statistics System (United Nations, 2003).  
 The international medical certificate of death is internationally used and recognized, consisting of 2 parts. Part I, devoted to the causes intervening in the causal chain, and Part II, devoted to the causes that, outside the chain, contributed to the fatal outcome. 
 
-The figure below shows an example of a completed form of Medical Certificate of cause of death.
+The Table below shows an example of a completed form of Medical Certificate of cause of death [PAHO, 2018 Basic Guidelines for the analysis of Mortality]
 
-<<TODO INSERT FIGURE--screen shot>>
-
-```{r}
-
+```{r, out.width='100%', fig.show='hold',fig.align="center"}
+knitr::include_graphics('./figs/table 1.png')
 ```
  
 From the first to last line, Part I indicates the following causes of deaths: a) direct cause of death: the one that finalizes the process and, without leading to another cause, directly ends the person’s life. b) Intermediate or intervening cause(s): as the name indicates, the cause or causes in the middle of the process. c) Originating antecedent cause (OAC): this is what is entered on the last line, because it engendered all the causes entered on the lines above it.
@@ -199,14 +204,14 @@ As such, in addition to the challenges of obtaining good quality hospitalization
 
 Different than mortality data from vital statistics, hospitalization data is usually not standardized and very rarely shared with international organizations or other institutions outside of the country. Although the type and quality of the data collected varies, most hospitals collect information on the age, date of admission and discharge, outcome (discharged, transferred, died), and admission and discharge diagnosis for each individual hospitalization claim. Newly admitted patients are assigned with an admission diagnosis code upon hospitalization. Usually, diagnosis are recorded using standardized ICD codes. This code on the institutional claim indicates the beneficiary’s initial diagnosis at the time of admission. The principal discharge diagnosis is the condition that occasioned the need for hospitalization and is determined after the patient has been thoroughly examined and completed the diagnostic examinations. The admission and discharge diagnosis may differ – and evidence support that in fact they are often in discord. This is particularly true for hospitalizations due to respiratory conditions, among which pneumonias [Zikos 2019].
 
-## Study design (DAN) 
+## Study design 
 
 ### Overview
-Observational studies present a number of analytical challenges. The introduction of vaccines is often occurring concurrently with other oublic health and social interventions that can influence disease rates. Other relevant changes include changes in social welfare systems, changes in the capacity of the healthcare system, changes in the efficincy of registering hospitalizations and deaths, and other pharmacological interventions that could influence susceptibility (e.g., increasing use of anti-retroviral therapy in sub-Saharan Africa). Because vaccines are introduced at the same time as these other changes, it can be challenging to attribute specific changes to the introduction of a vaccine. The methods that we will discuss here attempt to address this issue using different approaches and different assumptions. It is important to be aware of the assumptions and limitations of the different approaches. 
+Observational studies present a number of analytical challenges. The introduction of vaccines is often occurring concurrently with other public health and social interventions that can influence disease rates. Other relevant changes include changes in social welfare systems, changes in the capacity of the healthcare system, changes in the efficiency of registering hospitalizations and deaths, and other pharmacological interventions that could influence susceptibility (e.g., increasing use of anti-retroviral therapy in sub-Saharan Africa). Because vaccines are introduced at the same time as these other changes, it can be challenging to attribute specific changes to the introduction of a vaccine. The methods that we will discuss here attempt to address this issue using different approaches and different assumptions. It is important to be aware of the assumptions and limitations of the different approaches. 
 
 ###	Possible study designs for impact assessment
 
-The analysis goal is to disentangle changes in disease rates that are caused by the introduction of a vaccine program with changes that are due to these other factors. There are several approaches that could be taken. First, in a *pre-licensure* study, vaccine impact could be evaluated using a cluster-randomized study design, where disease rates are compared between spatial clusters that have been randomized to receive that vaccine or not. Assuming that there is not transmission between clusters, that the assignment of clusters was random and succesful (i.e., that the vaccinated and unvaccinated clusters are comparable), this provides an unbiased estimate of the total effect of the vaccine. 
+The analysis goal is to disentangle changes in disease rates that are caused by the introduction of a vaccine program with changes that are due to these other factors. There are several approaches that could be taken. First, in a *pre-licensure* study, vaccine impact could be evaluated using a cluster-randomized study design, where disease rates are compared between spatial clusters that have been randomized to receive that vaccine or not. Assuming that there is not transmission between clusters, that the assignment of clusters was random and successful (i.e., that the vaccinated and unvaccinated clusters are comparable), this provides an unbiased estimate of the total effect of the vaccine. 
 
 In a *post-licensure setting*, the cluster-randomized design can be approximated by using a 'step-wedge' study design. This design can be implemented in settings where the vaccine has not yet be introduced and where it might not be feasible to introduce to the entire population at the same time. With this design, geographic areas are randomized to receive the vaccine earlier or later. All geographic units eventually receive the vaccine. With this phased rollout, the geographic units that introduce the vaccine later serve as controls for the geographics units that introduce the vaccine earlier. Because the control group is changing over time and the comparisons between the vaccinated and unvaccinated groups is taking place over some time period, estimates of vaccine impact could be cofounded by underlying temporal trends. Therefore, it is important to appropriately adjust for time-varying rates of disease when analyzing these studies. 
 
@@ -220,7 +225,7 @@ Further, additional methodological recommendations have been proposed for improv
 
 
 ### Counterfactuals: What would have happened without a vaccine?
-With any analysis of vaccine impact, the goal is to compare the observed disease rates in the post-vaccine period with an estimate of what would have happened if the vaccine had not been introduced. This value is called the **counterfactual**. There are many ways to estimate counterfactuals from very simple approaches (as is done in pre/post comparison of incidence) to more complex approaches that adjust for trends and dynamics of the disease. In each of the followinng sections, we will discuss different methods to obtain this quantity.
+With any analysis of vaccine impact, the goal is to compare the observed disease rates in the post-vaccine period with an estimate of what would have happened if the vaccine had not been introduced. This value is called the **counterfactual**. There are many ways to estimate counterfactuals from very simple approaches (as is done in pre/post comparison of incidence) to more complex approaches that adjust for trends and dynamics of the disease. In each of the following sections, we will discuss different methods to obtain this quantity.
 
 
 ### Choosing control variables 
@@ -239,19 +244,19 @@ Control diseases should share some relevant etiological drivers with the disease
 
 ### Key considerations for analyses 
 
-####Denominators
+#### Denominators
 It is common when analyzing trend data to analyze changes in incidence (i.e., cases/population size) rather than the raw number of cases. The assumption here is that the number of cases should scale with population size. However, when using administrative data, using a population denominator might not effectively adjust for underlying change. Often, the administrative database does not cover the entire population, or other factors (e.g., access to healthcare) are larger drivers of trends than population size. Using alternative denominators, such as total number of hospitalizations in the system, can sometimes be a more effective approach (see Schuck-Paim et al., *Vaccine* 2017). Whatever the chosen denominator, it can either be included as an offset term (regression coefficient is held to 1), or as a covariate in a regression model. 
 
 #### Transition period 
 After a vaccine is formally introduced into a national immunization program, it typically takes some amount of time to implement the vaccine and vaccinate a large proportion of eligible infants. Additionally, it takes time for children who are vaccinated as infants to age and become toddlers (an age group that might be more important for transmitting pneumococcus). Due to these considerations, a transition period is typically defined to allow the program to reach maturity before trying to estimate changes in disease rates. The data are therefore subset into a pre-vaccine period, a transition period, and a post-vaccine period, and vaccine impact is defined by comparing the post-vaccine period and the pre-vaccine period, while ignoring the transition period. The length of transition period depends on how quickly the vaccine program is implemented. In most settings, 1-2 years are defined as the transition period. In many of the Latin American countries, 3-dose coverage rapidly reached a plateau within a year, so a 12 month transition period was used. 
 
 #### How many years of data required?
-In many instances, vaccines are introduced in the context of unrleated changes that influence disease rates. Changes in the underlying health of the population (e.g., due to changes in social welfare programs, declines in indoor air pollution), changes in healthcare utilization, and changes in coding can all affect the reported rates of disease. Therefore, it is important to have sufficient data from the pre-vaccine period to detect and adjust for such trends. *At least 4-5 years* of pre-vaccine data are typically needed to adequately adjust for existing trends in the data. This is often context specific and depends on the particular factors driving underlying trends. Analyses using fewer years of pre-vaccine data should be interpreted with *extreme caution*. 
+In many instances, vaccines are introduced in the context of unrelated changes that influence disease rates. Changes in the underlying health of the population (e.g., due to changes in social welfare programs, declines in indoor air pollution), changes in healthcare utilization, and changes in coding can all affect the reported rates of disease. Therefore, it is important to have sufficient data from the pre-vaccine period to detect and adjust for such trends. *At least 4-5 years* of pre-vaccine data are typically needed to adequately adjust for existing trends in the data. This is often context specific and depends on the particular factors driving underlying trends. Analyses using fewer years of pre-vaccine data should be interpreted with *extreme caution*. 
 
-Likewise, it is ideal to accumulate several years of post-vaccine data prior to evaluating vaccine uptake. This allows the vaccine program to mature. Additionally, pneumonia rates during short periods of observation can be strongly influenced by short epidemics such as those cuased by influenza or RSV. This can potentially obscure or exagerate the true vaccine effects.
+Likewise, it is ideal to accumulate several years of post-vaccine data prior to evaluating vaccine uptake. This allows the vaccine program to mature. Additionally, pneumonia rates during short periods of observation can be strongly influenced by short epidemics such as those caused by influenza or RSV. This can potentially obscure or exagerate the true vaccine effects.
 
 #### What to do if you have an epidemic disease
-All of these methods assume that the disease patterns follow a preditable pattern and can be captured either using a straight line relationship (ITS), or that the relationship with control variables is stable. Therefore, these methods are generally only appropriate for **endemic** diseases. For diseases that are epidemic (e.g., meningococcal meningitis), other approaches might be required that account for the dynamics of the pathogen and the build-up of immunity in the population. If the epidemic is widespread but the intervention is limited to a smaller region, it  might be possible to use the time series from an unvaccinated control population (e.g., another region within the country) as the control variable to generate a counterfactual in a synthetic control-type analysis. Or it might be necessary to use a dynamic transmission model that can capture non-linear dynamics (e.g., a compartmental model with Susceptiple, Infected, and Resistant classes). 
+All of these methods assume that the disease patterns follow a predictable pattern and can be captured either using a straight line relationship (ITS), or that the relationship with control variables is stable. Therefore, these methods are generally only appropriate for **endemic** diseases. For diseases that are epidemic (e.g., meningococcal meningitis), other approaches might be required that account for the dynamics of the pathogen and the build-up of immunity in the population. If the epidemic is widespread but the intervention is limited to a smaller region, it  might be possible to use the time series from an unvaccinated control population (e.g., another region within the country) as the control variable to generate a counterfactual in a synthetic control-type analysis. Or it might be necessary to use a dynamic transmission model that can capture non-linear dynamics (e.g., a compartmental model with Susceptible, Infected, and Resistant classes). 
 
 ##	Types of analyses
 In this context, a 'time series' is defined as a variable in which the number of cases is tallied in each unit of time (week/month/quarter/year). The goal for the analysis is to detect changes in the average number of cases or incidence.
@@ -298,7 +303,7 @@ abline(v=intro.date2, lty=2, col='gray')
 ```
 
 ### Pre-Post comparison
-The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre-post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introducion are excluded from the analysis because vaccine coverage has not yet reached full coverage levels. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
+The simplest possible analysis approach is to compare the average number of cases or incidence in the post-vaccine period with that in the pre-vaccine period (a 'pre-post comparison' study). This method is easy to implement and easy to understand. The analyst needs to define the pre-vaccine period and the post-vaccine period. Typically, the first year or two after vaccine introduction are excluded from the analysis because vaccine coverage has not yet reached full coverage levels. The decision about where to set the pre- and post-vaccine periods should be made *a priori* and should not be influenced by observed aberrations in the data (unless these are due to a known data quality issue); otherwise the estimation of the variability in disease rates will not be accurate. 
 
 ```{r, fig.width=10, fig.height=3}
 mean.pre<-mean(kids[,outcome.name][kids$date< intro.date])
@@ -416,7 +421,7 @@ abline(h=1, lty=2, col='gray')
 
 
 ### Interrupted time series analysis (ITS) 
-In many instances, there is an underlying trend in the time series that is unrelated to vaccination. Such a trend can be caused by a number of factors, including changes in healthcare access, changes in susceptibility of the population, and changes in the sensitivity of surveillance. Such trends can bias the estimates of vaccine impact if they are not properly controlled. The simplest approach to adjust for trends is to fit a straight line through the data and then test whether the slope of the line or the level of the line changes after vaccine introduction. This can be accomplished by fitting a Poisson or negative binomial regression model. A number of quantities can be estimated sing these models, including the change in the slope of the trend line or in the average number of cases. However, it is often most useful to use the model to calculate the decline in incidence (rate ratio or rate difference) compared to what would be expected if the trend/level had remained constant. Seasonal variations and known trends can be adjusted for in this model using regression covariates.
+In many instances, there is an underlying trend in the time series that is unrelated to vaccination. Such a trend can be caused by a number of factors, including changes in healthcare access, changes in susceptibility of the population, and changes in the sensitivity of surveillance. Such trends can bias the estimates of vaccine impact if they are not properly controlled. The simplest approach to adjust for trends is to fit a straight line through the data and then test whether the slope of the line or the level of the line changes after vaccine introduction. This tyope of analysis is called 'segmented regression" and can be accomplished by fitting a Poisson or negative binomial regression model. A number of quantities can be estimated using these models, including the change in the slope of the trend line or in the average number of cases. However, it is often most useful to use the model to calculate the decline in incidence (rate ratio or rate difference) compared to what would be expected if the trend/level had remained constant. Seasonal variations and known trends can be adjusted for in this model using regression covariates.
 
 **Assumptions of ITS analysis**
 A key assumption is that the linear trend in the pre-vaccine period captures the important underlying trends and that these trends would have continued at the same rate if the vaccine had not been introduced.  Assumptions also need to be made about which time periods to include in the ramp-up period and whether the slope should level out after a certain amount of time (and how much time should be allowed). Some of these assumptions about the timing and shape of the trajectory can be relaxed by using a flexible spline to capture post-vaccine changes   
@@ -762,62 +767,87 @@ There are a number of variants on these approaches that can, in some circumstanc
 With the ITS model described, the user needs to specify the time at which the vaccine-associated change begins. In some circumstances, even if the change occurs before the introduction of a vaccine, the decline is incorrectly attributed to the vaccine. Change point analyses are effectively ITS models, where the timing of the change in slope or change in mean is estimated from the data. This provides an additional piece of information: how much disease rates change and **when** disease rates begin to change. The model are also more felxible and could rpovide a more accurate estimate of the decline, if the guess about when rates will decline is incorrect in the ITS model. This approach can provide a helpful check to ensure that the change is actually occurring after the data of intervention at a plausible time point. Kurum et al, *Epidemiology* 2017 provides an example of how these models can be used to estimate effects of pneumococcal vaccines against pneumonia.
 
 **Holt-Winters models and ARIMA models**
-There are countless variants of ITS-type models that incorporate information about the time series as well. With the Holt-Winters approach, time points closer to the date of vaccine introduction are given more weight when estimating the slope and mean cases in the pre-vaccine period and can thus more effectively adjust for changes in the population that occur close to the time of vaccine introduction. See Andrade et al, *PLOS One* 2017 for an example of this model. ARIMA models also explicitly account for the time series characteristics of the data and decompose the series into different components. This approach allows the confidence intervals to expand appropriately as we move further away from the date of vaccine introduction.  
-
+There are countless variants of ITS-type models that incorporate information about the time series. With the Holt-Winters approach, time points closer to the date of vaccine introduction are given more weight when estimating the slope and mean cases in the pre-vaccine period and can thus more effectively adjust for changes in the population that occur close to the time of vaccine introduction. See Andrade et al, *PLOS One* 2017 for an example of this model. ARIMA models also explicitly account for the time series characteristics of the data and decompose the series into different components. This approach allows the confidence intervals to expand appropriately as we move further away from the date of vaccine introduction. In practice, trying to include autoregressive terms and control time series in the same model can lead to issues where the estimate for the association with the control time series is biased towards 0. As a result, trends in the data are "explained" by the autoregressive term rather than the control time series, and this can lead to biased estimates of the counterfactual. 
 
 ### Synthetic controls
-With the synthetic controls approach, the goal is to use time series that are not influenced by the vaccine to adjust for underlying secular trends in the data. With the "control covariates" approach described above, the control disease is included as an adjustment in the regression model, and the model is set up to detect changes in slope or level of disease after introduction of the vaccine. Synthetic controls analysis is an extenstion of this idea. The main differences are (1) that the models are only fit to data from the pre-vaccine period and used to extrapolate to the post-vaccine period and (2) typically many control time series are included, and variable selection is used to weight these controls. 
+The ITS models described above are fit to the full time series of data, including pre- and post-vaccine periods. And we discussed how "control covariates" can be included as an adjustment in the regression model. The model is set up to detect changes in slope or level of disease after introduction of the vaccine. Synthetic controls analysis is an extenstion of this idea. The main differences are (1) that the models are only fit to data from the pre-vaccine period, and the model is used to extrapolate to the post-vaccine period and (2) typically many control time series are included, and variable selection is used to weight these controls. This approach has certain advantages, including that no assumptions are made that the pre-vaccine is linear or about the timing or shape of the trajectory of the post-vaccine change. 
 
 **Simple example with a single time series**
-Using the same dataset from Ecuador that was used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
-```{r}
+Using the same datasets from Brazil and Ecuador that were used in the ITS example, we will evaluate changes in J12-J18 following introduction of the vaccine. We will fit the model just to data form the pre-vaccine period, adjusting for seaosnality and the control variable. As an example, we will use log(all-cause)
+```{r, fig.width=10, fig.height=3.5}
+par(mfrow=c(1,2))
 kids$outcome_pre<-kids[,outcome.name]
 kids$outcome_pre[kids$date>=intro.date]<-NA #set to missing for post period
 kids$log.ach<-log(kids[,offset.name]+0.5)
-
-form1<-as.formula(paste0('outcome_pre','~month+ index +spl1 + spl2 +log.offset'))
+form1<-as.formula(paste0('outcome_pre','~month+ log.offset'))
 mod1<-glm(form1,family='quasipoisson', data=kids)
 fit.outcome.pre<-predict(mod1, type='response')
-
-plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Fit of synthetic control model')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Fit of synthetic control model')
 points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
 
+
+kids2$outcome_pre<-kids2[,outcome.name2]
+kids2$outcome_pre[kids2$monthdate>=intro.date2]<-NA #set to missing for post period
+kids2$log.offset<-log(kids2[,offset.name2]+0.5)
+form2<-as.formula(paste0('outcome_pre','~month+  log.offset'))
+mod2<-glm(form2,family='quasipoisson', data=kids2)
+fit.outcome.pre2<-predict(mod2, type='response')
+plot(kids2$date, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Fit of synthetic control model')
+points(kids2$monthdate[kids2$monthdate<intro.date2],fit.outcome.pre2, type='l' ,col='#1b9e77' )
 ```
 
 Now that we have fit the model, we will plug in the observed values of the control variable into the model to get an estimate of pneumonia  during the post-vaccine months
 
-```{r}
+```{r, fig.width=10, fig.height=3.5}
+par(mfrow=c(1,2))
 fit.outcome.post<-predict(mod1, type='response', newdata=kids)
-
-plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Extrapolation to post-vaccine period')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Extrapolation to post-vaccine period')
 points(kids$date,fit.outcome.post, type='l' ,col='#d95f02' )
 points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
 abline(v=intro.date.minus.one, lty=2, col='gray')
+
+fit.outcome.post2<-predict(mod2, type='response', newdata=kids2)
+plot(kids2$monthdate, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Extrapolation to post-vaccine period')
+points(kids2$monthdate,fit.outcome.post2, type='l' ,col='#d95f02' )
+points(kids2$monthdate[kids2$monthdate<intro.date2],fit.outcome.pre2, type='l' ,col='#1b9e77' )
+abline(v=intro.date.minus.one2, lty=2, col='gray')
 ```
 
 The vaccine effect is calculated by taking the difference or ratio between the observed and extrapolated value during the post-vaccine period. The plots shown below give the ratio or difference at each time point. We will typically instead aggregate the observed cases and the extrapolated cases over a certain time period--by year, or during the evaluation period (e.g., excluding the first 12 months of post-vaccine data)
-```{r}
+```{r, fig.width=10, fig.height=3.5}
+par(mfcol=c(1,2))
 eval.start<-eval.date
 evalstart.index<-which(kids$date==eval.start)
 evalstart.index<-evalstart.index:nrow(kids)
 ratio<-kids[,outcome.name]/fit.outcome.post
 ave.ratio<- sum(kids[,outcome.name][evalstart.index])/sum(fit.outcome.post[evalstart.index])
 difference<-kids[,outcome.name]-fit.outcome.post
-
-
-plot(kids$date,ratio, type='l', bty='l', main='Ratio')
+plot(kids$date,ratio, type='l', bty='l', main='Rate ratio (Brazil)',ylim=c(0.5,1.5),xlab='', ylab='Ratio')
 abline(h=1, lty=3, col='gray')
 abline(v=intro.date.minus.one, lty=2, col='gray')
 points(kids$date[evalstart.index], rep(ave.ratio, length(evalstart.index)), type='l',col='#7570b3')
+# plot(kids$date,difference, type='l', bty='l', main='Difference')
+# abline(h=0, lty=3, col='gray')
+# abline(v=intro.date.minus.one, lty=2, col='gray')
 
-plot(kids$date,difference, type='l', bty='l', main='Difference')
-abline(h=0, lty=3, col='gray')
-abline(v=intro.date.minus.one, lty=2, col='gray')
 
+eval.start2<-eval.date2
+evalstart.index2<-which(kids2$monthdate==eval.start2)
+evalstart.index2<-evalstart.index2:nrow(kids2)
+ratio2<-kids2[,outcome.name2]/fit.outcome.post2
+ave.ratio2<- sum(kids2[,outcome.name2][evalstart.index2])/sum(fit.outcome.post2[evalstart.index2])
+difference2<-kids2[,outcome.name2]-fit.outcome.post2
+plot(kids2$monthdate,ratio2, type='l', bty='l', main='Rate ratio (Ecuador)',ylim=c(0.5,1.5), xlab='', ylab='Ratio')
+abline(h=1, lty=3, col='gray')
+abline(v=intro.date.minus.one2, lty=2, col='gray')
+points(kids2$monthdate[evalstart.index2], rep(ave.ratio2, length(evalstart.index2)), type='l',col='#7570b3')
+# plot(kids2$monthdate,difference2, type='l', bty='l', main='Difference')
+# abline(h=0, lty=3, col='gray')
+# abline(v=intro.date.minus.one2, lty=2, col='gray')
 ```
 
 **Use of multiple controls**
-In the example above, we have a single control time series. However, it is often difficult to choose a single control *a priori*, and there are often a number of possible candidates. With a typical synthetic control analysis, a large number of possible control variables are included in the regression, and Bayesian variable selection is used to give more or less weight to different controls. Controls that do not capture key variation in the outcome will receive a weight of 0. Controls that are more important will receive weights closer to 1. Controls are not 'excluded' from the model as they would be using classicla forward or backward variable selection. Rather they just receive more or less weight. Thus the final model is a composite that includes all of candidate controls.
+In the example above, we have a single control time series. However, it is often difficult to choose a single control *a priori*, and there are often a number of possible candidates. With a typical synthetic control analysis, a large number of possible control variables are included in the regression, and Bayesian variable selection is used to give more or less weight to different controls. Controls that do not capture key variation in the outcome will receive a weight of 0. Controls that are more important will receive weights closer to 1. Controls are not 'excluded' from the model as they would be using classic forward or backward variable selection. Rather they just receive more or less weight. Thus the final model is a composite that includes all of candidate controls.
 
 **Counterfactual** 
 The counterfactual is generated by plugging the observed values for the control time series during the post-vaccine period into the model. If the relationship between the outcome disease and the controls is stable over time, this represents an estimate of number of pneumonia cases that would be expected if the vaccine had not been introduced.
@@ -826,11 +856,11 @@ The counterfactual is generated by plugging the observed values for the control 
 The vaccine effect is calculated by taking the ratio or difference between the observed cases and the extrapolated number of cases estimated from the regression model (the counterfactual). This can be done for each time point (as in the plots above). We will typically instead aggregate the observed cases and the extrapolated cases over a certain time period--by year, or during the evaluation period (e.g., excluding the first 12 months of post-vaccine data). 
 
 **Assumptions**
-The synthetic controls model relaxes the assumption used in the ITS model that the trends following a linear pattern. However, synthetic controls has its ow asusmptions that need to be met for the results to be valid. 
+The synthetic controls model relaxes the assumption used in the ITS model that the trends following a linear pattern. However, synthetic controls has its own asusmptions that need to be met for the results to be valid. 
 
 1. The control variables are not influenced by the vaccine. If the control variable is influenced by the target vaccine, then rates of disease for both the outcome and control will decline, and the estimate of the difference between the observed data and the counterfactual will be biased towards seeing no effect. Controls should be screened in advance to identify those that might be influenced by the vaccine 
 
-2. The association between the outcome and the controls is stable over time. Or to put it another way, the only factor that changes the relationship between the control disease and the outcome over time is the target vaccine.  This is a key assumption. If, we are evaluating the effect of PCVs against pneumonia, and diarrhea is a control variable, this could be a problem if rotavirus vaccine was introduced around the same time. That is because we would have 2 factors that change the relationship between pneumonai and diarrhea: PCV introduction and rotavirus vaccine introduction. In this instance, both diseases would be driven down by their respective vaccines, so the counterfactual would be biased down, and the vaccine effect would be under-estimated. Control variable should be screened in advance to identify those that might be influenced by targeted interventions. 
+2. The association between the outcome and the controls is stable over time. Or to put it another way, the only factor that changes the relationship between the control disease and the outcome over time is the target vaccine.  This is a key assumption. If, we are evaluating the effect of PCVs against pneumonia, and diarrhea is a control variable, this could be a problem if rotavirus vaccine was introduced around the same time. That is because we would have 2 factors that change the relationship between pneumonia and diarrhea: PCV introduction and rotavirus vaccine introduction. In this instance, both diseases would be driven down by their respective vaccines, so the counterfactual would be biased down, and the vaccine effect would be under-estimated. Control variable should be screened in advance to identify those that might be influenced by targeted interventions. 
   Broad interventions (e.g., social welfare programs) will affect both the outcome and control disease. In this instance, we *want* to include the control variables that are influenced by the intervention because it will help to adjust for trends in the outcome variable that are unrelated to vaccination.
 
 3. The controls share key causal drivers with the controls and capture relevant variation that is unaffected by the vaccine. If there are trend sin the outcome that are not captured by the controls, the estimates will be biased. This bias could go in either direction. For instance, in many populations, reported pneumonia rates in the elderly have been increasing for unexplained reasons. If the controls cannot capture this increase, one might (incorrectly) conclude that the vaccine causes an increase in pneumonia rates.  Likewise, if the outcome disease exhibits wild fluctuations due to unexplained factors, and the controls don't adjust for this, there will remain a lot of unexplained variability, and it will be difficult to obtain an estimate of vaccine impact
@@ -839,13 +869,11 @@ The synthetic controls model relaxes the assumption used in the ITS model that t
 
 
 
-## Data Sources (international and national for both mortality and hospitalization) (Cristiana)
-
-TODO formatting od this section
+## Data Sources (international and national for both mortality and hospitalization) 
 
 There are various data sources which can be considered for impact assessment studies. In addition to the outcome of interest, data on disease burden, vaccine coverage, and population should be obtained when embarking in such analysis. 
 As already mentioned above, for mortality data there are international data sources to which countries report and share data, and that cleans, compiles, and evaluate data quality in a standardized fashion.
-**1)	WHO website - mortality data **
+ **1)	WHO website - mortality data **
 
 **WHO**: https://www.who.int/healthinfo/statistics/en/ 
 a.	Click on "WHO Mortality Database" and then "Access the online database"
@@ -864,56 +892,64 @@ d.	Click on ok to return to the WHO Mortality database page and click on graph o
 **2)	WHO website - data on vaccination coverage** 
 
 **WHO**: https://www.who.int/immunization/monitoring_surveillance/data/en/ 
-a.	Download and review official country estimates of national coverages (4.1 Official country reported coverage estimates time series are available in html and in excel)
-b.	Download and review official reports of administrative coverages by country (4.2 Download country reported administrative data time series in excel)
-c.	Prepare a table summarizing PCV3 coverage in your country using data from these sources.
-d.	Now, download and review the reports prepared according to the method of estimating national immunization coverage by WHO / UNICEF (WUENIC) (4.5 WHO / UNICEF Estimates of National Immunization Coverage (WUENIC) are available in html and in excel. the country summaries (in pdf), content of PDF in excel and the method.)
-i.	How do the reported WHO / UNICEF estimates and administrative coverage estimates differ?
-ii.	Are you familiar with the methods for estimating WHO / UNICEF coverage? The country summaries and methods are available on this page.
+ 
+ a.	Download and review official country estimates of national coverages (4.1 Official country reported coverage estimates time series are available in html and in excel)
+
+ b.	Download and review official reports of administrative coverages by country (4.2 Download country reported administrative data time series in excel)
+
+ c.	Prepare a table summarizing PCV3 coverage in your country using data from these sources.
+
+ d.	Now, download and review the reports prepared according to the method of estimating national immunization coverage by WHO / UNICEF (WUENIC) (4.5 WHO / UNICEF Estimates of National Immunization Coverage (WUENIC) are available in html and in excel. the country summaries (in pdf), content of PDF in excel and the method.)
+
+  i.	How do the reported WHO / UNICEF estimates and administrative coverage estimates differ?
+  ii.	Are you familiar with the methods for estimating WHO / UNICEF coverage? The country summaries and methods are available on this page.
 
 **3)	United Nations, Division of Population (UNPOP) - Population data**
+
 **UNPOP**: Main page of the UN Population website with several links for publications, data, manuals, papers, maps, among others.
 https://www.un.org/en/development/desa/population/publications/dataset/index.asp
 
 Among them, the link to access the databases and demographic / population information:
 https://population.un.org/wpp/
-a.	“Graphs”, “demographic profiles”, select your country
-Review and discuss the figures generated under “lines charts” and “population pyramids”
-b.	“Interactive data”, click in “Population by age and sex”
-i.	select “Latin America and the Caribbean”, select your country
-ii.	select the time period in years (ex. 2005-2019)
-iii.	select “both sexes combined”
-iv.	select the age group of your interest for the analysis (or all for curiosity)
-v.	Validate/confirm the suggested format provided by the webpage for the pivot table to be generated for presenting the  data
-vi.	Evaluate the results and use this information to generate the information which will be used for the final product of the workshop, as described in further detail below  
 
-c.	Click in “Data Sources”, select your country. Evalua the description of the available data, its sources, and methods used for population estimation.  
+ a.	“Graphs”, “demographic profiles”, select your country
+ Review and discuss the figures generated under “lines charts” and “population pyramids”
 
-d.	OBSERVATION: If you want to download datasets, click in “Download files”, “Standard Projections” and “Population Indicators”
-i.	under “Age Composition”, the databases  in .xls “Population by age groups” can be dowloaded
+ b.	“Interactive data”, click in “Population by age and sex”
+  i.	select “Latin America and the Caribbean”, select your country
+  ii.	select the time period in years (ex. 2005-2019)
+  iii.	select “both sexes combined”
+  iv.	select the age group of your interest for the analysis (or all for curiosity)
+  v.	Validate/confirm the suggested format provided by the webpage for the pivot table to be generated for presenting the  data
+  vi.	Evaluate the results and use this information to generate the information which will be used for the final product of the workshop, as described in further detail below  
+
+ c.	Click in “Data Sources”, select your country. Evalua the description of the available data, its sources, and methods used for population estimation.  OBSERVATION: If you want to download datasets, click in “Download files”, “Standard Projections” and “Population Indicators”
+ 
+ d.	under “Age Composition”, the databases  in .xls “Population by age groups” can be dowloaded
 
 **4)	WHO – toolkit for health facility information analysis ** 
 The WHO has recently launched a toolkit including a set of resources to optimize the analysis and use of data collected through routine health facility information systems, also known as health management information systems (HMIS). The comprehensive toolkit includes a series of integrated modules including program specific analysis (immunization and non-communicable diseases among them), standards for measurement/analysis, and integrated health services analysis. Modules can be used individually or together, according to the needs. [WHO, Analysis and use of Health Facility Data].
-HOSPITALIZATION DATA AND EXAMPLES FROM THE ABOVE
+
+TODO: HOSPITALIZATION DATA AND EXAMPLES FROM THE ABOVE
 
 
-##	Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts) (CRISTIANA)
+##	Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts) 
 
-## Data management (MOSTLY CRISTIANA)
+## Data management 
 
-## Data analysis (DAN TODO)
+## Data analysis
 
-In the sections below, we will describe how to format the data for analysis and how to interpret the results from different analyses. In these examples, we will use mortality data from Ecuador. If you want more details on how to actually implement these analyses in R or in a web-based interface, see the following:
+A brief overview of the steps needed to perform an evaluation analysis are outlined below. 
 
-- For a detailed, guided example that shows how to format your data, run analyses, and interpret results in R, see the Practical Exercise (TODO LINK). In that Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls. 
+- For a detailed, guided example that shows how to format your data, run analyses, and interpret results in R, see the Practical Exercise (https://weinbergerlab.shinyapps.io/NYC_syndromic/WHO guidance on the use of administrative data). In that Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls. 
 
--To learn how to implement and interpret the analyses using a point-and-click web-based interface, click here (TODO link). 
+-To learn how to implement and interpret the analyses using a point-and-click web-based interface, click here (https://weinbergerlab.shinyapps.io/NYC_syndromic/WHO guidance on the use of administrative data). 
 
 ###	Data formatting
 
 When evaluating changes in disease rates associated with an intervention, the first step is to format the data into a **time series**. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data (i.e., one row per hospitalization or death), creating a variable that has the date rounded down to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period. 
 
-Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases or cause sof death that we want to enumerate. If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 2 age groups. Each date/age group combination should have only 1 row in this dataset, *and all date/age combinations should be represented, even if no cases were observed during a particular time period*. Here we can see the first 3 months of data for age groups 2-23m and 2-59m in Ecuador.
+Ultimately we want to get a dataset that looks something like this, with a column for the date, and a column for each of the diseases or cause sof death that we want to enumerate. If you have multiple strata, such as different age groups or regions, the dataset will need to reflect this. In the table below, we have 2 age groups. Each date/age group combination should have only 1 row in this dataset, *and all date/age combinations should be represented, even if there were 0 cases observed during a particular time period*. Here we can see the first 3 months of data for age groups 2-23m and 2-59m in Ecuador.
 
 ```{r, echo=F}
 
@@ -937,53 +973,140 @@ plot(ds.sub$monthdate,ds.sub[,offset.name2], type='l', bty='l', col='blue', xlab
 
 ### Analyzing the data
 
-As discussed in the previous sections, there are a number of ways to evaluate the impact of PCVs. In Ecuador, PCV was introduced in August 2010. We will ignore the first year of post-vaccine data to allow vaccine uptake to increase before we start evaluating the effect of the vaccine on rates of death.
+As discussed in the previous sections, there are a number of ways to evaluate the impact of PCVs. These include pre-post comparisons, interrupted time series analyses, and synthetic controls; and there are many variants of these approaches. 
 
-### Interpreting results (DAN)
+For all of the analysis types that we have reviewed, the analysis involves a comparison between the number of cases (or incidence) in a post-vaccine evaluation period, compared to an **expected** number of cases. The expected number of cases can be derived by extrapolating the trend line (interrupted time series or pre-post analyses) or by tracking trends in comparison diseases.
 
-	‘dummy’ results that highlight different scenarios (ie wide Cis with a point estimate <<1, wide Cis with a point estimate near 1, tight Cis with a point estimate near 1, tight Cis with a point estimate far from 1)
+Regardless of the analytical framework used, it is critical to adjust for underlying trends in the data that are unrelated to vaccine introduction. If the underlying trend is linear or log-linear, a standard interrupted time series analysis might be appropriate. However, the trends unrelated to vaccine introduction often follow patterns that are not readily captured with a straight line. Ignoring these trends can lead to incorrect results. Therefore, it is critical to identify control variables that can be used to adjust for unrelated factors. This can be accomplished in a number of ways, as discussed above.
 
+Several summary measures can be reported from the main analysis. These include
+1. The relative change in incidence during a specified evaluation period, also known as the "Rate Ratio". The rate ratio is calculated by summing the number of cases that occurred after the intervention and dividing by the expected number of cases.
+2. The absolute change in incidence during a specified evaluation period, also known as the "Rate difference". The rate difference is calculated by summing the number of cases that occurred after the intervention and subtracting the expected number of cases.
+3. Reports from interrupted time series analysis often also report on the change in the slope of the line from the pre-vaccine period to the post-vaccine period. While this does provide evidence of a change, it is a somewhat abstract quantity that can be difficult to interpret from a public health standpoint and can be difficult to compare between studies
 
-##	Communicating and Presenting results effectively (including suggested templates) (DAN AND CRIS)
+It is also important to conduct sensitivity analyses to determine the robustness of the findings. These can include
+1. Shifting the specified date of vaccine introduction or the evaluation period forward or backward in time
+2. Using different controls or sets of control diseases
+3. Using different analytical approaches. For instance, if the main analysis uses synthetic controls, an interrupted time series could be performed as a comparison
 
+### Interpreting results in light of uncertainty
 
+With any statistical analysis, there will be a measure of uncertainty in the estimates. These give an indication of the precision of the estimates and are specific to the model used and the underlying data. 
+
+When performing a randomized controlled trial for the purposes of licensing a vaccine the goal is to determine whether the vaccine works as intended, and this is determined through a formal statistical test. The question in that situation is whether the efficacy of the vaccine is greater than 0, and a 95% confidence interval for vaccine efficacy that does not cross 0 is taken as evidence for a 'significant' effect.
+
+In post-licensure studies of vaccine impact, the goals of the analyses and uses of the results are different than they are in a trial. The results are used to obtain an estimate of the magnitude of impact (e.g., percent reduction or number of cases averted); the results are not typically used to make a dichotomous decision. Moreover, impact evaluations are observational studies using available data and are therefore not designed to have a specified statistical power. Therefore, the estimates of vaccine impact and the uncertainty intervals should be used to give an indication of the magnitude of the effect and the strength of the evidence. *Results should not be interpreted   in terms of statistical significance*. 
+
+When describing the results,  it is most useful with this type of study to present the estimate of interest (e.g., rate ratio, cases averted), along with the uncertainty intervals, and then discuss the size of the effect and the robustness of the results. The uncertainty intervals around the rate ratio capture just some of the sources of error and uncertainty in the analyses.  
+
+As a concrete example, here are rate ratio estimates from 4 different sets of analyses. Rate ratio A has a value of 0.65 (0.58, 0.72). This represents a strong decline of 35%, with little uncertainty in the estimates. Rate ratio 2 also has a value of 0.65, but with much wider confidence intervals, which cross 1 (i.e., no effect). It would be incorrect to say that there is no decline, just because the confidence interval crosses 1. Rather, we can say that there was an estimated 35% decline, with a high degree of uncertainty in the estimate, with plausible estimates ranging from no effect (-1%) to a very strong effect (70% decline).
+
+As a comparison, rate ratios C and D represent smaller effects (10% decline). C has narrow confidence intervals (ranging from 0.85-0.95), while rate ratio D has wider confidence intervals (ranging from 0.8-1.1). In this instance, we would say that C shows evidence of a small decline, with a moderate degree of certainty, while for D, it is difficult to draw a firm conclusion--we could say that there is some evidence for a small decline, but there is a high degree of uncertainty in the estimates, but we can't say with confidence that there was a notable decline.
+
+Finally, for E, there is no evidence of a decline (RR=1), with a small degree of uncertainty.
+
+```{r}
+rr1<- c(0.65, 0.58, 0.72)
+rr2<-c(0.65, 0.3, 1.01)
+rr3<- c(0.9, 0.85, 0.95)
+rr4<-c(0.9, 0.8, 1.1)
+rr5<-c(1.0, 0.9, 1.1)
+
+all.rrs<-rbind(rr1, rr2, rr3, rr4,rr5)
+plot(all.rrs[,1], ylim=range(all.rrs), bty='l', pch=16, ylab='Rate Ratio', xaxt='n', xlab='')
+axis(1, at=c(1:nrow(all.rrs)), labels=c("A", "B","C","D", "E"))
+arrows(x0<-1:nrow(all.rrs) ,y0=all.rrs[,2], y1=all.rrs[,3], length=0   )
+abline(h=1, lty=2, col='gray')
+```
+Finally, as illustrated in the previous sections, different analysis approaches can yield different estimates. It can be helpful to discuss where the results agree between methods, and if they disagree, discuss possible reasons why. 
+
+It is important to remember that the uncertainty intervals presented in an evaluation study typically capture just one or a few sources of error, which are related to the fit of the model and the characteristics of the data. Issues with data quality are not as easily captured by a summary measure of uncertainty, and uncertainty related to the choice of which analytical framework to use are also not typically captured. 
+
+##	Communicating and Presenting results effectively (including suggested templates) 
+
+Communicating and presenting results of the analysis is an important aspect of the study, particularly conveying the message to program managers, decision makers, and other stakeholders involved.
+
+When presenting the results from an evaluation study, it is important to convey the magnitude of the effect, and the uncertainty in the estimates. It is also important to convey caution that these are observational results and to describe them with sufficient caution. 
+
+- Present the relative decline as a percent reduction in disease rates. Indicate what time period the evaluation is done, and, and also indicate over what period. For instance for an interreupted time series or synthetic control analysis, say "pneumonia rates declined by 23% following the introduction of pneumococcal conjugate vaccines during the period January 2011-December 2013 compared to the expected number of cases)
+- Describe "declines in disease  rates **associated** with the introduction of the vaccine", rather than "declines in disease rates **caused** by the vaccine. The wording can explicity say the decline is associated with vaccine introduction, or could states that the decline occurred following the introduction o the vaccine.
+
+A template for presentation including relevant background information of the country, including vaccine introduction, available data sources, in addition to study objectives, methods and results, is provided here. 
 
 
 ## References 
-TODO: Order and format
-Liu L, Oza S, Hogan D, et al. Global, regional, and national causes of under-5 mortality in 2000-15: an updated systematic analysis with implications for the Sustainable Development Goals. Lancet (London, England) 2016; 388(10063): 3027-35.
-O'Brien KL, Wolfson LJ, Watt JP, et al. Burden of disease caused by Streptococcus pneumoniae in children younger than 5 years: global estimates. Lancet (London, England) 2009; 374(9693): 893-902.
-Wahl B, O'Brien KL, Greenbaum A, et al. Burden of Streptococcus pneumoniae and Haemophilus influenzae type b disease in children in the era of conjugate vaccines: global, regional, and national estimates for 2000-15. Lancet Glob Health 2018; 6(7): e744-e57.
-Johns Hopkins Bloomberg School of Public Health International Vaccine Access Center (IVAC). View-hub report: Global vaccine introduction and Implementation, March 2019. 2019. https://www.technet-21.org/fr/library/explore/global-initiatives/5010-september-2018-view-hub-report-global-vaccine-introduction-and-implementation 2019).
-World Health Organization. Pneumococcal vaccines WHO position paper--2012. Releve epidemiologique hebdomadaire 2012; 87(14): 129-44.
-World Health Organization. Pneumococcal vaccines WHO position paper--2019. Releve epidemiologique hebdomadaire 2019; 8(94): 85-104.
-de Oliveira L, Camacho L, Coutinho E, et al. Impact and Effectiveness of 10 and 13-Valent Pneumococcal Conjugate Vaccines on Hospitalization and Mortality in Children Aged Less than 5 Years in Latin American Countries: A Systematic Review. PloS one 2016; 11(12).
-Loo JD, Conklin L, Fleming-Dutra KE, et al. Systematic review of the effect of pneumococcal conjugate vaccine dosing schedules on prevention of pneumonia. The Pediatric infectious disease journal 2014; 33 Suppl 2: S140-51.
-Phillips D, Lozano R, Naghavi M, et al. A composite metric for assessing data on mortality and causes of death: the vital statistics performance index. Popul Health Metr 2014; 12(14): 1478-7954.
-Shioda K, Schuck-Paim C, Taylor R, et al. Challenges in Estimating the Impact of Vaccination with Sparse Data. Epidemiology 2019; 30(1): 61-8.
-Pan American Health Organization/World Health Organization. Lineamientos básicos para el análisis de la mortalidad. In: Pan American Health Organization, editor. Washington, DC: OPS/PAHO; 2017.
-Pan American Health Organization/World Health Organization. PLISA Database. Health Situation in the Americas: Core Indicators 2018. In: Organization PAH, editor. Washington, DC: PAHO; 2018.
-Penfold RB, Zhang F. Use of interrupted time series analysis in evaluating health care quality improvements. Acad Pediatr. 2013;13:S38-44.
-Bruhn CA, Schuck-Paim C, Kürüm E, Taylor RJ, Simonsen L, Weinberger DM. Improving Assessments of Population-level Vaccine Impact. Epidemiology. 2017 Mar;28(2):233-236.
-Saadatian-Elahi M, Horstick O, Breiman RF, et al. Beyond Efficacy: The Full Public Health Impact of Vaccines. Vaccine. 2016;34(9):1139-1147.
-Hanquet G, Valenciano M, Simondon F, Moren A. Vaccine effects and impact of vaccination programmes in post-licensure studies. Vaccine. 2013;31(48):5634-42. 
-Sartori AM, Nascimento AF, Yuba TY, Soarez PC, Novaes HM. Methods and challenges for the health impact assessment of vaccination programs in Latin America. Rev Saude Publica. 2015;49.
-Schuck-Paim C, Taylor RJ, Simonsen L, Lustig R, Kürüm E, Bruhn CA, Weinberger DM. Challenges to estimating vaccine impact using hospitalization data. Vaccine. 2017 Jan 3;35(1):118-124. 
-de Oliveira LH, Camacho LA, Coutinho ES, Martinez-Silveira MS, Carvalho AF, Ruiz-Matus C, Toscano CM.Impact and Effectiveness of 10 and 13-Valent Pneumococcal Conjugate Vaccines on Hospitalization and Mortality in Children Aged Less than 5 Years in Latin American Countries: A Systematic Review. PLoS One. 2016 Dec 12;11(12):e0166736.
-Bruhn CA, Hetterich S, Schuck-Paim C, Kürüm E, Taylor RJ, Lustig R, Shapiro ED, Warren JL, Simonsen L, Weinberger DM. Estimating the population-level impact of vaccines using synthetic controls. Proc Natl Acad Sci USA. 2017 Feb 14;114(7):1524-1529.
-United Nations Population Division (UNPOP). Available at https://esa.un.org/unpd/wpp/ 
-Alonso WJ, López D, Schuck-Paim. Popweaver: a program for interpolation and visualization of census and other sparsely collected data. Journal of Population Research, 2017 (In press) 
-WHO. Measuring impact of Streptococcus pneumoniae and Haemophilus influenza type b conjugate vaccination. Geneva, 2012. WHO/IVB/12.08
-de Oliveira LH, Shioda K, Valenzuela MT, Janusz CB, Rearte A, Sbarra AN, et al. Declines in pneumonia mortality following the introduction of pneumococcal conjugate vaccines in Latin American and Caribbean countries. Lancet Global Health, 2020. Submitted.
 
-•	Published papers using administrative data to assess PCV in Africa
-•	Rwanda (Gatera et al, 2016)
-•	Malawi (McCollum et al, 2017)
-•	South Africa (Izu et al, 2017)
+(IVAC), Johns Hopkins Bloomberg School of Public Health International Vaccine Access Center. "View-Hub Report: Global Vaccine Introduction and Implementation." Baltimore, MD: Johns Hopkins Bloomberg School of Public Health, 2019. Print.
 
-Pan American Health Organization. Basic guidelines for the analysis of mortality. Washington, D.C.: PAHO; 2018. Available at http://iris.paho.org/xmlui/handle/123456789/34985
+(PAHO), Pan American Health Organization. "Basic Guidelines for the Analysis of Mortality." Washington, D.C: PAHO, 2018. Print.
 
-World Health Organization. (2005). Health statistics and information systems. Statistics. Mortality raw data, available at 
-https://www.who.int/healthinfo/statistics/mortality_rawdata/en/#
-World Health Organization. (2004). ICD-10 : international statistical classification of diseases and related health problems: tenth revision, 2nd ed. World Health Organization. https://apps.who.int/iris/handle/10665/42980
-World Health Organization. (2018). International classification of diseases for mortality and morbidity statistics (11th Revision). Available at https://icd.who.int/browse11/l-m/en 
+---. "Health Situation in the Americas: Core Indicators 2018." Washington, D.C: PAHO, 2018. Print.
+
+(UN), United Nations. "United Nations Population Division 
+
+(Unpop). ."  https://esa.un.org/unpd/wpp/ %! United Nations Population Division (UNPOP).  %U https://esa.un.org/unpd/wpp/. Print.
+
+(WHO), World Health Organization. "Analysis and Use of Health Facility Data ". Print.
+
+---. "Health Statistics and Information Systems. Statistics. Mortality Raw Data." 2005. Print.
+
+---. "Icd-10 : International Statistical Classification of Diseases and Related Health Problems: Tenth Revision." World Health Organization, 2004. Print.
+
+---. "International Classification of Diseases for Mortality and Morbidity Statistics  (11th Revision)." 2018. Print.
+
+---. "Measuring Impact of Streptococcus Pneumoniae and Haemophilus Influenzae Type B Conjugate Vaccination." Geneva2012 of WHO/IVB/12.08. Print.
+
+Alonso, Wladimir J., Daniel López, and Cynthia Schuck-Paim. "Popweaver: A Program for Interpolation and Visualization of Census and Other Sparsely Collected Data." Journal of Population Research In press %! Popweaver: a program for interpolation and visualization of census and other sparsely collected data %@ 3 (2017). Print.
+
+Bruhn, C. A., et al. "Estimating the Population-Level Impact of Vaccines Using Synthetic Controls." Proc Natl Acad Sci U S A 114.7 (2017): 1524-29 %7 2017/02/01 %8 02 %! Estimating the population-level impact of vaccines using synthetic controls %@ 1091-6490. Print.
+
+Bruhn, C. A., et al. "Improving Assessments of Population-Level Vaccine Impact." Epidemiology 28.2 (2017): 233-36 %7 2016/12/07 %8 Mar %! Improving Assessments of Population-level Vaccine Impact %@ 1044-3983. Print.
+
+de Oliveira, L. H., et al. "Impact and Effectiveness of 10 and 13-Valent Pneumococcal Conjugate Vaccines on Hospitalization and Mortality in Children Aged Less Than 5 Years in Latin American Countries: A Systematic Review." PLoS One 11.12 (2016): e0166736 %7 2016/12/12 %! Impact and Effectiveness of 10 and 13-Valent Pneumococcal Conjugate Vaccines on Hospitalization and Mortality in Children Aged Less than 5 Years in Latin American Countries: A Systematic Review %@ 1932-6203. Print.
+
+de Oliveira, L. H., et al. "Declines in Pneumonia Mortality Following the Introduction of Pneumococcal Conjugate Vaccines in Latin American and Caribbean Countries." Clin Infect Dis  (2020). Print.
+
+Gatera, M., et al. "Use of Administrative Records to Assess Pneumococcal Conjugate Vaccine Impact on Pediatric Meningitis and Pneumonia Hospitalizations in Rwanda." Vaccine 34.44 (2016): 5321-28. Print.
+
+Gatera, M., et al. "Use of Administrative Records to Assess Pneumococcal Conjugate Vaccine Impact on Pediatric Meningitis and Pneumonia Hospitalizations in Rwanda." Vaccine 34.44 (2016): 5321-28 %7 2016/09/14 %8 10 %! Use of administrative records to assess pneumococcal conjugate vaccine impact on pediatric meningitis and pneumonia hospitalizations in Rwanda %@ 1873-2518. Print.
+Hanquet, G., et al. "Vaccine Effects and Impact of Vaccination Programmes in Post-Licensure Studies." Vaccine 31.48 (2013): 5634-42 %7 2013/07/17 %8 Nov 19 %! Vaccine effects and impact of vaccination programmes in post-licensure studies %@ 0264-410x. Print.
+
+Izu, A., et al. "Pneumococcal Conjugate Vaccines and Hospitalization of Children for Pneumonia: A Time-Series Analysis, South Africa, 2006-2014." Bull World Health Organ 95.9 (2017): 618-28. Print.
+
+Lee, E., et al. "Database of Normalised Computed Tomography Dose Index for Retrospective Ct Dosimetry." J Radiol Prot 34.2 (2014): 363-88. Print.
+
+Liu, L., et al. "Global, Regional, and National Causes of under-5 Mortality in 2000-15: An Updated Systematic Analysis with Implications for the Sustainable Development Goals." Lancet 388.10063 (2016): 3027-35. Print.
+
+Loo, J. D., et al. "Systematic Review of the Effect of Pneumococcal Conjugate Vaccine Dosing Schedules on Prevention of Pneumonia." Pediatr Infect Dis J 33 Suppl 2 (2014): S140-51. Print.
+
+Lopez Bernal, J., S. Cummins, and A. Gasparrini. "The Use of Controls in Interrupted Time Series Studies of Public Health Interventions." Int J Epidemiol 47.6 (2018): 2082-93. Print.
+
+Lopez Bernal, J., S. Soumerai, and A. Gasparrini. "A Methodological Framework for Model Selection in Interrupted Time Series Studies." J Clin Epidemiol 103 (2018): 82-91. Print.
+
+McCollum, E. D., et al. "Impact of the 13-Valent Pneumococcal Conjugate Vaccine on Clinical and Hypoxemic Childhood Pneumonia over Three Years in Central Malawi: An Observational Study." PLoS One 12.1 (2017): e0168209 %7 2017/01/04 %! Impact of the 13-Valent Pneumococcal Conjugate Vaccine on Clinical and Hypoxemic Childhood Pneumonia over Three Years in Central Malawi: An Observational Study %@ 1932-6203. Print.
+
+O'Brien, K. L., et al. "Burden of Disease Caused by Streptococcus Pneumoniae in Children Younger Than 5 Years: Global Estimates." Lancet 374.9693 (2009): 893-902. Print.
+Organization, World Health. "Pneumococcal Vaccines Who Position Paper--2012." Wkly Epidemiol Rec 87.14 (2012): 129-44. Print.
+
+---. "Pneumococcal Vaccines Who Position Paper--2019." Wkly Epidemiol Rec 94.8 (2019): 85-104. Print.
+
+Penfold, R. B., and F. Zhang. "Use of Interrupted Time Series Analysis in Evaluating Health Care Quality Improvements." Acad Pediatr 13.6 Suppl (2013): S38-44 %7 2013/12/07 %8 Nov-Dec %! Use of interrupted time series analysis in evaluating health care quality improvements %@ 1876-2859. Print.
+
+Phillips, D. E., et al. "A Composite Metric for Assessing Data on Mortality and Causes of Death: The Vital Statistics Performance Index." Popul Health Metr 12 (2014): 14. Print.
+
+Saadatian-Elahi, M., et al. "Beyond Efficacy: The Full Public Health Impact of Vaccines." Vaccine 34.9 (2016): 1139-47 %7 2016/01/26 %8 Feb 24 %! Beyond efficacy: The full public health impact of vaccines %@ 0264-410x. Print.
+
+Sartori, A. M., et al. "Methods and Challenges for the Health Impact Assessment of Vaccination Programs in Latin America." Rev Saude Publica 49 %7 2016/01/15 %! Methods and challenges for the health impact assessment of vaccination programs in Latin America %@ 1518-8787 (2015). Print.
+
+Schuck-Paim, C., et al. "Challenges to Estimating Vaccine Impact Using Hospitalization Data." Vaccine 35.1 (2017): 118-24 %7 2016/11/26 %8 01 %! Challenges to estimating vaccine impact using hospitalization data %@ 1873-2518. Print.
+
+Shioda, K., et al. "Challenges in Estimating the Impact of Vaccination with Sparse Data." Epidemiology 30.1 (2019): 61-68. Print.
+
+Sreenivasa Kumar, M. L., et al. "Impact of Metabolic Syndrome on Global Left Ventricular Function: As Evaluated by the Myocardial Performance Index." J Saudi Heart Assoc 26.3 (2014): 145-51. Print.
+
+Wahl, B., et al. "Burden of Streptococcus Pneumoniae and Haemophilus Influenzae Type B Disease in Children in the Era of Conjugate Vaccines: Global, Regional, and National Estimates for 2000-15." Lancet Glob Health 6.7 (2018): e744-e57. Print.
+
+Zikos, D., A. Shrestha, and L. Fegaras. "Estimation of the Mismatch between Admission and Discharge Diagnosis for Respiratory Patients, and Implications on the Length of Stay and Hospital Charges." AMIA Jt Summits Transl Sci Proc 2019 (2019): 192-201 %7 2019/05/06 %! 
+
+Estimation of the Mismatch between Admission and Discharge Diagnosis for Respiratory Patients, and Implications on the Length of Stay and Hospital Charges %@ 153-4063 %2 PMC6568083 %M 31258971. Print.
+
