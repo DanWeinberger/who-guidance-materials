@@ -23,8 +23,12 @@ RUN Rscript -e 'install.packages(c(\
   "Gmisc", \
   "INLA" \
 ), repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"))'
+RUN Rscript -e 'devtools::install_version(\
+  "future", version="1.19.1" \
+)'
 RUN Rscript -e 'devtools::install_github(\
-  "weinbergerlab/InterventionEvaluatR" \
+  "weinbergerlab/InterventionEvaluatR", \
+  upgrade="never" \
 )'
 
 ### Install pandoc 2.x
