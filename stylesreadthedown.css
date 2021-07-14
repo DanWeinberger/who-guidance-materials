@@ -36,8 +36,8 @@ h3.subtitle {
 }
 .btn-default {
   color: #507894;
-    background-color: #ffffff;
-    border-color: #ffffff;
+    background-color: #507894;
+    border-color: #507894;
 }
 
 h2, .h2 {
@@ -62,8 +62,8 @@ h3, .h3 {
 }
 
 #main a {
-    background-image: linear-gradient(180deg,#d64a70,#d64a70);
-    color:#c7254e;
+    background-image: linear-gradient(180deg,#507894,#507894);
+    color:#507894;
 }
 
 a:hover{
