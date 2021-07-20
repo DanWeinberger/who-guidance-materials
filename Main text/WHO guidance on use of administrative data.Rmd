@@ -36,7 +36,7 @@ ecuador_mortality$date<-ecuador_mortality$monthdate
 ```
 
 ```{r knitr-logo, out.width='50%', fig.show='hold',fig.align="center"}
-knitr::include_graphics('./figs/WHO_logo.png')
+#knitr::include_graphics('./figs/WHO_logo.png')
 ```
 <br>
 
