@@ -1482,14 +1482,16 @@ $(document).ready(function () {
       <li><a href="#synthetic-controls">Synthetic controls</a></li>
       </ul></li>
       <li><a href="#feasibility-of-conducting-a-time-series-analysis-of-secondary-data-to-assess-vaccine-impact-concepts">Feasibility of conducting a time series analysis of secondary data to assess vaccine impact (Concepts)</a></li>
-      <li><a href="#data-management-pending">Data management (pending)</a></li>
-      <li><a href="#data-analysis">Data analysis</a><ul>
+      <li><a href="#data-management-pending">Data management (pending)</a><ul>
       <li><a href="#data-formatting">Data formatting</a></li>
       <li><a href="#descriptive-analysis">Descriptive analysis</a></li>
       <li><a href="#analyzing-the-data">Analyzing the data</a></li>
       <li><a href="#interpreting-results-in-light-of-uncertainty">Interpreting results in light of uncertainty</a></li>
       </ul></li>
       <li><a href="#communicating-and-presenting-results-effectively-including-suggested-templates">Communicating and Presenting results effectively (including suggested templates)</a></li>
+      <li><a href="#tutorial-on-formatting-and-analyzing-data-in-r-ecuador">Tutorial on formatting and analyzing data in R: Ecuador</a></li>
+      <li><a href="#tutorial-using-synthetic-controls-to-evaluate-the-impact-of-pcvs-in-south-africa">Tutorial: Using synthetic controls to Evaluate the impact of PCVs in South Africa</a></li>
+      <li><a href="#instructions-on-using-the-point-and-click-interface-to-evaluate-pcv-impact-pending">Instructions on using the point and click interface to evaluate PCV impact (pending)</a></li>
       <li><a href="#references">References</a></li>
       </ul>
     </div>
@@ -1806,15 +1808,6 @@ iii. Year of vaccine introduction</p>
 <p>Data extraction, cleaning and formatting for analysis</p>
 <p>Annex: Template for Study protocol</p>
 <p>Annex: Template for Presentation of Results</p>
-</div>
-<div id="data-analysis" class="section level2">
-<h2>Data analysis</h2>
-<p>A brief overview of the steps needed to perform an evaluation analysis are outlined below.</p>
-<ul>
-<li>For a detailed, guided example that shows how to format your data, run analyses, and interpret results in R, see the Practical Exercise (PENDING). In that Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls.</li>
-</ul>
-<p>–For a worked example of applying synthetic controls analysis to mortality data from South Africa, see <a href="https://vaccineevaluationworkshop.github.io/Session-4-Synthetic-Controls/" class="uri">https://vaccineevaluationworkshop.github.io/Session-4-Synthetic-Controls/</a></p>
-<p>-To learn how to implement and interpret the analyses using a point-and-click web-based interface, click here (PENDING).</p>
 <div id="data-formatting" class="section level3">
 <h3>Data formatting</h3>
 <p>When evaluating changes in disease rates associated with an intervention, the first step is to format the data into a <strong>time series</strong>. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data (i.e., one row per hospitalization or death), creating a variable that has the date rounded down to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period.</p>
@@ -1867,6 +1860,18 @@ iii. Year of vaccine introduction</p>
 <li>Describe “declines in disease rates <strong>associated</strong> with the introduction of the vaccine”, rather than &quot;declines in disease rates <strong>caused</strong> by the vaccine. The wording can explicity say the decline is associated with vaccine introduction, or could states that the decline occurred following the introduction o the vaccine.</li>
 </ul>
 <p>A template for presentation including relevant background information of the country, including vaccine introduction, available data sources, in addition to study objectives, methods and results, is provided here.[PENDING]</p>
+</div>
+<div id="tutorial-on-formatting-and-analyzing-data-in-r-ecuador" class="section level2">
+<h2>Tutorial on formatting and analyzing data in R: Ecuador</h2>
+<p>In this Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls. <a href="https://danweinberger.github.io/who-guidance-materials/tutorial_ecuador.html">Click here to access the tutorial</a></p>
+</div>
+<div id="tutorial-using-synthetic-controls-to-evaluate-the-impact-of-pcvs-in-south-africa" class="section level2">
+<h2>Tutorial: Using synthetic controls to Evaluate the impact of PCVs in South Africa</h2>
+<p>In this exercise, we will analyze a challenging mortaliy dataset from South Africa to quantify the impact of PCVs on death due to pneumonia. <a href="https://danweinberger.github.io/who-guidance-materials/South-Africa-Example.html">Click here to access the tutorial</a></p>
+</div>
+<div id="instructions-on-using-the-point-and-click-interface-to-evaluate-pcv-impact-pending" class="section level2">
+<h2>Instructions on using the point and click interface to evaluate PCV impact (pending)</h2>
+<p>-To learn how to implement and interpret the analyses using a point-and-click web-based interface, click here (PENDING).</p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
