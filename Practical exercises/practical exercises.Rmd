@@ -34,6 +34,7 @@ library(InterventionEvaluatR)
 library(coda)
 library(rmdformats)
 library(httr)
+library(xtable)
 
 
 
@@ -360,7 +361,14 @@ analysis <- evaluatr.init(
   set.sampleN=10000
 )
 set.seed(1)
+
 ```
+
+```{r, echo=F}
+analysis <- readRDS('./Results/analysis_post_run.rds') #reads in analysis object that was modified after running SC
+
+```
+
 ### Sort data by age group and month
 ```{r}
     ds<-ds[order(ds[, analysis$group_name], ds[,analysis$date_name]),] #Sort data by age group and month
@@ -372,24 +380,17 @@ set.seed(1)
 This function runs Interrupted time series analysis, an alternative time trend analysis, synthetic controls, and STL+PCA. All of these results are saved in the object 'impact_results'.
 
 
-### Run ITS analysis
-
-```{r}
-
-```
-
-
 ### Run a simple control analysis, controlling for 1 control variable at a time
 
 Before getting into more complicated analyses, we will first try to fit a simple Poisson regression model (with overdispersion) where we adjust for seasonality and 1 control variable at a time. These models are fit to data from the pre-vaccine periods and extrapolated to the post-vaccine period. Fitting 1 control variable at a time allows us to see how the use of different controls influences the results. This take a few minutes, so we will use a pre-run set of results.
 
-```{r univariate, echo = T, results = 'hide',warning=FALSE}
-# glmer_results= evaluatr.univariate(analysis)
+```{r univariate, echo = T, results = 'hide',warning=FALSE, eval=F}
+ glmer_results= evaluatr.univariate(analysis)
 ```
 
-```{r}
+```{r, echo=F}
 #saveRDS(glmer_results,'./Data/univariate_results.rds')
- glmer_results= readRDS('./Data/univariate_results.rds')
+ glmer_results= readRDS('./Results/univariate_results.rds')
 
 ```
 
@@ -405,25 +406,162 @@ lapply(glmer_results,evaluatr.univariate.plot)
 
 ### Run Synthetic control analysis
 
-```{r}
-#impact_results = evaluatr.impact(analysis)
+For teaching purposes, this code has been pre-run since it takes some time and computational resources.
 
+```{r,message = FALSE,warning=FALSE, eval=F}
+impact_results = evaluatr.impact(analysis)
+saveRDS(impact_results,'./Results/ec_sc.rds')
+
+```
+
+```{r, echo=F}
+#Load the pre-run results
+impact_results <- readRDS('./Results/ec_sc.rds')
+```
+
+Were there any strata that were too sparse to analyze?
+
+```{r sparse, results="asis", echo=F}
+if (!is.null(names(analysis$sparse_groups[analysis$sparse_groups])) && length(names(analysis$sparse_groups[analysis$sparse_groups])) != 0) {
+  print(xtable(data.frame("Sparse Groups" = names(analysis$sparse_groups[analysis$sparse_groups]), check.names = FALSE), align = "cc"), type="html")
+}
+```
+
+## Compare estimates from different models
+This shows the estimated rate ratio and 95% credible intervals from a synthetic controls analysis; a time-trend analysis where we used the specified denominator (all non-respiratory deaths) to adjust the number of pneumonia deaths in each month and a linear trend for time; a classic interrupted time series analysis (segmented regression); and the STL+PCA approach, which smooths and combines the control variables prior to including them in the model. 
+
+```{r Comparison of estimates from different models, results="asis"}
+results.table<- cbind.data.frame(
+  impact_results$full$rr_mean_intervals, 
+  impact_results$time$rr_mean_intervals, 
+  impact_results$its$rr_mean_intervals, 
+  impact_results$pca$rr_mean_intervals)
+
+  table<-xtable(results.table)
+  
+  htmlTable(table)
+```
+
+
+## Cases averted
+How many cases were prevented from the time of vaccine introduction to the last time point in each stratum (+/- 95% CrI)? You can modify the number 'last.point' to pull out the cumulative number of cases at any point in the time series. In this case we are printing results fromthe SC model
+```{r}
+last.point<-dim(impact_results$full$cumsum_prevented)[1]
+cum.prevented<-impact_results$full$cumsum_prevented[last.point,,]
+```
+
+Format and print table 
+```{r}
+cum1<- round(t(cum.prevented))
+cum2<- paste0(cum1[,'50%'], ' (', cum1[,'2.5%'],', ',cum1[,'97.5%'],')')
+cum3<-cbind.data.frame(row.names(cum1), cum2)
+names(cum3)<-c('Stratum','Cases Averted (95% CrI)')
+  htmlTable(cum3, align='l')
+```
+
+## Number of variables selected in SC analysis
+The Synthetic controls analysis uses a Bayesian variable selection algorithm to weight the candidate covariates. In each MCMC iteration, it tests a different combination of variables. The model size indicates how many variables are selected in any given model. If <1 variable is selected on average, this indicates that no suitable control variables were identified. 
+In this example 1-2 variables were selected on average in the 2-23m and 2-59 m age categories, while no controls were identified in the 24-59m age group (the average model size is <1 (0.44)).
+
+```{r modelsize, results="asis"}
+model_size = data.frame(t(analysis$model_size))
+htmlTable(model_size, align='c')
+```
+
+
+## Inclusion Probabilities
+```{r incl, include = TRUE}
+incl_probs <- NULL
+for (group in analysis$groups) {
+  incl_prob <- impact_results$full$groups[[group]]$inclusion_probs[-c(1:(analysis$n_seasons - 1)), ]
+  incl_prob <- incl_prob[order(-incl_prob$inclusion_probs), ]
+  incl_prob <- incl_prob[c(1:3), ]
+  incl_prob2 <- round(incl_prob[, 2],2)
+  incl_prob_names <- incl_prob[, 1]
+  incl_prob3 <- data.frame("Group" = group, "Greatest Inclusion Variable" = incl_prob_names[1], "Greatest Inclusion Probability" = incl_prob2[1], "Second Greatest Inclusion Variable" = incl_prob_names[2], "Second Greatest Inclusion Probability" = incl_prob2[2], "Third Greatest Inclusion Variable" = incl_prob_names[3], "Third Greatest Inclusion Probability" = incl_prob2[3], check.names = FALSE)
+  incl_probs <- rbind(incl_probs, incl_prob3)
+}
+rownames(incl_probs) <- NULL
+```
+
+Here we can see which variables received the most weight in the models for each strata. Values range from 0-1, with values closer to 1 indicating that the variable was included in a larger proportion of the variable combinations that were tested A value of 1 would indicate that the variable was always included in the model, a value of 0.48 would indicate the variable was included in 48% of the models that were tested.
+```{r incl_table, results="asis"}
+htmlTable(incl_probs)
 ```
 
 
 ###Sensitivity analysis
+In the sensitivity analyses, we re-run the synthetic controls analysis, but sequentially drop the top 1,2, or 3 variables that were most influential (received the most weight) in the original analysis. This allows us to evaluate whether the results are sensitive to the inclusion of a specific variable
 
-### Diagnostics
-Check model convergence
-These models are fit using Markov Chain Monte Carlo (MCMC). It is important to evaluate the convergence of the model. A quick way to check this is to evaluate the trace plots for rate ratio estimates from the synthetic controls model (or for the other model variants). We use Geweke’s diagnostic, which tests whether the mean estimate for the rate ratio in the first 10% of the iterations is equal to the mean estimate for the rate ration in the last 50% of the iterations. If the model has not converged, you might need to add more iterations or a longer burn in period
-```{r}
-# all.traces<-sapply(impact_results,'[[', 'rr_iter')
-# cats<-dimnames(all.traces[[1]])[[1]]
-# all.converge.status<-sapply(impact_results,'[[', 'converge')
-# for(j in c('full','time','pca')){
-# for(i in 1: nrow(all.traces[[1]])){
-#    plot(all.traces[[j]][i,], type='l', main=paste0(j,' ',cats[i],' ' ,all.converge.status[[j]][i,2] ), bty='l', ylim=c(0.2,2))
-# }
-# }
+```{r sensitivity_analyses, include = FALSE, eval=F}
+
+  sensitivity_results <- evaluatr.sensitivity(analysis)
+  saveRDS(sensitivity_results, './Results/sensitivity.rds')
+  saveRDS(analysis, './Results/analysis_post_run.rds')  
 ```
+
+Load the pre-run results
+```{r, echo=F}
+  sensitivity_results <- readRDS('./Results/sensitivity.rds')
+```
+
+
+The purpose of this analysis is to evaluate the sensitivity of the synthetic controls results to the inclusion of specific control variables. The model is first fit with all variables, then the top-weighted variable is excluded, and the model is re-run. If the results change drastically after dropping 1 variable, this indicates that that variable is highly influential on the results. If the results don't change, this indicates that the results are robust to the exclusion of that variable (this assumes that the variable that is excluded received a decent amount of weight prior to exclusion)
+
+```{r sensitivity, results="asis"}
+if (exists("sensitivity_results")) {
+  htmlTable(sensitivity_results$sensitivity_table_intervals)
+}
+```
+
+
+## Generate and save the plots
+```{r mainplot1, echo=FALSE}
+plots <- evaluatr.plots(analysis)
+```
+
+## Plot the results for 1 age group
+### First look at the results from the synthetic controls model for 1 age group.
+
+This first plot shows a monthly time series, with observed, fitted, and counterfacual values. The observed number of deaths is shown in the black line. The fitted values for the pre-vaccine period are shown in the red dotted line, and the counterfactual estimate with its 95% credible interval is shown as the white dotted line and gray shaded area. if the black line is below the gray shaded area, this would indicate that obsrved cases are lower than expected based on changes in the control diseases in the post-vaccine period. If the controls appropriately adjust for underlying trends, then this would reflect an effect of the vaccine. 
+```{r, fig.width=5, fig.height=4}
+      plots$groups[["ec 2-23m A"]]$pred_full 
+```
+
+It is sometimes easier to look at the results if we aggregate the observed and expected values up to the annual time scale. Here the observed values are shown as black dots. When the black dots go below the gray shaded area, this indicates that the observed cases are lower than expected based on changes in the control diseases in the post-vaccine period. If the controls appropriately adjust for underlying trends, then this would reflect an effect of the vaccine. The vertical line indicates the date of vaccine introduction. The year when the vaccine is introduced is included to the right of the line, even if the vaccine was introduced part-way through the year. For instance, regardless of whether the the vaccine was introduced in January 2009 or November 2009, the observed dot for 2009 would be to the right of the line.
+
+```{r, fig.width=5, fig.height=4}
+      plots$groups[["ec 2-23m A"]]$pred_full_agg 
+```
+
+
+Finally, we can look at the cumulative cases prevented. In this example, there have been 445 cases prevented (95%CrI: 58, 931) from the time of vaccine introduction to the last day month of the study period. This is calculated by takin the difference between the observed and fitted number of cases in each month, and summing them. If atleast 1 control disease is identified from the synthetic controls model, then the result here is drawn from that model, otherwise, it is drawn from the STL+PCA model.
+
+```{r, fig.width=5, fig.height=4}
+      plots$groups[["ec 2-23m A"]]$cumsum_prevented 
+```
+
+
+## Printing plots for all models and age groups
+We instead might want to just print everything for all age groups and models. We can use the following code to do that
+
+## Plot Observed vs expected yearly time series
+```{r plots2, results = 'asis', fig.width=5, fig.height=4}
+      par(mfrow=c(4,1))
+
+for (group in names(plots$groups)) {
+      print(plots$groups[[group]]$pred_full_agg )
+      print(plots$groups[[group]]$pred_best_agg )
+      print(plots$groups[[group]]$pred_time_agg )
+      print(plots$groups[[group]]$pred_pca_agg )
+}
+```
+
+## Save results
+```{r save_results, echo=FALSE}
+#output_file <- "Results" # Directory where results will be saved.
+#output_file <- paste0(output_file, "_", analysis$country, "_", format(Sys.time(), "%Y-%m-%d-%H%M%S"), ".Rds")
+#evaluatr.save(analysis, output_file)
+```
+
 
