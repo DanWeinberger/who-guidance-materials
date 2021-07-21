@@ -10,13 +10,6 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
-  html_document:
-    df_print: paged
-    toc: yes
-    toc_depth: '2'
-  word_document:
-    toc: yes
-    toc_depth: '2'
 --- 
 
 ```{r setup, include=FALSE}
@@ -43,7 +36,7 @@ ecuador_mortality$date<-ecuador_mortality$monthdate
 ```
 
 ```{r knitr-logo, out.width='50%', fig.show='hold',fig.align="center"}
-knitr::include_graphics('./figs/WHO_logo.png')
+#knitr::include_graphics('./figs/WHO_logo.png')
 ```
 <br>
 
@@ -116,7 +109,6 @@ Several outcomes can be considered when assessing vaccine impact. For PCV impact
 
 One must consider the estimated effect of the vaccine in the various outcomes of interest in the pre-licensure clinical trials, in order to plan the outcome of interest to be considered in impact assessment studies. For instance, randomized controlled trials in the Gambia estimated a 35% decline on radiological pneumonia, 18% decline on hospitalized/severe pneumonia, and 13% decline in mortality [MacKenzie, Vaccine, 2014]. With a larger relative effect, it will often be easier to detect this decline in analyses of population-level trends. With smaller effects, the analyses become more challenging.
 ```{r, eval=F}
-#<<TODO insert table comparing efficacy in trials>>
 
 ds<- cbind.data.frame(
   c("California-PCV7","Gambia-PCV9 (PCV7+1,5)", "South Africa-PCV9", "Philippines-PCV11 (never licensed)", "Latin America- PCV10"),
