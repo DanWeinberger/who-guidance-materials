@@ -1012,16 +1012,6 @@ Annex: Template for Study protocol
 Annex: Template for Presentation of Results
 
 
-## Data analysis
-
-A brief overview of the steps needed to perform an evaluation analysis are outlined below. 
-
-- For a detailed, guided example that shows how to format your data, run analyses, and interpret results in R, see the Practical Exercise (PENDING). In that Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls. 
-
---For a worked example of applying synthetic controls analysis to mortality data from South Africa, see https://vaccineevaluationworkshop.github.io/Session-4-Synthetic-Controls/
-
--To learn how to implement and interpret the analyses using a point-and-click web-based interface, click here (PENDING). 
-
 ###	Data formatting
 
 When evaluating changes in disease rates associated with an intervention, the first step is to format the data into a **time series**. Time series enumerate the number of cases in a time period (e.g., week, month, quarter, or year). We typically do this by starting with a spreadsheet that has individual-level data (i.e., one row per hospitalization or death), creating a variable that has the date rounded down to the date of the beginning of the nearest week/month/quarter/year, and then adding up the number of cases that occurred during that time period. 
@@ -1113,6 +1103,17 @@ When presenting the results from an evaluation study, it is important to convey 
 
 A template for presentation including relevant background information of the country, including vaccine introduction, available data sources, in addition to study objectives, methods and results, is provided here.[PENDING] 
 
+
+## Tutorial on formatting and analyzing data in R: Ecuador
+
+In this Exercise, we will use individual-level mortality records from Ecuador, learn how to explore the raw data, format time series, and run and interpret the time series analyses, including interrupted time series and synthetic controls. [Click here to access  the tutorial](https://danweinberger.github.io/who-guidance-materials/tutorial_ecuador.html) 
+
+## Tutorial: Using synthetic controls to Evaluate the impact of PCVs in South Africa
+
+In this exercise, we will analyze a challenging mortaliy dataset from South Africa to quantify the impact of PCVs on death due to pneumonia. [Click here to access the tutorial](https://danweinberger.github.io/who-guidance-materials/South-Africa-Example.html)
+
+## Instructions on using the point and click interface to evaluate PCV impact (pending)
+-To learn how to implement and interpret the analyses using a point-and-click web-based interface, click here (PENDING). 
 
 ## References 
 
