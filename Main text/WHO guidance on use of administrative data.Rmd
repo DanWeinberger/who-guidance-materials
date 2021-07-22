@@ -994,7 +994,7 @@ iii.	%  garbage codes (http://www.paho.org/data/index.php/en/indicadores/sistema
 a.	Generate and discuss trends of overall deaths, mortality rates, and mortality data quality indicators, revised and discussed above, over time.
 
 
-*WHO – mortality data*
+**World Health Organization (WHO) mortality data**
 
 1) Explore the WHO website for mortality data (https://www.who.int/healthinfo/statistics/en/)
 a.Click on "WHO Mortality Database" and then "Access the online database"
@@ -1204,7 +1204,6 @@ Finally, as illustrated in the previous sections, different analysis approaches 
 
 It is important to remember that the uncertainty intervals presented in an evaluation study typically capture just one or a few sources of error, which are related to the fit of the model and the characteristics of the data. Issues with data quality are not as easily captured by a summary measure of uncertainty, and uncertainty related to the choice of which analytical framework to use are also not typically captured.
 
-
 ##	Communicating and Presenting results effectively (including suggested templates) 
 
 Communicating and presenting results of the analysis is an important aspect of the study, particularly conveying the message to program managers, decision makers, and other stakeholders involved.
@@ -1215,14 +1214,14 @@ When presenting the results from an evaluation study, it is important to convey 
 
 * Describe “declines in disease rates associated with the introduction of the vaccine”, rather than "declines in disease rates caused by the vaccine. The wording can explicitly say the decline is associated with vaccine introduction, or could state that the decline occurred following the introduction of the vaccine.
 
-A template for presentation, including relevant background information of the country, vaccine introduction, available data sources, in addition to study objectives, methods and results, is provided in the Annex: Template for Presentation of Results.
+A template for presentation, including relevant background information of the country, vaccine introduction, available data sources, in addition to study objectives, methods and results, is provided in the [Annex: template for presentation of results](https://github.com/DanWeinberger/who-guidance-materials/raw/master/docs/Outline%20Protocol_ENG.docx) and with a [powerpoint template for presentations](https://github.com/DanWeinberger/who-guidance-materials/raw/master/docs/Template_Presenting%20Study%20results.pptx).
 
 ## Conclusions
 
 We present approaches to assess the impact of vaccines using secondary data on mortality and hospitalizations, using the specific case of PCV as an example. In addition to an overview of the concepts and methods, we discuss minimum data requirements, present step by step guidance to access data from international and local/country level sources, and a framework for ensuring adequate application of relevant methodological aspects required for the use of time series methodology.
 This document can be used by policy makers who will use results of impact assessment studies to make decisions regarding vaccine introduction and sustainability; Ministry of Health technical officers directly involved with requesting and/or conducting data management, epidemiologic studies and data analysis; as well as professionals working in academic institutions supporting the Ministry of Health in conducting research impact assessment evaluation.
 
-For those interested in pursuing such analysis, we provide here a template of study protocol which can be a helpful start for your work (Annex: Template for Study protocol).
+For those interested in pursuing such analysis, we provide here a template of study protocol which can be a helpful start for your work (Annex: Template for Study protocol). This is included as a [Word document template](https://github.com/DanWeinberger/who-guidance-materials/raw/master/docs/Outline%20Protocol_ENG.docx) and with a [powerpoint template for presentations](https://github.com/DanWeinberger/who-guidance-materials/raw/master/docs/Template_Presenting%20Study%20results.pptx)
 
 The adequate use of these methodologies are very important for further assessment of the impact of vaccines in population level morbidity and mortality, and these results will ultimately be relevant for guidance on vaccination policies around the world. 
 
