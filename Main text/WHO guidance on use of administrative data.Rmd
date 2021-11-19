@@ -13,6 +13,10 @@ output:
     self_contained: yes
     thumbnails: no
     toc_depth: '3'
+  html_document:
+    toc: yes
+    toc_depth: '3'
+    df_print: paged
 --- 
 
 ```{r setup, include=FALSE}
