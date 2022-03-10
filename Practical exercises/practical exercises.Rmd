@@ -36,6 +36,7 @@ library(rmdformats)
 library(httr)
 library(xtable)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 
 
@@ -319,6 +320,9 @@ d1$g_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is pr
 ```
 
 ## Now aggregate the outcome and the controls
+
+One important step here is to make sure that every time step is represented in the data, even if there are no cases. We do this using tidyr::complete
+
 ```{r}
 d2 <- d1 %>%
   group_by(agec, date) %>%
@@ -330,6 +334,14 @@ d2 <- d1 %>%
             'w_prim'=sum(w_prim),
             'g_prim'=sum(g_prim)
             ) %>%
+    tidyr::complete(date=seq.Date(min(date, na.rm=T), max(date, na.rm=T), 'month'), 
+                    fill=list(j12_j18=0,                                                                                              A15_A19_prim=0,
+                              A00_B99_prim=0,
+                              p_prim=0,
+                              q_prim=0,
+                              w_prim=0,
+                              g_prim=0
+                              )) %>%
   ungroup()
 
 
