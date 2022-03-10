@@ -35,7 +35,8 @@ library(coda)
 library(rmdformats)
 library(httr)
 library(xtable)
-
+library(dplyr)
+library(ggplot2)
 
 
 ```
@@ -140,7 +141,9 @@ The data are stored as an R dataset.
 **CHANGE THIS TO DOWNLOAD FROM GITHUB**
 ```{r}
 githubURL <- ("https://raw.githubusercontent.com/DanWeinberger/who-guidance-materials/master/Practical%20exercises/ecuador%20raw/u5.deaths.2001.2015.rds")
+
 download.file(githubURL,"ecuador_raw.rds", method="curl") #downloads file to working directory
+
 d1 <- readRDS("ecuador_raw.rds") #imports file into R and saves as object 'd1'
 ```
 
@@ -192,19 +195,28 @@ d1$j12_j18<-rep(0, nrow(d1))
 d1$j12_j18[d1$cause %in% c('J12', 'J13', 'J14', 'J15', 'J16', 'J17', 'J18') ]<-1
 table(d1$j12_j18)
 ```
+
 Let's aggregate now by date
 
 ```{r}
-d2<-aggregate(d1$j12_j18, by=list('date'=d1$date), FUN=sum) #sum by date
+
+d2 <- d1 %>%
+  group_by(date) %>%
+  summarize('j12_j18'=sum(j12_j18)) %>%
+  ungroup()
 
 ```
 
 Plot your time series
 ```{r}
- plot(d2$date,d2$x,  #names of variable
-      type='l', #'l' for line plot
-      bty='l' #turn off the top and right border
-      )
+
+p1 <- ggplot(d2, aes(x=date, y=j12_j18))+
+  geom_line() +  #line plot
+  ylim(0,NA) + #extend yaxis to 0
+  theme_classic() #make it look nice
+
+p1
+
 ```
 
 
@@ -222,36 +234,33 @@ d1$agec[d1$age.years>=2/12 & d1$age.years<1] <-1
 d1$agec[d1$age.years>=1 & d1$age.years<2] <-2
 d1$agec[d1$age.years>=2 & d1$age.years<5] <-3
 
-age.labels<-c('<2m','2-11m','12-23m','24-59m')
+d1$agec <- factor(d1$agec,  labels=c('<2m','2-11m','12-23m','24-59m'))
+
+d1 <- d1[!is.na(d1$agec),]
 ```
 
 ```{r}
-d3<-aggregate(d1$j12_j18, by=list('agec'=d1$agec,'date'=d1$date), FUN=sum) 
-
-d3<-d3[order(d3$agec, d3$date), ] #sort the rows of the data frame by age and date
-names(d3)<-c('agec','date','J12_18')
+d4 <- d1 %>%
+  group_by(agec,date) %>%
+  summarize('j12_j18'=sum(j12_j18)) %>%
+  ungroup()
 ```
 
 
 ```{r, fig.width=8, fig.height=5}
-d3.spl<-split(d3,d3$agec) #break up dataframe into 4 pieces; 1 for each age group
 
-par(mfrow=c(2,2), mar=c(2,4,1,1)) #make a plot with arrangement of 2 rows and 2 columns
+p2 <- ggplot(d4, aes(x=date, y=j12_j18)) +
+  geom_line() +
+  theme_classic() +
+  ylim(0,NA) +
+  facet_wrap(~agec, scales='free')
 
-for(i in 1:length(d3.spl)){
-   x<-d3.spl[[i]]
-    plot(x$date, x$J12_18, #x-y plot
-       bty='l', #turn off right and top border of plot
-       type='l', #line plot
-       ylab='Number of pneumonia deaths', #label y axis
-       xlab='Date', #label x axis
-       main=age.labels[i] #add title
-       )
-}
+p2
 ```
 
 ### Extract some control variables
 1) Flag any records that has a potential pneumococcal-related code anywhere in the record
+
 ```{r}
 # possible_pneumo_code: any pneumo code anywhere
 d1$possible_pneumo_code <- 0
@@ -261,6 +270,7 @@ d1$possible_pneumo_code[d1$cause %in% c("A40","A49","B953","R652","H10","H65",  
 
 
 A00-B99 primary cause of death:
+
 ```{r}
 d1$A00_B99_prim <- ifelse(c(substr(d1$cause, 1, 1) %in% c("A","B")), 1, 0)
 d1$A00_B99_prim <- ifelse(c(substr(d1$cause, 1, 2) =="A0" | # Exclude A00-A09 (rotavax)
@@ -269,18 +279,25 @@ d1$A00_B99_prim <- ifelse(c(substr(d1$cause, 1, 2) =="A0" | # Exclude A00-A09 (r
 ```
 
 Check your work:
+
 ```{r}
 table(d1$A00_B99_prim, d1$possible_pneumo_code) # Good.
 ```
 
 Also extract some more specific sub-chapter codes
+
 ```{r}
 table(d1$cause[substr(d1$cause, 1, 2)=="A1"])
+
 d1$A15_A19_prim <- ifelse(c(substr(d1$cause, 1, 2) =="A1"), 1, 0)
+
 d1$A15_A19_prim <- ifelse(d1$possible_pneumo_code==1, 0, d1$A15_A19_prim) 
+
 table(d1$cause[substr(d1$cause, 1, 2)=="A1"], d1$possible_pneumo_code[substr(d1$cause, 1, 2)=="A1"])
 ```
+
 Check your work
+
 ```{r}
 table(d1$A15_A19_prim, d1$possible_pneumo_code)
 ```
@@ -303,8 +320,19 @@ d1$g_prim[d1$possible_pneumo_code==1]<-0 #don't count of pneumococcal code is pr
 
 ## Now aggregate the outcome and the controls
 ```{r}
-d2<-aggregate(d1[ ,c('j12_j18','A15_A19_prim','A00_B99_prim','p_prim','q_prim','w_prim','g_prim')], by=list('agec'=d1$agec, 'date'=d1$date), FUN=sum)
-str(d2)
+d2 <- d1 %>%
+  group_by(agec, date) %>%
+  summarize('j12_j18'=sum(j12_j18) ,
+            'A15_A19_prim'=sum(A15_A19_prim),
+            'A00_B99_prim'=sum(A00_B99_prim),
+            'p_prim'=sum(p_prim),
+            'q_prim'=sum(q_prim),
+            'w_prim'=sum(w_prim),
+            'g_prim'=sum(g_prim)
+            ) %>%
+  ungroup()
+
+
 ```
 
 ## Set up for analysis
@@ -317,7 +345,9 @@ We are going to switch and start using a pre-formatted time series from Ecuador 
 Let's load the data, which are included with the InterventionEvaluatR package
 ```{r viewdata, include=TRUE}
     data(ecuador_mortality, package = "InterventionEvaluatR") #load the data
+
     head(ecuador_mortality[,1:5]) #View first few rows and columns
+    
     ds<-ecuador_mortality
 ```
 Ensure your date variable is in an R date format. If your variable is in a character or factor format, you need to tell R the format. 
@@ -543,9 +573,11 @@ Finally, we can look at the cumulative cases prevented. In this example, there h
 
 
 ## Printing plots for all models and age groups
+
 We instead might want to just print everything for all age groups and models. We can use the following code to do that
 
 ## Plot Observed vs expected yearly time series
+
 ```{r plots2, results = 'asis', fig.width=5, fig.height=4}
       par(mfrow=c(4,1))
 
@@ -558,6 +590,7 @@ for (group in names(plots$groups)) {
 ```
 
 ## Save results
+
 ```{r save_results, echo=FALSE}
 #output_file <- "Results" # Directory where results will be saved.
 #output_file <- paste0(output_file, "_", analysis$country, "_", format(Sys.time(), "%Y-%m-%d-%H%M%S"), ".Rds")

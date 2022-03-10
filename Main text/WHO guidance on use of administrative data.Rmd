@@ -1,5 +1,5 @@
 ---
-title: DRAFT:Measuring the impact of new vaccines using mortality and administrative
+title: Measuring the impact of new vaccines using mortality and administrative
   hospitalization data
 subtitle: Pneumococcal conjugate vaccine as a case study
 output:
@@ -651,7 +651,7 @@ pred1.pre[kids$date>=intro.date]<-NA
 pred1.post<-pred1
 pred1.post[kids$date<intro.date]<-NA
 #par(mfrow=c(2,1))
-plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='ITS, adjusted for ACM')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='ITS, adjusted for ACM, Brazil')
 points(kids$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids$date,pred1.post, type='l' , col='#7570b3' )
 points(kids$date,pred1.counter, type='l', col='#d95f02', lty=3  )
@@ -686,7 +686,7 @@ pred1.pre[kids2$date>=intro.date2]<-NA
 pred1.post<-pred1
 pred1.post[kids2$date<intro.date2]<-NA
 #par(mfrow=c(2,1))
-plot(kids2$date, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='ITS, adjusted for ACM')
+plot(kids2$date, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='ITS, adjusted for ACM, Ecuador')
 points(kids2$date,pred1.pre, type='l' ,col='#1b9e77' )
 points(kids2$date,pred1.post, type='l' , col='#7570b3' )
 points(kids2$date,pred1.counter, type='l', col='#d95f02', lty=3  )
