@@ -103,11 +103,11 @@ is directed to.
 ## How to use this guide 
 
 This guide is best used in its digital online format, available at:
-[[[http://](http://guidance.interventionevaluatr.com)](https://danweinberger.github.io/who-guidance-materials/#content)](about:blank#content)[guidance.interventionevaluatr.com](http://guidance.interventionevaluatr.com)
-In addition to several worked examples, with accompanying R code, the
-online version has an appendix with templates for presenting and
-formatting. The sections of the guide are modular and are not
-necessarily intended to be read as a single document.
+<http://guidance.interventionevaluatr.com> In addition to several worked
+examples, with accompanying R code, the online version has an appendix
+with templates for presenting and formatting. The sections of the guide
+are modular and are not necessarily intended to be read as a single
+document.
 
 ## What is vaccine 'impact'?
 
@@ -120,26 +120,26 @@ to etiologically confirmed disease, and focus on individual level
 effects only. Once a vaccine is licensed and introduced in the
 population, post-licensure studies are required to measure vaccine
 effectiveness and impact of vaccination programs on the population
-\[Hanquet G, 2013\].
+(Hanquet G, 2013).
 
 In contrast with vaccine efficacy studies, vaccine effectiveness studies
 are post-licensure studies in which the actual performance of a vaccine
 at the population level is measured. Both vaccine efficacy and
 effectiveness can be based on individual or cluster randomized designs
-and can report direct and indirect
-effects of vaccines. A direct effect is the protective effect that a
-vaccinated individual gains from receiving the vaccine. An indirect
-effect corresponds to the reduction of infection in immunized and
-unimmunized individuals that results from reducing transmission from
-immunized individuals. The total effect is the combined reduction in
-disease resulting from both direct and indirect effects and represents
-the difference in disease rates between a population that has received
-the vaccine compared with those in a hypothetical population that had
-not used the vaccine \[Saadatian-Elahi M, 2016\].
+and can report direct and indirect effects of vaccines. A direct effect
+is the protective effect that a vaccinated individual gains from
+receiving the vaccine. An indirect effect corresponds to the reduction
+of infection in immunized and unimmunized individuals that results from
+reducing transmission from immunized individuals. The total effect is
+the combined reduction in disease resulting from both direct and
+indirect effects and represents the difference in disease rates between
+a population that has received the vaccine compared with those in a
+hypothetical population that had not used the vaccine (Saadatian-Elahi
+M, 2016).
 
 The impact of a vaccination program is measured by comparing populations
 with and without a vaccination program, most commonly the same
-population before and after vaccination \[Hanquet, 2013\]. Impact will
+population before and after vaccination (Hanquet, 2013). Impact will
 consider additional aspects, and may take into consideration disease and
 economic burden, among other. Some diseases for which a lower vaccine
 effectiveness is demonstrated but with significantly high disease burden
@@ -161,8 +161,8 @@ before-after studies. These provide measures of impact account for both
 the direct and indirect effects. This is in contrast to cohort and
 case-control studies, which typically
 estimate the direct effect of the vaccine in preventing cases in
-vaccinated subjects but do not account indirect effects \[Hanquet,
-Vaccine 2013\]
+vaccinated subjects but do not account indirect effects (Hanquet,
+Vaccine 2013)
 
 Both primary and secondary data can be used for health impact assessment
 purposes. Primary data are prospectively gathered data from a variety of
@@ -206,11 +206,10 @@ data.
 Several outcomes can be considered when assessing vaccine impact. For
 instance, pneumococcus causes a variety of syndromes; these can include
 acute otitis media events, invasive bacterial disease (suspected,
-probable or confirmed), pneumonia \[clinical or World Health
-Organization (WHO)-defined endpoint (radiologically confirmed)\], severe
-pneumonia (usually measured as hospitalized or hypoxic pneumonia), and
-mortality (due to invasive bacterial disease, pneumonia, or all-cause
-mortality).
+probable or confirmed), pneumonia (clinical or World Health Organization
+(WHO)-defined endpoint (radiologically confirmed)), severe pneumonia
+(usually measured as hospitalized or hypoxic pneumonia), and mortality
+(due to invasive bacterial disease, pneumonia, or all-cause mortality).
 
 One must consider the estimated effect of the vaccine on the various
 outcomes of interest in the pre-licensure clinical trials, in order to
@@ -218,7 +217,7 @@ plan for the outcome of interest to be considered in impact assessment
 studies. For instance, randomized controlled trials of PCVs in the
 Gambia estimated a 35% decline on
 radiologically confirmed pneumonia, 18% decline on hospitalized/severe
-pneumonia, and 13% decline in mortality \[MacKenzie, *Vaccine*, 2014\].
+pneumonia, and 13% decline in mortality (MacKenzie, *Vaccine*, 2014).
 With a larger relative effect, it will often be easier to detect this
 decline in analyses of population-level trends. With smaller effects,
 the analyses become more challenging. For more specific outcomes (e.g.,
@@ -354,8 +353,8 @@ intervening in the causal chain, and Part II, devoted to the causes
 that, outside the chain, contributed to the fatal outcome.
 
 The Table below shows an example of a completed form of Medical
-Certificate of cause of death \[PAHO, 2018 Basic Guidelines for the
-analysis of Mortality\]
+Certificate of cause of death (PAHO, 2018 Basic Guidelines for the
+analysis of Mortality)
 
 ```{r, out.width='100%', fig.show='hold',fig.align="center"}
 knitr::include_graphics('./figs/table 1.png')
@@ -476,8 +475,8 @@ hospitalization data, estimates of vaccine impact based on
 hospitalization data may be particularly prone to confounding, as
 hospitalization rates are tightly linked to changes in the quality,
 access and use of the healthcare system, which often occur
-simultaneously with the introduction of new vaccines \[Schuck-Paim,
-Vaccine 2017\].
+simultaneously with the introduction of new vaccines (Schuck-Paim,
+Vaccine 2017).
 
 Unlike mortality data from vital statistics, hospitalization data are
 usually not standardized, are governed by privacy restrictions, and are
@@ -504,7 +503,7 @@ impact assessment evaluations. Evidence indicates that the discordance
 between admission and discharge diagnoses are more significant in
 selected conditions and syndromes, and this is particularly true for
 hospitalizations due to respiratory conditions, including pneumonia
-\[Zikos 2019\]. Nonetheless, as
+(Zikos 2019). Nonetheless, as
 hospitalization discharge diagnoses are mainly used for reimbursement
 purposes, biases in coding are often present depending on the
 reimbursement and payment system in place, leading to an over indication
@@ -566,26 +565,25 @@ In most settings, such controlled roll-outs of vaccines are not
 possible. Therefore, the most common study designs are purely
 observational, in which changes in disease rates are evaluated over time
 or between regions. Caution needs to be used when performing and
-interpreting these studies to ensure that factors
-unrelated to vaccination are appropriately adjusted in the analysis.
-This guide will focus on the analysis situation where there is a single
-time series of interest from a country or region and the goal is to
-detect changes in incidence following vaccine introduction from this
-time series. When time series from multiple subnational regions are
-available, additional types of analyses are possible, including
-spatiotemporal analyses in which the declines in regions with higher or
-lower coverage are compared.
+interpreting these studies to ensure that factors unrelated to
+vaccination are appropriately adjusted in the analysis. This guide will
+focus on the analysis situation where there is a single time series of
+interest from a country or region and the goal is to detect changes in
+incidence following vaccine introduction from this time series. When
+time series from multiple subnational regions are available, additional
+types of analyses are possible, including spatiotemporal analyses in
+which the declines in regions with higher or lower coverage are
+compared.
 
 Interrupted time series analysis is among the most common approaches to
-assess population-level impact of new vaccines \[Lopez Bernal, Int Journ
+assess population-level impact of new vaccines (Lopez Bernal, Int Journ
 Epid, 2017, Penfold, Acad Pediatr 2013, Ramsay CR, Int J Technology
-Assessment in Health, 2003\]. Interrupted time series analysis allows
-for adjustments in annual
-variations, secular disease trends and changes in health care use, among
-other factors \[Hanquet, Vaccine 2013\]. Nonetheless, as other authors
-have reported in developed countries, methodological challenges exist
-when assessing vaccine impact, particularly considering PCVs \[Hanquet,
-Vaccine 2013\]. Evaluations of
+Assessment in Health, 2003). Interrupted time series analysis allows for
+adjustments in annual variations, secular disease trends and changes in
+health care use, among other factors (Hanquet, Vaccine 2013).
+Nonetheless, as other authors have reported in developed countries,
+methodological challenges exist when assessing vaccine impact,
+particularly considering PCVs (Hanquet, Vaccine 2013). Evaluations of
 time trends can be made more robust by including control time series.
 These can include time series for other causes of disease that are not
 influenced by the vaccine or time series from other geographic units
@@ -594,13 +592,13 @@ interest with these control/comparator time series, more robust
 estimates can be obtained. This can be accomplished in the framework of
 interrupted time series analysis when a small number of controls is
 used. When multiple controls are available, they can be synthesized
-using an approach called 'synthetic controls' \[Bruhn, PNAS 2017\] (see
+using an approach called 'synthetic controls' (Bruhn, PNAS 2017) (see
 later sections for details).
 
 Further, additional methodological recommendations have been proposed
 for improving the assessment of population level vaccine impact
 analyses, which could increase the accuracy, reproducibility, and
-comparability of such studies \[Bruhn, Epidemiology 2017\].
+comparability of such studies (Bruhn, Epidemiology 2017).
 
 ### Counterfactuals: What would have happened without a vaccine?
 
@@ -930,18 +928,16 @@ they are not properly controlled. The simplest approach to adjust for
 trends is to fit a straight line through the data and then test whether
 the slope of the line or the level of the line changes after vaccine
 introduction. This type of analysis is called segmented regression and
-can be
-accomplished by fitting a Poisson or negative binomial regression model,
-which are common regression approaches used when the outcome is a count
-variable (e.g., number of hospitalizations per week). A number of
+can be accomplished by fitting a Poisson or negative binomial regression
+model, which are common regression approaches used when the outcome is a
+count variable (e.g., number of hospitalizations per week). A number of
 quantities can be estimated using these models, including the change in
-the slope of the trend
-line or in the average number of cases. However, it is often most useful
-to use the model to calculate the decline in incidence (rate ratio or
-rate difference) compared to what would be expected if the trend/level
-had remained constant. Seasonal variations and known trends can be
-adjusted in this model using
-regression covariates.
+the slope of the trend line or in the average number of cases. However,
+it is often most useful to use the model to calculate the decline in
+incidence (rate ratio or rate difference) compared to what would be
+expected if the trend/level had remained constant. Seasonal variations
+and known trends can be adjusted in this model using regression
+covariates.
 
 **Assumptions of ITS analysis**: A key assumption is that the linear
 trend in the pre-vaccine period captures the important underlying trends
@@ -951,8 +947,7 @@ which time periods to include in the vaccine introduction period and
 whether the slope should level out after a certain amount of time (and
 how much time should be allowed). Some of these assumptions about the
 timing and shape of the trajectory can be relaxed by using a flexible
-non-linear trend (i.e., a spline) to capture post-vaccine
-changes.
+non-linear trend (i.e., a spline) to capture post-vaccine changes.
 
 **Calculation of vaccine impact from ITS analysis**: Vaccine impact is
 measured in a variety of ways with ITS models. Some authors report the
@@ -1328,7 +1323,7 @@ variable did not have a strong influence on the results.
 
 **Comparison of rate ratios estimated from from different models**
 
-```{r, fig.width=10, fig.height=3.5}
+```{r, fig.width=10, fig.height=4}
 comp.cols<-c('#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00')
 par(mfrow=c(1,2))
 its.comp1<-cbind.data.frame(its.rr.control, its.rr.connected1, its.rr.disjoint, its.rr.level,rr.pre.post)
@@ -1336,7 +1331,7 @@ matplot(kids$date,its.comp1, type='l', bty='l', ylim=c(0.6,1.1), col=comp.cols, 
 axis(side=1,at=as.Date(c('2004-01-01','2006-01-01','2008-01-01','2010-01-01','2012-01-01')), labels=c('2004','2006','2008','2010','2012')) 
 abline(v=intro.date, lty=2, col='gray')
 abline(v=eval.date, lty=3, col='gray')
-legend(x=as.numeric(min(kids$date)), y=0.85, legend=c("ITS:smooth+control", "ITS:smooth","ITS:Disjointed",'ITS:plateau', 'Pre/Post'),
+legend(x=as.numeric(min(kids$date)), y=0.95, legend=c("ITS:smooth+control", "ITS:smooth","ITS:Disjointed",'ITS:plateau', 'Pre/Post'),
         cex=0.8,lty=c(1,1,1,1,1),
        box.lty=0, col=comp.cols)
 
@@ -1345,7 +1340,7 @@ matplot(kids2$date, its.comp2, type='l', bty='l', ylim=c(0.6,1.1), col=comp.cols
 axis(side=1,at=as.Date(c('2005-01-01','2007-01-01','2009-01-01','2011-01-01','2013-01-01','2015-01-01')), labels=c('2005','2007','2009','2011','2013','2015')) 
 abline(v=intro.date2, lty=2, col='gray')
 abline(v=eval.date2, lty=3, col='gray')
-legend(x=as.numeric(min(kids2$date)), y=0.85, legend=c("ITS:smooth+control", "ITS:smooth","ITS:Disjointed",'ITS:plateau', 'Pre/Post'),
+legend(x=as.numeric(min(kids2$date)), y=0.95, legend=c("ITS:smooth+control", "ITS:smooth","ITS:Disjointed",'ITS:plateau', 'Pre/Post'),
         cex=0.8,lty=c(1,1,1,1,1),
        box.lty=0, col=comp.cols)
 ```
@@ -1454,26 +1449,25 @@ influenced by the intervention of interest. Therefore, meningitis be a
 poor control for evaluating the impact of pneumococcal conjugate
 vaccines on pneumonia, because meningitis might itself be influenced by
 the same vaccine (unless pneumococcal meningitis could be specifically
-excluded). The inclusion of a control that is influenced
-by the same intervention will bias the estimates towards no effect
-because both will be going down in parallel due to the same cause.
+excluded). The inclusion of a control that is influenced by the same
+intervention will bias the estimates towards no effect because both will
+be going down in parallel due to the same cause.
 
 Sometimes it is not clear whether a set of causes of death should be
 considered as controls. Low-quality databases often have a large
 proportion of deaths coded using "garbage codes", which are ICD-10 codes
 for certain ill-defined causes that should not be considered as the
-underlying cause of death (including
-symptoms, signs and ill-defined conditions) \[GBD study, 1999\]. The
-frequency of these garbage codes is used as a measure of database
-quality and completeness. In many settings, the quality of coding has
-changed over time. A decrease in garbage codes over time would be
-expected to be associated with an increase in cause-specific codes.
-Therefore, the time series of garbage codes itself could be useful for
-adjusting the reported rates of pneumonia deaths for changes in coding
-practices. Conversely, if actual pneumonia cases are incorrectly coded
-with a garbage code, then the vaccine will cause a decline in the
-garbage codes, and including these garbage codes as control variables
-will bias the estimates
+underlying cause of death (including symptoms, signs and ill-defined
+conditions) (GBD study, 1999\]). The frequency of these garbage codes is
+used as a measure of database quality and completeness. In many
+settings, the quality of coding has changed over time. A decrease in
+garbage codes over time would be expected to be associated with an
+increase in cause-specific codes. Therefore, the time series of garbage
+codes itself could be useful for adjusting the reported rates of
+pneumonia deaths for changes in coding practices. Conversely, if actual
+pneumonia cases are incorrectly coded with a garbage code, then the
+vaccine will cause a decline in the garbage codes, and including these
+garbage codes as control variables will bias the estimates
 towards seeing no effect.
 
 In summary, control diseases should share some relevant etiological
@@ -2104,545 +2098,134 @@ Estimation of the Mismatch between Admission and Discharge Diagnosis for
 Respiratory Patients, and Implications on the Length of Stay and
 Hospital Charges %\@ 153-4063 %2 PMC6568083 %M 31258971. Print.
 
-## Case study on measuring the impact of pneumococcal conjugate vaccines
-
-Pneumococcal infections cause significant morbidity and mortality in
-children under 5 years of age in countries throughout the world, and are
-being the leading cause of vaccine-preventable deaths worldwide \[Liu L,
-Lancet 2016\]. Streptococcus pneumoniae (S. pneumoniae or pneumococcus)
-causes a variety of clinical syndromes, including pneumonia, meningitis,
-and bacteremia, as well as milder but more common illnesses such as
-otitis media and sinusitis \[O'Brien KL, Lancet 2009\]. All age groups
-are affected, but most of the burden affects infants, young children and
-the elderly.
-
-The World Health Organization (WHO) estimated that pneumococcal disease
-was, in the pre-vaccine period, the leading cause of vaccine-preventable
-deaths worldwide. In 2005, there were an estimated 14.5 million cases of
-serious pneumococcal disease each year worldwide, resulting in
-approximately 826,000 deaths \[O'Brien KL, Lancet 2009\]. Shortly after
-PCV introduction, in 2015, pneumococcal deaths globally were estimated
-at 320,000 to 515,000, with 50% of these deaths occurring in five large
-countries in Africa and Asia reinforcing the need for larger vaccine
-uptake. \[Wahl, B, Lancet 2018\].
-
-Bacteremia is the most common invasive clinical presentation of
-pneumococcal infection in children aged 2 years or less, whereas
-pneumonia is the most common clinical presentation in adults. Invasive
-pneumococcal disease (IPD) implies the morbidity associated with
-isolation of pneumococci from normally sterile body sites, such as the
-blood stream, or those secondary to bloodstream spread, e.g. meningitis
-or septic arthritis.
-
-Pneumococcal conjugate vaccines (PCVs) were first licensed in 2000.
-There are currently at least three commercially available vaccines,
-Synflorix (10-valent, PCV10, GSK), Prevnar (13-valent, PCV13, Pfizer),
-and Pneumosil (10-valent, Serum Institute of India). All available
-vaccines have demonstrated excellent safety and immunogenicity profiles
-in clinical trials \[WER, 2019\]. The World Health Organization (WHO) in
-2012 recommended the introduction of pneumococcal conjugate vaccines
-(PCVs) in childhood immunization programs with high priority to
-countries with mortality rate \>50 deaths/1000 births in children under
-5 years of age \[WER, 2012\]. In 2019, Strategic Advisory Group of
-Experts (SAGE) updated its recommendation, urging all countries in the
-world to introduce PCVs, in either 3+0 or 2+1 schedules, regardless of
-disease burden and mortality rates \[WER, 2019\].
-
-To date, more than 140 countries in the world have introduced PCVs into
-their national immunization programs, including many low- and
-middle-income countries \[IVAC - View-hub report, 2019\].Impact
-assessment studies are crucial after the introduction of new
-technologies to demonstrate that they work in real world settings as
-they have in clinical trials. This is particularly true for new
-vaccines, which have been made available in the past decade and are
-associated with higher costs when compared to traditional vaccines
-\[Penfold RB, Acad Pediatr 2013; Bruhn CA, Epidemiology 2017\].
-
-Demonstrating vaccine impact on disease occurrence is also crucial to
-inform decision making and provide evidence to sustain the use of
-immunization programs. Additionally, In addition to providing evidence
-for decision makers, vaccine impact studies are crucial to allow all
-stakeholders to recognize the benefits of vaccination; to assess the
-programmatic use of vaccine; and monitor progress towards national and
-international child health goals.
-
-After PCV introduction in several countries among the first to use the
-vaccine, many studies were conducted to assess their effectiveness and
-impact on various relevant clinical outcomes. To this end, many studies
-benefited from guidance provided by the WHO manual "Measuring impact of
-Streptococcus pneumoniae and Haemophilus influenzae type b conjugate
-vaccination", published in 2012 \[WHO, 2012\]. In this manual, selected
-approaches to measuring PCV and Hib impact on disease occurrence and a
-framework for determining the best methodology for measuring that impact
-for different countries or epidemiologic settings are presented,
-including using secondary data sources such as vital statistics and
-administrative records of hospitalizations. However, ecologic study
-designs are not fully explored and may be a useful method for measuring
-vaccine impact, as recently demonstrated by several studies, using
-available secondary data sources such as mortality registries and
-administrative hospitalization databases. In addition, new methods to
-measure PCV impact using administrative data have been developed since
-the publication of that manual.
-
-A significant body of evidence is currently available demonstrating PCV
-effectiveness and impact on acute otitis media, pneumonia, invasive
-bacterial diseases, including both cases managed in the outpatient
-setting and more severe disease requiring hospitalization \[de Oliveira,
-2016; Loo, JD, 2014 \]. However, to date, there is scarce evidence on
-the impact of PCVs on mortality and morbidity in children under 5 years
-of age, using available secondary mortality and hospitalization
-data-sources, particularly in low- and middle- income countries. This is
-mainly due to challenges in availability, access to, and analysis of
-secondary sources of morbidity and mortality data. Despite the large
-body of evidence of PCV impact, countries that newly introduce PCV may
-choose to conduct an impact evaluation to be used for local program
-evaluation.
-
-A multi-national study led by the Pan American Health Organization
-(PAHO) conducted in 10 low- and middle- income countries in the Latin
-American Region was recently completed, with the aim of determining the
-impact of PCVs on pneumonia mortality in children under 5 years of age,
-following their introduction into the national routine immunization
-program targeting infants. This study has been able to demonstrate, as a
-proof of concept, the ability that it is possible to use available
-mortality data to evaluate the impact of PCVs on all-cause pneumonia
-mortality in children under the age of 5 years in selected countries, by
-means of time series analysis methodology \[de Oliveira, CID, 2020\]. In
-addition, similar studies are being undertaken in the African, European,
-and Southeast Asian Regions by the respective WHO regional offices with
-countries in their regions \[Gatera, Vaccine 2016; Izu, Bull World
-Health Organization 2017\].
-
-The use of nationwide data from secondary sources, including the
-National Mortality Information Systems and Hospitalization Information
-systems, from pre- and post-vaccine introduction periods is possible,
-granted various aspects of data availability, extraction, quality, and
-other methodological challenges are adequately addressed and overcome.
-
-As such, this document provides guidance on approaches to measuring PCV
-impact using mortality and hospitalization secondary data sources,
-including minimum data requirements, and a framework for ensuring
-adequate application of relevant methodological aspects required for the
-use of time series methodology. This may serve as a useful resource to
-policy makers who will utilize results of impact assessment studies to
-make decisions regarding vaccine introduction and sustainability;
-Ministry of Health technical officers directly involved with requesting
-and/or conducting data management, epidemiologic studies and data
-analysis; as well as professionals working in academic institutions
-supporting the Ministry of Health in conducting research impact
-assessment evaluation.
-
-### Study question and objectives: A focus on pneumococcal vaccines
-
-For pneumonia in children, as the case study for the assessment of PCV,
-the study question focuses on the impact of PCV in pneumonia
-hospitalizations or deaths in children of a given age group of interest,
-in country X, in a given time period (consider the time being assessed
-after PCV introduction).
-
-Study objectives will be structured considering the research question
-above, and include:
-
-The **main objective** of secondary data analysis of PCV impact is to
-evaluate the impact of PCV vaccination ( **INTERVENTION** ) in pneumonia
-mortality ( **OUTCOME**) in children younger than 5 years of age
-(**POPULATION**) in **COUNTRY** X through the assessment of available
-secondary mortality data.
-
-Secondary objectives of these types of studies include the following:
-
-1.  To assess the pneumonia mortality or disease burden in Country X in
-    children \<5 years of age and by sub-groups of age
-
-2.  To describe the pneumonia mortality burden in Country X considering
-    any cause of death reported versus considering only the main cause
-    of death reported.
-
-3.  Characterize the temporal trends of PCV vaccine coverage (3rd dose)
-    in children 1 year of age over time in Country X.
-
-### Feasibility of conducting ITS analysis of secondary data: A focus on pneumococcal vaccines
-
-After considering the specific questions related to pneumococcal vaccine
-introduction in your country, the next step is to search and evaluate
-any available data from international data sources, including
-population/demographics, vaccination coverage, and secondary
-mortality/hospitalization data. As already mentioned, hospitalization
-data is not likely to be available from international data sources as
-these are not usually shared. But mortality data is routinely shared and
-available from international organization data sites. Of note, this
-available data is aggregated at a level which enables simple descriptive
-analysis, but is usually not useful for conducting an ITS analysis, for
-which one will need to obtain case by case data from national data
-registries/databases. It is however very useful to allow assessment of
-the data quality and feasibility of conducting an ITS analysis for
-vaccine impact assessment.
-
-Various aspects of the available data from international data sources,
-including data quality and preliminary descriptive analysis, should be
-evaluated and considered before deciding to embark on an ITS.
-
-A step by step outline to access and analyse available data is presented
-below:
-
-**Part 1: Available international Mortality data**
-
-*PLISA - PAHO*
-
-1)  Access PLISA, mortality data
-    <http://www.paho.org/data/index.php/en/>
-
-```{=html}
-<!-- -->
-```
-a.  Number of annual deaths in general and due to pneumonia in children
-b.  Under "mortality" click on "Main causes of death" in the upper right
-    quadrant of the page
-
-```{=html}
-<!-- -->
-```
-ii. Select the country, age group and both sexes and discuss.
-
-```{=html}
-<!-- -->
-```
-b.  Click "Core health indicators"
-    <http://www.paho.org/data/index.php/en/indicadores.html> Click "see
-    databases", "country profile"
-c.  For all years, your country, select the various subdomain topics of
-    interest to view information on population, PCV3 coverage, numbers
-    and rates of mortality (in general) and by cause (respiratory
-    illness in children)
-
-```{=html}
-<!-- -->
-```
-1.  Suggested sub-domains of interest: services, demographics, mother
-    and child mortality, mortality by cause (respiratory)
-
-```{=html}
-<!-- -->
-```
-ii. Discuss
-
-iii. Click "see databases", "indicator profile" For all years, your
-     country, select the various health indicators select the various
-     indicators of interest to view information on number/rates of
-     general and cause specific deaths in children
-
-iv. Select the following indicators
-
-```{=html}
-<!-- -->
-```
-1.  Under-five deaths due to ARI (%)
-2.  Under five deaths estimated
-3.  Under five mortality rate estimated
-4.  Lower respiratory infection mortality rate
-
-```{=html}
-<!-- -->
-```
-2)  Access PLISA, "core health indicators" Qualitative analysis of
-    mortality data based on standardized mortality quality indicators
-
-```{=html}
-<!-- -->
-```
-a.  Click "see databases", "indicator profile", select the subdomain
-    "health information"
-    <http://www.paho.org/data/index.php/en/indicadores.html>
-b.  \% under-registration
-
-```{=html}
-<!-- -->
-```
-ii. \% ill-defined and unknown causes of death (%)
-iii. \% garbage codes
-     (<http://www.paho.org/data/index.php/en/indicadores/sistemas-de-salud/493-garbage-en.html>)
-
-```{=html}
-<!-- -->
-```
-3)  Under PLISA, "Core health indicatos", "see databases", "trends"
-
-```{=html}
-<!-- -->
-```
-a.  Generate and discuss trends of overall deaths, mortality rates, and
-    mortality data quality indicators, revised and discussed above, over
-    time.
-
-**World Health Organization (WHO) mortality data**
-
-1)  Explore the WHO website for mortality data
-    (<https://www.who.int/healthinfo/statistics/en/>) a.Click on "WHO
-    Mortality Database" and then "Access the online database"
-
-```{=html}
-<!-- -->
-```
-b.  Click on "select parameters", and then specify the indicator,
-    country and period of interest. The number of deaths or the
-    standardized mortality rate can be accessed.
-c.  For number of deaths: under indicator check "disease of the
-    respiratory system", then check "Number of deaths - pneumonia, both
-    sexes", and check "below 1 year" and also "1 to 4 years" age groups.
-
-```{r}
-#HOLD for WHO_screenshot1
-```
-
-Evaluate the number of pneumonia deaths by age and gender, over time, in
-your country.
-
-ii. For standardized mortality rate: under indicator check
-    "Age-standardized death rates per 100 000 world standard
-    population", then check ASDR (age standardized death rate) per
-    100,000, and check "ICD Chapter 10 - Diseases of the Respiratory
-    System - both sexes" and check in both male and female below. Under
-    country selected the country of interest, and under period, the time
-    period or years of interest.
-
-```{r}
-#HOLD for WHO_screenshot2
-```
-
-c.  Click on Load, and then Ok, you will return to the WHO Mortality
-    database page and click on graph or table B (all countries are shown
-    in table A).
-
-```{r}
-#HOLD for WHO_screenshot3
-```
-
-d.  You can see tables (as below) with the indicator selected.
-
-```{r}
-#HOLD for WHO_screenshot4
-```
-
-e.  You can also see graphs/figures presenting the indicators selected,
-    considering the available graph options in the menu.
-
-```{r}
-#HOLD for WHO_screenshot4
-```
-
-Evaluate the mortality rates due to respiratory diseases over time, in
-your country.
-
-```{r, out.width='50%', fig.show='hold',fig.align="center"}
-knitr::include_graphics('./figs/who website mortality.png')
-```
-
-**Part 2: Coverage and vacine introduction information**
-
-1)  Access the PAHO and WHO website to review data on vaccination
-    coverage in your country
-
-WHO: <https://www.who.int/immunization/monitoring_surveillance/data/en/>
-a. Download and review official country estimates of national coverages
-(4.1 Official country reported coverage estimates time series are
-available in html and in excel) b. Download and review official reports
-of administrative coverages by country (4.2 Download country reported
-administrative data time series in excel) c. Prepare a table summarizing
-PCV3 coverage in your country using data from these sources. d. Now,
-download and review the reports prepared according to the method of
-estimating national immunization coverage by WHO / UNICEF (WUENIC) (4.5
-WHO / UNICEF Estimates of National Immunization Coverage (WUENIC) are
-available in html and in excel. the country summaries (in pdf), content
-of PDF in excel and the method.) i. How do the reported WHO / UNICEF
-estimates and administrative coverage estimates differ? ii. Are you
-familiar with the methods for estimating WHO / UNICEF coverage? The
-country summaries and methods are available on this page.
-
-PAHO: <http://www.paho.org/data/index.php/en/>\
-a. Click in "Health Topics", "imunizations" b. Among the available
-links, evaluate the information on selected vaccines in your country: i.
-Vaccine coverage by country\
-ii. Vaccine coverage by vaccine\
-iii. Year of vaccine introduction
-
-Evaluate the PCV3 coverage over time in your country.
-
-**Part 3: Population data -- United Nations, Division of Population
-(UNPOP)**
-
-1)  Access in UNPOP and the World Bank website population data in your
-    countries
-    <https://www.un.org/en/development/desa/population/publications/dataset/index.asp>
-    Main page of the UN Population website with several links for
-    publications, data, manuals, papers, maps, among others.
-
-Among them, the link to access the databases and demographic /
-population information: <https://population.un.org/wpp/> a. "Graphs",
-"demographic profiles", select your country Review and discuss the
-figures generated under "lines charts" and "population pyramids" b.
-"Interactive data", click in "Population by age and sex" i. select
-"Latin America and the Caribbean", select your country ii. select the
-time period in years (ex. 2005-2019) iii. select "both sexes combined"
-iv. select the age group of your interest for the analysis (or all for
-curiosity) v. Validate/confirm the suggested format provided by the
-webpage for the pivot table to be generated for presenting the data vi.
-Evaluate the results and use this information to generate the
-information which will be used for the final product of the workshop, as
-described in further detail below
-
-c.  Click in "Data Sources", select your country. Evaluate the
-    description of the available data, its sources, and methods used for
-    population estimation.
-
-d.  OBSERVATION: If you want to download datasets, click in "Download
-    files", "Standard Projections" and "Population Indicators"
-
-e.  under "Age Composition", the databases in .xls "Population by age
-    groups" can be dowloaded
-
-*Evaluate the estimated population of children \<5 years of age over
-time (year by year during the study period you would select) in your
-country.*
-
-Finally, after going through local and international data, consider the
-following questions and discuss them with your team in order to agree on
-the feasibility regarding conducting a vaccine impact analysis using the
-available data in your country.
-
-Finally, after going through the available data, consider the following
-questions and discuss them with your team in order to agree on the
-feasibility regarding conducting a vaccine impact analysis using the
-available data in your country.
-
--   What is the total population, population of children \<5 years, and
-    general trends of general and specific mortality in children over
-    time in your country?
-
--   What is the quality of mortality data in your country, considering
-    the quality indicators available and evaluated?
-
-\*Do you consider it feasible to perform vaccine impact analyses on
-mortality over time (and / or other health interventions) considering
-the number of events and quality of mortality data in your country?
-
-## Data management
-
-Once you have decided to perform an ITS to evaluate the impact of
-vaccination, you will obtain official data from your country, for the
-study period of the intended analysis. Databases should be extracted
-from original and cleaned datasets, which are usually managed by
-National Centers of Statistics and Demography or their equivalent.
-Mortality registries are managed by a specific team in every country, as
-they follow standardized guidelines for data collection, processing,
-cleaning, and reporting. Hospitalization data may or may not be
-available at national level and when available are usually managed by
-teams responsible for hospital healthcare services.
+## Appendix: Data Management
+
+Once you have decided to perform a study to evaluate the impact of
+vaccination, you
+will obtain official data from your country, for the study period of the
+intended analysis. Databases should be extracted from original and
+cleaned datasets, which are usually managed by National Centers of
+Statistics and Demography or their equivalent. Mortality registries are
+managed by a specific team in every country, as they follow standardized
+guidelines for data collection, processing, cleaning, and reporting.
+Hospitalization data may or may not be available at national level and
+when available are usually managed by teams responsible for hospital
+healthcare services.
 
 These available secondary databases are protected by ethical regulations
-and personal identifiers cannot be obtained. It is important to note
-that although personal identifiers are not needed, as these data will
-not be linked to other individual level databases, ITS analysis requires
-case by case databases, and not aggregated data (although this data will
-later be aggregated during the analysis process). For ITS, date of birth
-of each individual in the database is required. This may pose a problem
-in some countries where date of birth is considered a personal
-identifier. In these circumstances, special authorizations are required
-to access this variable and its coding into age may be required before
-rendering the data available for this purpose.
+and personal
+identifiers cannot be obtained. It is important to note that although
+personal identifiers are not needed, as these data will not be linked to
+other individual level databases, ITS analysis requires case-by-case
+databases, and not aggregated data (although this data will later be
+aggregated during the analysis process). For ITS, date of birth of each
+individual in the database is
+required. This may pose a problem in some countries where date of birth
+is considered a personal identifier. In these circumstances, special
+authorizations are required to access this variable and its coding into
+age may be required before rendering the data available for this
+purpose.
 
 The study protocol should be evaluated by local ethics committees as
-individual data will be obtained and evaluated (in some countries these
+individual data will be obtained and evaluated. In some countries these
 data without personal identifiers are publicly available and their use
-is exempt from IRB approval).
+is exempt from IRB approval.
 
 Regarding the variables required for the analysis, the data to be
-extracted for analysis is individual level data of all deaths
-(regardless of cause), or hospitalizations (regardless of cause),
-occurring in the country during a given time period. Variables of
-interest which should be extracted include: date of birth, date of
-death/hospitalization, age of death/hospitalization, location of birth
+extracted for analysis are
+individual level data of all deaths (regardless of cause), or
+hospitalizations (regardless of cause), occurring in the country during
+a given time period. Variables of interest which should be extracted
+include: date of birth, date of death/hospitalization, age of
+death/hospitalization, location of birth
 (municipality and state/region), location of death/hospitalization
-(municipality and state/region), gender, causes of death (primary/
+(municipality and state/region), sex, causes of death (primary/
 main/underlying, secondary, intermediate and any other, in 3 and/or 4
 digit ICD codes as available in the dataset), and any variable of
 socio-economic indicators available at the individual level (mother's
-literacy, poverty index, etc).
+literacy, poverty index, etc.).
 
-Even if this data usually follows a routine process of cleaning at the
+Even if these data usually follows a routine process of cleaning at the
 National level, for other uses and international data sharing, when
 extracted, the dataset requires additional cleaning and verification. In
 particular, generating the variable "age at death" (date of death - date
 of birth) and verifying the age distribution of the events is very
-relevant. Generating the age variable may be challenging as in many
-countries the date of birth and date of death are not single variables
-(in date format) but rather a combination of date, month and year
-variables (in number formats) which have to be merged to generate a
-single date variable. Also, datasets usually also contain a separate
-variable for age (age at hospitalization or age at death), which in most
-cases are poorly filled out with many missings, and which are in many
-cases different than the age estimated by using dates of birth and
-events (as described above). The age variable usually comprises two
-variables - one indicating the unit (hours, days, months or years) and a
-second one indicating the actual number. So these have to be merged and
-converted into an age variable in days, which will then be further
-converted in age-groups considering the age groups of interest for the
-analysis. For example, if the age sub-groups of the younger than 5 years
-of age (so \<60 months) are \<2 months, 2-23 months, 24-59 months, these
-have to be coded and categorized considering days to avoid mistakes in
+relevant. Generating the age variable may be
+challenging as in many countries the date of birth and date of death are
+not single variables (in date format) but rather a combination of date,
+month and year variables (in number formats) which have to be merged to
+generate a single date variable. Also, datasets usually also contain a
+separate variable for age (age at hospitalization or age at death),
+which in most cases are poorly filled
+out with many missing variables, and which are in many cases different
+than the age estimated by using dates of birth and events (as described
+above). The age variable usually comprises two variables - one
+indicating the unit (hours, days, months or years) and a second one
+indicating the actual number, so these have to be merged and converted
+into an age variable in days, which will then be further converted in
+age-groups considering the age groups of interest for the analysis. For
+example, if the age sub-groups of the younger than 5 years of age (\<60
+months) are \<2 months, 2-23 months, 24-59 months, these have to be
+coded and categorized considering days to avoid mistakes in
 classification.
 
 Finally, dichotomous variables for pneumonia and non-pneumonia deaths
-should be created, for descriptive analysis of number of events due to
-ICD codes related to pneumonia considered as the main outcomes of
-interest in the analysis. In the hospitalization dataset, we will use
-the variable discharge diagnosis and include ICD codes related to
-pneumonia. In the mortality dataset different variables of causes of
-death are usually available. The primary/main/underlying cause of death
-(these are used interchangeably) should be considered as the main
-outcome of interest. For a more sensitive definition, one may want to
-also consider as pneumonia any death in which ICD codes related to
-pneumonia are present in any of the variables of causes of death
-(including secondary, intermediate and any other). A detailed example of
-creating and recoding variables, data cleaning and descriptive
-preliminary analysis is R is available in the following link:
-<http://guidance.interventionevaluatr.com/practical-exercises.html>
+should be created,
+for descriptive analysis of number of events due to ICD codes related to
+pneumonia considered as the main outcomes of interest in the analysis.
+In the hospitalization dataset, we will use the variable discharge
+diagnosis and include ICD codes related to pneumonia. In the mortality
+dataset different
+variables of causes of death are usually available. The
+primary/main/underlying cause of death (these are used interchangeably)
+should be considered as the main outcome of interest. For a more
+sensitive definition, one may want to also consider as pneumonia any
+death in which ICD codes related to pneumonia are present in any of the
+variables of causes of death (including secondary,
+intermediate and any other). A detailed example of creating and recoding
+variables, data cleaning and descriptive preliminary analysis in R is
+available in the following link:
+<https://guidance.interventionevaluatr.com/practical-exercises.html>
 
-## Data analysis
+## Appendix: Data Analysis (including cases studies from Ecuador and South Africa)
 
 A brief overview of the steps needed to perform an evaluation analysis
-are outlined below.
+are outlined
+below.
 
-### Worked example: Ecuador
+### **Case study: Ecuador**
 
 For a detailed, guided example that shows how to format your data, run
-analyses, and interpret results in R, see the [Practical
-Exercise](https://guidance.interventionevaluatr.com/practical-exercises.html).
+analyses, and
+interpret results in R, see the [Practical Exercise
+(<https://guidance.interventionevaluatr.com/practical-exercises.html)>]{.ul}.
 In that Exercise, we use individual-level mortality records from
-Ecuador, learn how to explore the raw data, format time series, and run
-and interpret the time series analyses, including interrupted time
-series and synthetic controls.
+Ecuador, learn
+how to explore the raw data, format time series, and run and interpret
+the time series analyses, including interrupted time series and
+synthetic controls.
 
-### Worked example: South Africa.
+### **Case study: South Africa.** 
 
 We evaluate the impact of PCVs on rates of death due to pneumonia in
-South Africa. This analysis is based on the study in *PLOS Medicine* by
-Jackie Kleynhans et al. This is a challening dataset due to changing
+South Africa. This analysis is based on the study in PLOS Medicine by
+Jackie Kleynhans et al. This is a challenging dataset due to changing
 rates of HIV infection and use of antiretroviral therapy, both of which
-influence rates of death independent of the vaccine. [This vignette can
-be found
-here](https://danweinberger.github.io/who-guidance-materials/South-Africa-Example.html)
+influence rates of death independent of the vaccine**.** [This case
+studycan be found here](about:blank)
+[(<http://guidance.interventionevaluatr.com/South-Africa-Example.html)>]{.ul}
 
 For those who do not use R, we have created a simple point-and-click
 interface that allows the user to upload a spreadsheet and simply
 specify the name of the outcome and control variables and the date of
 vaccine introduction. The interface runs synthetic controls as well as
-interrupted time series and the STL-PCA method for sparse data. The
-interface can be accessed on the web here:
-(<http://dev.interventionevaluatr.com/>). Alternatively, the program can
-be run locally through R by following the instructions here:
-<https://github.com/weinbergerlab/InterventionEvaluatR>
+interrupted time series and a variant of this method designed for use
+with sparse data. The interface can be accessed on the web here:
+([<http://dev.interventionevaluatr.com/>](about:blank)). Alternatively,
+the program can be run locally through R by following the instructions
+here: <https://github.com/weinbergerlab/InterventionEvaluatR>
 
-### Data formatting
+### **Data formatting**
 
 When evaluating changes in disease rates associated with an
 intervention, the first step is to format the data into a **time
@@ -2655,14 +2238,18 @@ week/month/quarter/year, and then adding up the number of cases that
 occurred during that time period.
 
 Ultimately we want to get a dataset that looks something like this, with
-a column for the date, and a column for each of the diseases or cause
-sof death that we want to enumerate. If you have multiple strata, such
-as different age groups or regions, the dataset will need to reflect
-this. In the table below, we have 2 age groups. Each date/age group
-combination should have only 1 row in this dataset, *and all date/age
-combinations should be represented, even if there were 0 cases observed
-during a particular time period*. Here we can see the first 3 months of
-data for age groups 2-23m and 2-59m in Ecuador.
+a column for the
+date, and a column for each of the diseases or causes of death that we
+want to enumerate. If you have multiple strata, such as different age
+groups or regions, the dataset will need to reflect this. In the table
+below, we have 2 age groups. Each date/age group combination should have
+only 1 row in this dataset, *and all date/age combinations should be
+represented, even if there were 0 cases observed during a particular
+time period*. Here we can see the first 3 months of data for age groups
+2-23m and 2-59m in Ecuador. In this table, J12_J18_prim, acm_noj_prim,
+and A00_B99_prim give the number of deaths due to pneumonia, all-cause
+mortality (excluding respiratory causes), and
+infectious/parasitic diseases, respectively.
 
 ```{r, echo=F}
 
@@ -2672,7 +2259,7 @@ dataset<-ecuador_mortality
 print(head(ecuador_mortality[ecuador_mortality$monthdate<=as.Date('2005-03-01'),1:5] ))
 ```
 
-### Descriptive analysis
+### Descriptive Analyses
 
 The most useful thing to do to ensure the data are appropriately
 formatted is to plot the data as a time series line plot, where we have
@@ -2687,8 +2274,6 @@ ds.sub<-dataset[dataset$age_group=='ec 2-59m A',]
 plot(ds.sub$monthdate,ds.sub[,outcome.name2], type='l', bty='l', col='blue', xlab='Date', ylab='J12-18', ylim=c(0, max(ds.sub[,outcome.name2])))
 plot(ds.sub$monthdate,ds.sub[,offset.name2], type='l', bty='l', col='blue', xlab='Date', ylab='All non-resp.', ylim=c(0, max(ds.sub$acm_noj_prim)))
 ```
-
-### Analyzing the data
 
 As discussed in the previous sections, there are a number of ways to
 evaluate the impact of PCVs. These include pre-post comparisons,
@@ -2706,29 +2291,30 @@ Regardless of the analytical framework used, it is critical to adjust
 for underlying trends in the data that are unrelated to vaccine
 introduction. If the underlying trend is linear or log-linear, a
 standard interrupted time series analysis might be appropriate. However,
-the trends unrelated to vaccine introduction often follow patterns that
-are not readily captured with a straight line. Ignoring these trends can
-lead to incorrect results. Therefore, it is critical to identify control
-variables that can be used to adjust for unrelated factors. This can be
-accomplished in a number of ways, as discussed above.
+the trends unrelated to vaccine
+introduction often follow patterns that are not readily captured with a
+straight line. Ignoring these trends can lead to incorrect results.
+Therefore, it is critical to identify control variables that can be used
+to adjust for unrelated factors. This can be accomplished in a number of
+ways, as discussed
+above.
 
 Several summary measures can be reported from the main analysis. These
-include 1. The relative change in incidence during a specified
-evaluation period, also known as the "Rate Ratio". The rate ratio is
-calculated by summing the number of cases that occurred after the
-intervention and dividing by the expected number of cases. 2. The
+include the following: 1. The relative change in incidence during a
+specified evaluation period, also known as the "Rate Ratio". The rate
+ratio is calculated by summing the number of cases that occurred after
+the intervention and dividing by the expected number of cases. 2. The
 absolute change in incidence during a specified evaluation period, also
 known as the "Rate difference". The rate difference is calculated by
 summing the number of cases that occurred after the intervention and
-subtracting the expected number of cases. 3. Reports from interrupted
-time series analysis often also report on the change in the slope of the
-line from the pre-vaccine period to the post-vaccine period. While this
-does provide evidence of a change, it is a somewhat abstract quantity
-that can be difficult to interpret from a public health standpoint and
-can be difficult to compare between studies
+subtracting the expected number of cases. 3. The change in the slope of
+the line from the pre-vaccine period to the post-vaccine period. While
+this does provide evidence of a change, it is a somewhat abstract
+quantity that can be difficult to interpret from a public health
+standpoint and can be difficult to compare between studies.
 
 It is also important to conduct sensitivity analyses to determine the
-robustness of the findings. These can include
+robustness of the findings. These can include:
 
 1.  Shifting the specified date of vaccine introduction or the
     evaluation period forward or backward in time
@@ -2737,6 +2323,430 @@ robustness of the findings. These can include
 
 3.  Using different analytical approaches. For instance, if the main
     analysis uses synthetic controls, an interrupted time series could
-    be performed as a comparison
+    be performed as a comparison.
 
-## 
+## Appendix: Case study on measuring the impact of pneumococcal conjugate vaccines
+
+Pneumococcal infections cause significant morbidity and mortality in
+children under 5 years
+of age in countries throughout the world and are the leading cause of
+vaccine-preventable deaths worldwide \[Liu L, Lancet 2016\].
+*Streptococcus pneumoniae* (pneumococcus) causes a variety of clinical
+syndromes, including pneumonia, meningitis, and bacteremia, as well as
+milder but more common illnesses such as otitis media and sinusitis
+(O'Brien KL, Lancet 2009\]. All age groups are affected, but most of the
+burden affects infants, young children and the elderly.
+
+WHO estimated that pneumococcal disease was, in the pre-vaccine period,
+the leading cause of vaccine-preventable deaths worldwide. In 2005,
+there were an estimated 14.5 million cases of serious pneumococcal
+disease each year worldwide, resulting in approximately 826,000 deaths
+(O'Brien KL, Lancet 2009\]. Shortly after PCV introduction, in 2015,
+pneumococcal deaths globally were estimated at 320,000 to 515,000, with
+50% of these deaths occurring in five large countries
+in Africa and Asia reinforcing the need for larger vaccine uptake.
+(Wahl, B, Lancet 2018\]. Bacteremia is the most common invasive clinical
+presentation of pneumococcal infection in children aged 2 years or less,
+whereas pneumonia is the most common clinical presentation in adults.
+Invasive pneumococcal disease (IPD) implies the morbidity associated
+with isolation of pneumococci from
+normally sterile body sites, such as the blood stream, or those
+secondary to bloodstream spread, e.g., meningitis or septic arthritis.
+PCVs were first licensed in 2000. There are currently at least three
+commercially available vaccines: Synflorix (10-valent, PCV10, GSK),
+Prevnar (13-valent, PCV13, Pfizer), and Pneumosil (10-valent, Serum
+Institute of India). All available vaccines have demonstrated excellent
+safety and immunogenicity profiles in clinical trials (WER, 2019\]. WHO,
+in 2012, recommended the introduction of PCVs in childhood immunization
+programs with high priority to
+countries with mortality rate \>50 deaths/1000 births in children under
+5 years of age (WER, 2012\]. In 2019, the Strategic Advisory Group of
+Experts (SAGE) updated its recommendation, urging all countries in the
+world to introduce PCVs, in either 3+0 or 2+1 schedules, regardless of
+disease burden and mortality rates (WER, 2019\].
+
+To date, at least 147 countries in the world have introduced PCVs into
+their national immunization programs, including many low- and
+middle-income countries (IVAC - View-hub report, 2019\]. Impact
+assessment studies are crucial after the introduction of new
+technologies to demonstrate that they work in real world settings as
+they have in clinical trials. This is particularly true for new
+vaccines, which have been made available in the past decade and are
+associated with higher costs when compared to traditional vaccines
+(Penfold RB, Acad Pediatr 2013; Bruhn CA, Epidemiology 2017\].
+
+Demonstrating vaccine impact on disease occurrence is also crucial to
+inform decision making
+and provide evidence to sustain the use of immunization programs.
+Additionally, in addition to providing evidence for decision makers,
+vaccine impact studies are crucial to allow all stakeholders to
+recognize the benefits of vaccination, to assess the programmatic use of
+vaccine, and monitor progress towards national and international child
+health goals.
+
+After PCV introduction in several countries among the first to use the
+vaccine, many studies were conducted to assess their effectiveness and
+impact on the various relevant clinical outcomes. To this end, many
+studies benefited from guidance provided by the WHO manual "Measuring
+impact of Streptococcus pneumoniae and *Haemophilus influenzae* type b
+conjugate vaccination", published in 2012 (WHO, 2012\]. In this manual,
+selected approaches to measuring PCV and Hib conjugate vaccine impact on
+disease occurrence and a framework for determining the best methodology
+for
+measuring that impact for different countries or epidemiologic settings
+are presented, including using secondary data sources such as vital
+statistics and administrative records of hospitalizations. However,
+ecologic study designs are not fully explored and may be a useful method
+for measuring vaccine impact, as recently demonstrated by several
+studies, using available secondary data sources
+such as mortality registries and administrative hospitalization
+databases. In addition, new methods to measure PCV impact using
+administrative data have been developed since the publication of that
+manual.
+
+A significant body of evidence is currently available demonstrating PCV
+effectiveness and impact on acute otitis media, pneumonia, invasive
+bacterial diseases, including both cases managed in the outpatient
+setting and more severe disease requiring hospitalization (de Oliveira,
+2016; Loo, JD, 2014 \]. However, to date, there is scarce evidence on
+the impact of PCVs on mortality and morbidity in children under 5 years
+of age, using available secondary mortality and hospitalization
+data-sources, particularly in low- and middle- income countries. This is
+mainly due to challenges in availability, access to, and analysis of
+secondary sources of morbidity and mortality data. Despite the large
+body of evidence of PCV impact, countries that newly introduce PCV may
+choose to conduct an impact evaluation to be used for local program
+evaluation.
+
+A recent multi-national study led by the Pan American Health
+Organization (PAHO) conducted in 10 low- and middle- income countries in
+the Latin American Region was conducted, with the aim of determining the
+impact of PCVs on pneumonia mortality in children under 5 years of age,
+following their introduction into the national routine immunization
+program targeting infants. This study
+demonstrated, as a proof of concept, that available mortality data could
+estimate the impact of PCVs on all-cause pneumonia mortality in children
+under the age of 5 years in selected countries, by means of time series
+analysis methodology (de Oliveira, CID, 2020\]. In addition, similar
+studies are being undertaken in the African, European, and Southeast
+Asian Regions by the respective WHO regional offices with countries in
+their regions (Gatera, Vaccine 2016; Izu, Bull World Health Organization
+2017\].
+
+The use of nationwide data from secondary sources, including the
+National Mortality Information Systems and Hospitalization Information
+systems, from pre- and post-vaccine introduction periods is possible,
+granted various aspects of data availability, extraction, quality, and
+other methodological challenges are adequately addressed and overcome.
+
+As such, this document provides guidance on approaches to measuring PCV
+impact using mortality and hospitalization secondary data sources,
+including minimum data requirements, and a framework for ensuring
+adequate application of relevant methodological aspects required for the
+use of time series methodology. This may serve as a useful resource to
+policy makers who will
+utilize results of impact assessment studies to make decisions regarding
+vaccine introduction and sustainability; Ministry of Health technical
+officers directly involved with requesting and/or conducting data
+management, epidemiologic studies and data analysis; as well as
+professionals working in academic institutions supporting the Ministry
+of Health in conducting research impact
+assessment evaluation.
+
+### Study question and objectives: A focus on pneumococcal vaccines
+
+For pneumonia in children, as the case study for the assessment of PCV,
+the study question focuses on the impact of PCV in pneumonia
+hospitalizations or deaths in children of a given age group of interest,
+in country X, in a given time period (considering the time being
+assessed after PCV introduction).
+
+Study objectives will be structured considering the research question
+above, and include:
+
+The **main objective** of secondary data analysis of PCV impact is to
+evaluate the impact of PCV vaccination (**INTERVENTION**) in pneumonia
+mortality (**OUTCOME**) in children younger than 5 years of age
+(**POPULATION**) in **COUNTRY** **X** through the assessment of
+available secondary mortality data.
+
+Secondary objectives of these types of studies include the following:
+
+1.  To assess the pneumonia mortality or disease burden in Country X
+    in children \<5 years of age and by sub-groups of age
+
+2.  To describe the pneumonia mortality burden in Country X
+    considering any cause of death reported versus considering only the
+    main cause
+    of death reported.
+
+3.  Characterize the temporal trends of PCV vaccine coverage (3rd dose)
+    in children 1 year of age over time in Country X.
+
+    ## Feasibility of conducting time series analysis of secondary data: A focus on pneumococcal vaccines
+
+After considering the specific questions related to pneumococcal vaccine
+introduction in your country, the next step is to search and evaluate
+any available data from international data sources, including
+population/demographics, vaccination coverage, and secondary
+mortality/hospitalization data. As already mentioned, hospitalization
+data are not likely to be available from international datasources as
+these are not usually shared. But mortality data are routinely shared
+and available from international organization data sites. Of note, this
+available data is aggregated at a level which enables simple descriptive
+analysis **but is usually not useful for conducting a time series
+analysis, for which one will need to obtain case-by-case data from
+national data registries and databases**. It is however very useful to
+allow assessment of the data quality and feasibility of conducting a
+time series analysis for vaccine impact assessment.
+
+Various aspects of the available data from international data sources,
+including data quality and preliminary descriptive analysis, should be
+evaluated and considered before deciding to embark on an ITS.
+
+A step-by-step outline to access and analyze available data is presented
+below:
+
+#### **Part 1: Available international Mortality data and quality indicators**
+
+As mentioned above, WHO and Regional offices have aggregated mortality
+data available. Below, you will find a step-by-step outline to access
+data from the Regional WHO office for the Americas and WHO headquarters.
+
+[**Regional Pan-American Health Organization (PAHO) health information
+system for the Americas**]{.ul} *(Health Information Platform for the
+Americas - PLISA)*
+
+Access PLISA, mortality data: <http://www.paho.org/data/index.php/en/>
+
+To access information on annual lower respiratory infection death rates
+in your country:
+
+1.  On the PLISA main page, under "mortality" click on "Mortality trends
+    by cause of death, sex
+    and country 2000-2016";
+
+2.  Select your country, lower respiratory infection under cause,
+    age-standardized under age, and
+    both sexes under sex;
+
+To access information on annual lower respiratory infection death rates
+in your country:
+
+3.  On the PLISA main page, under "core indicators", click "All
+    indicators":
+    <https://opendata.paho.org/en/core-indicators/core-indicators-dashboard>
+4.  Under latest data, in the drop down menus in the table, select
+    "mortality" under dimension,
+    and select "child health" and "cause of death" under sub-dimension.
+
+For your country, view the latest estimate for the following indicators:
+
+-Under-five deaths due to acute respiratory illness ARI (%)
+
+-Under five mortality rate estimated (per 1,000 live births)
+
+-Lower respiratory infection mortality rate (per 100,000 pop)
+
+5.  Trends over time of these same indicators can be seen under
+    "indicator profile", after selecting these specific indicators in
+    the indicator dorp-down menu.
+
+To access qualitative analysis of mortality data based on standardized
+mortality quality indicators:
+
+1.  On the PLISA main page, under "core indicators", click "All
+    indicators":
+    <https://opendata.paho.org/en/core-indicators/core-indicators-dashboard>
+
+2.  Under Country profile, select your country, under dimension select
+    "health system"
+
+3.  Verify the following mortality data quality standardized indicators
+    reported over time by
+    your country:
+
+    -Mortality under-registration (%)
+
+    -Ill-defined and unknown causes of death (%)
+
+    -Mortality garbage codes (%)
+
+Finally, considering the above information and data, consider whether it
+is feasible to perform PCV impact analyzes on mortality over time
+considering the number of events and quality of mortality data in your
+country.
+
+[**WHO -- mortality data**]{.ul}
+
+The World Health Organization manages and maintains a wide range of data
+collections related to global health and well-being as mandated by our
+Member States under <https://www.who.int/data/collections>
+
+1.  To access the mortality data dashboard, with information on the
+    number of annual deaths in
+    general - by age, sex and group of causes, as well as crude
+    mortality rates,
+    for a given year and over time:
+
+    1.  Click on "WHO Mortality Database";
+
+    2.  Specify country and year of interest in the drop-down menus.
+
+2.  To access data on deaths due to acute lower respiratory infections
+    by age group and year in your country, access "Global Health
+    Observatory and data repository"
+
+    1.  Click on <https://apps.who.int/gho/data/node.home>;
+
+    2.  Under data tables by topic, click on "Mortality and global
+        health estimates"
+
+    3.  Click on "Child mortality";
+
+    4.  Click on "Causes of child death";
+
+    5.  Click on "Number of deaths by cause";
+
+    6.  Click on "Acute Lower respiratory infections", scroll down to
+        see numbers for your country, and scroll sideways to see numbers
+        over time, by age groups.
+
+3.  To access WHO mortality databases, raw data, as reported annually by
+    countries from their civil registration systems,
+    <https://www.who.int/data>, under data collection and analysis tools
+    (<https://www.who.int/data/data-collection-tools>), search for WHO
+    mortality database:
+
+    1.  Click on Mortality databases:
+        <https://www.who.int/data/data-collection-tools/who-mortality-database>
+
+    2.  As indicated by WHO: "Basic underlying raw data files, together
+        with the necessary instructions, file structures, code reference
+        tables, etc. These data can be used by institutions and
+        organizations which need access at this level of detail, mainly
+        for research purposes, AND have the required information
+        technology (IT) resources to use this information."
+
+#### **Part 2: Immunization Coverage**
+
+As with mortality data, WHO and Regional offices have immunization
+coverage data available. Below, you will find a step-by-step outline to
+access data from the Regional WHO office for the Americas and WHO
+headquarters.
+
+1.  To access immunization coverage dashboard, with information provided
+    by countries through WHO and UNICEF Estimates of National
+    Immunization coverage, by vaccine and by country, for a given year
+    and over time:
+
+    1.  Access <https://www.who.int/data/collections>
+
+    2.  Click on "Immunization coverage country punchcards"
+
+2.  To access trends in PCV3 coverage by country over time, access
+    "Global Health Observatory and data repository"
+
+    1.  Click on <https://apps.who.int/gho/data/node.home>;
+
+    2.   Under "Themes", click on "Immunization and vaccine-preventable
+        communicable diseases"
+
+    3.  Under related indicators, select "pneumococcal conjugate vaccine
+        (PCV3) coverage
+        among 1-year olds (in %)
+
+ 
+
+3.  To access detailed immunization coverages as reported by the WHO and
+    UNICEF Estimates of National Immunization coverage, by vaccine and
+    by country, access "Immunization Analysis and Insights" in
+    <https://www.who.int/teams/immunization-vaccines-and-biologicals/immunization-analysis-and-insights/global-monitoring/immunization-coverage/who-unicef-estimates-of-national-immunization-coverage>
+
+    1.  Under Resources, click "WUENIC excel" to download and review
+        official estimates of national coverages, by vaccine, country
+        and year.
+
+    2.  Open downloaded Excel file, select your country, PCV3 and
+        evaluate vaccine coverage by year reported.
+
+#### **Part 3: Population data**
+
+The United Nations makes available United Nations population estimates
+and projections prepared by the Population Division of the Department of
+Economic and Social Affairs of the United Nations Secretariat. These
+data are presented in a [series of Excel
+files](https://population.un.org/wpp/Download) displaying key
+demographic indicators for each UN development group, *World
+Bank* income group, geographic region, *Sustainable Development Goals
+(SDGs)* region, sub-region and country or area for selected periods or
+dates within 1950-2100.
+
+Below, you will find a step-by-step outline to access population
+estimates, population pyramids, population projections by age group, by
+country, over time, among others.
+
+1.   Access the UNPOP website: <https://population.un.org/wpp/> This is
+    the main page of
+    the UN Population website with several links for publications, data,
+    manuals,
+    papers, maps, among others.
+
+    1.  under "Graphs and demographic profiles", select your country
+
+    2.  Click on Demographic profiles, and then "line charts" and
+        "population pyramids"
+
+        1.  Review the figures generated
+
+    3.  Click on probabilistic projects, then population. Select the age
+        groups of interest
+
+        1.  Review the figures generated
+
+2.  Access in UNPOP website: <https://population.un.org/wpp/>
+
+    1.  Under "Interactive data", select "Population by age and sex"
+
+    2.  Select your region under "Geographic regions", click next
+
+    3.  Select your country (if available), click next
+
+    4.  Select the time period in years (ex. 2005-2020), click next
+
+    5.  Select "both sexes combined", click next
+
+    6.  Select the age groups of your interest for the analysis
+
+    7.  Validate/confirm the suggested format provided by the webpage
+        for the pivot table to be generated for presenting the data,
+        click next. You can export the data to excel file.
+
+    **Critical assessment of mortality, vaccine coverage and population
+    data from
+    international sources**
+
+After going through available data, consider the following questions and
+discuss them
+with your team in order to agree on the feasibility regarding conducting
+a
+vaccine impact analysis using the available data in your country.
+
+-   When was the vaccine introduced? Is there enough time after vaccine
+    introduction to enable vaccine impact evaluation?
+
+-   What is the total population, population of children \<5 years, and
+    general trends of general and specific mortality in children over
+    time in your country?
+
+-   What is the quality of mortality data in your country, considering
+    the quality indicators available and evaluated?
+
+-   Do you consider it is feasible to perform vaccine impact analyses on
+    mortality over time considering the number of events and quality of
+    mortality data in your country?
+
+If you decide to embark in a full impact assessment evaluation, access
+individual level secondary mortality or hospitalization datasets and
+follow the steps described in this manual to extract, evaluate, clean
+and analyze the data. **Good luck!**
