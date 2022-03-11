@@ -73,3 +73,8 @@ a:hover{
 a:visited{
     color:#3d1308
 }
+
+#content h2 {
+    background-color: #507894;
+    color: #FFFFFF;
+}
