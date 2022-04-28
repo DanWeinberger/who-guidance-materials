@@ -1488,7 +1488,7 @@ kids$log.ach<-log(kids[,offset.name]+0.5)
 form1<-as.formula(paste0('outcome_pre','~month+ log.offset'))
 mod1<-glm(form1,family='quasipoisson', data=kids)
 fit.outcome.pre<-predict(mod1, type='response')
-plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Fit of synthetic control model')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Fit of synthetic control model, Brazil')
 points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
 
 
@@ -1498,7 +1498,7 @@ kids2$log.offset<-log(kids2[,offset.name2]+0.5)
 form2<-as.formula(paste0('outcome_pre','~month+  log.offset'))
 mod2<-glm(form2,family='quasipoisson', data=kids2)
 fit.outcome.pre2<-predict(mod2, type='response')
-plot(kids2$date, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Fit of synthetic control model')
+plot(kids2$date, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Fit of synthetic control model, Ecuador')
 points(kids2$monthdate[kids2$monthdate<intro.date2],fit.outcome.pre2, type='l' ,col='#1b9e77' )
 ```
 
@@ -1509,13 +1509,13 @@ during the post-vaccine months
 ```{r, fig.width=10, fig.height=3.5}
 par(mfrow=c(1,2))
 fit.outcome.post<-predict(mod1, type='response', newdata=kids)
-plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Extrapolation to post-vaccine period')
+plot(kids$date, kids[,outcome.name], type='p', pch=16, bty='l', ylab="N hosp.", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids[,outcome.name])), main='Extrapolation to post-vaccine period, Brazil')
 points(kids$date,fit.outcome.post, type='l' ,col='#d95f02' )
 points(kids$date[kids$date<intro.date],fit.outcome.pre, type='l' ,col='#1b9e77' )
 abline(v=intro.date.minus.one, lty=2, col='gray')
 
 fit.outcome.post2<-predict(mod2, type='response', newdata=kids2)
-plot(kids2$monthdate, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Extrapolation to post-vaccine period')
+plot(kids2$monthdate, kids2[,outcome.name2], type='p', pch=16, bty='l', ylab="N Deaths", col='gray', cex=0.7,  xlab='date', ylim=c(0, max(kids2[,outcome.name2])), main='Extrapolation to post-vaccine period, Ecuador')
 points(kids2$monthdate,fit.outcome.post2, type='l' ,col='#d95f02' )
 points(kids2$monthdate[kids2$monthdate<intro.date2],fit.outcome.pre2, type='l' ,col='#1b9e77' )
 abline(v=intro.date.minus.one2, lty=2, col='gray')
@@ -2629,10 +2629,13 @@ country, over time, among others.
 
     "population pyramids"
 
-     1. Review the figures generated
+    1.  Review the figures generated
 
-3.   Click on probabilistic projects, then population. Select the age
+3.  Click on probabilistic projects, then population. Select the age
 
+```{=html}
+<!-- -->
+```
     groups of interest
 
      1. Review the figures generated
