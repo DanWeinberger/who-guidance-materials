@@ -2057,7 +2057,7 @@ Estimation of the Mismatch between Admission and Discharge Diagnosis for
 Respiratory Patients, and Implications on the Length of Stay and
 Hospital Charges %\@ 153-4063 %2 PMC6568083 %M 31258971. Print.
 
-## Appendix: Data Management
+## Appendix 1: Data Management
 
 Once you have decided to perform a study to evaluate the impact of
 vaccination, you will obtain official data from your country, for the
@@ -2139,7 +2139,7 @@ creating and recoding variables, data cleaning and descriptive
 preliminary analysis in R is available in the following link:
 <https://guidance.interventionevaluatr.com/practical-exercises.html>
 
-## Appendix: Data Analysis (including cases studies from Ecuador and South Africa)
+## Appendix 2: Data Analysis (including cases studies from Ecuador and South Africa)
 
 A brief overview of the steps needed to perform an evaluation analysis
 are outlined below.
@@ -2271,7 +2271,7 @@ robustness of the findings. These can include:
     analysis uses synthetic controls, an interrupted time series could
     be performed as a comparison.
 
-## Appendix: Case study on measuring the impact of pneumococcal conjugate vaccines
+## Appendix 3: Case study on measuring the impact of pneumococcal conjugate vaccines
 
 Pneumococcal infections cause significant morbidity and mortality in
 children under 5 years of age in countries throughout the world and are
